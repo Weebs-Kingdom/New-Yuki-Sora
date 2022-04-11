@@ -26,3 +26,4 @@ target/
 .idea/
 .github/
 *.iml
+yuki/yuki.properties
