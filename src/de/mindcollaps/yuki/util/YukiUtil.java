@@ -1,4 +1,4 @@
-package yuki.util;
+package de.mindcollaps.yuki.util;
 
 public class YukiUtil {
 

@@ -1,15 +1,14 @@
-package yuki.core;
+package de.mindcollaps.yuki.core;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import yuki.NetworkManager;
-import yuki.api.ApiManagerOld;
-import yuki.api.YukiApi;
-import yuki.api.ApiRequestHandler;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.application.discord.core.DiscordApplication;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.NetworkManager;
+import de.mindcollaps.yuki.api.ApiManagerOld;
+import de.mindcollaps.yuki.api.ApiRequestHandler;
+import de.mindcollaps.yuki.api.YukiApi;
+import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 
 import java.io.FileReader;
 
@@ -17,7 +16,7 @@ public class YukiSora {
 
     private final String consMsgDef = "[Yuki Sora]";
 
-    private YukiApi yukiApi;
+    private final YukiApi yukiApi;
     private NetworkManager networkManager;
     private ApiRequestHandler requestHandler;
     private ApiManagerOld apiManagerOld;

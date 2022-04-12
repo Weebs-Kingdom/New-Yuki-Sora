@@ -1,16 +1,14 @@
-package yuki.api.lib.data;
+package de.mindcollaps.yuki.api.lib.data;
 
+import de.mindcollaps.yuki.api.lib.RouteClass;
+import de.mindcollaps.yuki.api.lib.RouteField;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import yuki.api.lib.RouteClass;
-import yuki.api.lib.RouteData;
-import yuki.api.lib.RouteField;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
-import yuki.util.YukiUtil;
 
 @RouteClass("disc-server")
 public class DiscApplicationServer extends RouteData {

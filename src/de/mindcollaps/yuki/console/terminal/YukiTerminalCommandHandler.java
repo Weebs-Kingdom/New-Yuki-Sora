@@ -1,6 +1,6 @@
-package yuki.console.terminal;
+package de.mindcollaps.yuki.console.terminal;
 
-import yuki.console.terminal.commands.TerminalCommand;
+import de.mindcollaps.yuki.console.terminal.commands.TerminalCommand;
 
 public class YukiTerminalCommandHandler {
 

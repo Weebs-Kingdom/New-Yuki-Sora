@@ -1,8 +1,8 @@
-package yuki.console.terminal.commands;
+package de.mindcollaps.yuki.console.terminal.commands;
 
 public interface TerminalCommand {
 
-    public String onExecute(String[] args);
-    public String getCommandInvoke();
-    public String help();
+    String onExecute(String[] args);
+    String getCommandInvoke();
+    String help();
 }

@@ -1,17 +1,17 @@
-package yuki.application.discord.command.handler;
+package de.mindcollaps.yuki.application.discord.command.handler;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import yuki.application.discord.command.CommandAction;
-import yuki.application.discord.command.CommandOption;
-import yuki.application.discord.command.DiscCommand;
-import yuki.application.discord.command.SubCommand;
-import yuki.application.discord.core.DiscordApplication;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.application.discord.command.CommandAction;
+import de.mindcollaps.yuki.application.discord.command.CommandOption;
+import de.mindcollaps.yuki.application.discord.command.DiscCommand;
+import de.mindcollaps.yuki.application.discord.command.SubCommand;
+import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.core.YukiSora;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -66,9 +66,7 @@ public class DiscCommandHandler {
             //If options is a sub command
             if (args.length - 1 > checkI)
                 if (options[i].getType() == OptionType.SUB_COMMAND)
-                    if (args[checkI].equalsIgnoreCase(options[i].getName()))
-                        return true;
-                    else return false;
+                    return args[checkI].equalsIgnoreCase(options[i].getName());
                 else continue;
             else return false;
         }

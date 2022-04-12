@@ -1,18 +1,18 @@
-package yuki.api;
+package de.mindcollaps.yuki.api;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
-import yuki.util.FileUtils;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
+import de.mindcollaps.yuki.util.FileUtils;
 
 public class ApiManagerOld {
 
     private final String apiToken;
     private final YukiSora yukiSora;
-    private String api;
+    private final String api;
 
     public ApiManagerOld(YukiSora engine) {
         api = YukiProperties.getProperties(YukiProperties.dPDbApiUrlOld);

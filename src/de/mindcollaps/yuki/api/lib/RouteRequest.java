@@ -1,14 +1,14 @@
-package yuki.api.lib;
+package de.mindcollaps.yuki.api.lib;
 
 import org.json.simple.JSONObject;
-import yuki.api.ApiResponse;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.ApiResponse;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public abstract class RouteRequest<T extends RouteData> extends Route {
 
-    private Class<T> clazz;
+    private final Class<T> clazz;
 
     public RouteRequest(Class<T> clazz) {
         this.clazz = clazz;

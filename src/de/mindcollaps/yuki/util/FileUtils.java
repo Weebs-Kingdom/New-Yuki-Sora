@@ -1,9 +1,9 @@
-package yuki.util;
+package de.mindcollaps.yuki.util;
 
-import yuki.console.log.YukiLogInfo;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
 
 import java.io.*;
 
@@ -13,7 +13,7 @@ public class FileUtils {
 
     public static String home = System.getProperty("user.dir") + "/yuki";
 
-    private static JSONParser parser = new JSONParser();
+    private static final JSONParser parser = new JSONParser();
 
     public static String getHome() {
         return home;

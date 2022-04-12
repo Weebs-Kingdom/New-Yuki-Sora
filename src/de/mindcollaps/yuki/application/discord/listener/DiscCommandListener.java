@@ -1,4 +1,4 @@
-package yuki.application.discord.listener;
+package de.mindcollaps.yuki.application.discord.listener;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -6,15 +6,15 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import yuki.api.lib.LibManager;
-import yuki.api.lib.data.DiscApplicationServer;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.application.discord.command.handler.DiscCommandParser;
-import yuki.application.discord.util.TextUtil;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.lib.LibManager;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandParser;
+import de.mindcollaps.yuki.application.discord.util.TextUtil;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public class DiscCommandListener extends ListenerAdapter {
 

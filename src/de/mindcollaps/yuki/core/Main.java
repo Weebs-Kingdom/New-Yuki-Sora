@@ -1,9 +1,8 @@
-package yuki.core;
+package de.mindcollaps.yuki.core;
 
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.console.terminal.YukiTerminal;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.console.terminal.YukiTerminal;
 
 import java.io.IOException;
 

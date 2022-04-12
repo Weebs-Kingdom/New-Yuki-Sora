@@ -1,4 +1,4 @@
-package yuki.api.lib;
+package de.mindcollaps.yuki.api.lib;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

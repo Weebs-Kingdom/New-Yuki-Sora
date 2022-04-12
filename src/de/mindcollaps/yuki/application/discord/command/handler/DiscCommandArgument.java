@@ -1,6 +1,9 @@
-package yuki.application.discord.command.handler;
+package de.mindcollaps.yuki.application.discord.command.handler;
 
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 public class DiscCommandArgument {

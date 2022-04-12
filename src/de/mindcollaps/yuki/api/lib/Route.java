@@ -1,6 +1,6 @@
-package yuki.api.lib;
+package de.mindcollaps.yuki.api.lib;
 
-import yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiProperties;
 
 public abstract class Route {
 
@@ -12,8 +12,6 @@ public abstract class Route {
     }
 
     public boolean isValid(){
-        if(!this.getClass().isAnnotationPresent(RouteClass.class))
-            return false;
-        return true;
+        return this.getClass().isAnnotationPresent(RouteClass.class);
     }
 }

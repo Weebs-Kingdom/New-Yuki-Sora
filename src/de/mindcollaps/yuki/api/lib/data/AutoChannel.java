@@ -1,12 +1,11 @@
-package yuki.api.lib.data;
+package de.mindcollaps.yuki.api.lib.data;
 
+import de.mindcollaps.yuki.api.lib.ForeignData;
+import de.mindcollaps.yuki.api.lib.RouteClass;
+import de.mindcollaps.yuki.api.lib.RouteField;
+import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
+import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.*;
-import yuki.api.lib.ForeignData;
-import yuki.api.lib.RouteClass;
-import yuki.api.lib.RouteData;
-import yuki.api.lib.RouteField;
-import yuki.application.discord.util.DiscordUtil;
-import yuki.core.YukiSora;
 
 @RouteClass("autochannel")
 public class AutoChannel extends RouteData {

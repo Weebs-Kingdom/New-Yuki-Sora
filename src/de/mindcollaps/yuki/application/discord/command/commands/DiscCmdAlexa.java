@@ -1,15 +1,15 @@
-package yuki.application.discord.command.commands;
+package de.mindcollaps.yuki.application.discord.command.commands;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.json.simple.JSONObject;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.application.discord.command.CommandAction;
-import yuki.application.discord.command.CommandOption;
-import yuki.application.discord.command.DiscCommand;
-import yuki.application.discord.command.handler.DiscCommandArgs;
-import yuki.application.discord.util.TextUtil;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.application.discord.command.CommandAction;
+import de.mindcollaps.yuki.application.discord.command.CommandOption;
+import de.mindcollaps.yuki.application.discord.command.DiscCommand;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
+import de.mindcollaps.yuki.application.discord.util.TextUtil;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public class DiscCmdAlexa extends DiscCommand {
 

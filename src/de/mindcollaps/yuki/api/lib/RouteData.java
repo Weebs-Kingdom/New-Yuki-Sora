@@ -1,12 +1,9 @@
-package yuki.api.lib;
+package de.mindcollaps.yuki.api.lib;
 
-import org.json.simple.JSONObject;
-import yuki.api.ApiResponse;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.ApiResponse;
+import de.mindcollaps.yuki.core.YukiSora;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public abstract class RouteData extends Route {

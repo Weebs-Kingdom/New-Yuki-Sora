@@ -1,10 +1,10 @@
-package yuki.application.discord.command.handler;
+package de.mindcollaps.yuki.application.discord.command.handler;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import yuki.api.lib.data.DiscApplicationServer;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
-package yuki.core;
+package de.mindcollaps.yuki.core;
 
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.util.FileUtils;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.util.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;

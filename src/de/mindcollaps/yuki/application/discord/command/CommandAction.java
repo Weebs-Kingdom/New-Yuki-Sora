@@ -1,11 +1,11 @@
-package yuki.application.discord.command;
+package de.mindcollaps.yuki.application.discord.command;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import yuki.api.lib.data.DiscApplicationServer;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.application.discord.command.handler.DiscCommandArgs;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public interface CommandAction {
 

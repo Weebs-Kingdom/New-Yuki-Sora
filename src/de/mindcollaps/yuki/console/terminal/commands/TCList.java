@@ -1,6 +1,6 @@
-package yuki.console.terminal.commands;
+package de.mindcollaps.yuki.console.terminal.commands;
 
-import yuki.console.terminal.YukiTerminal;
+import de.mindcollaps.yuki.console.terminal.YukiTerminal;
 
 public class TCList implements TerminalCommand{
     @Override

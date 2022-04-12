@@ -1,11 +1,10 @@
-package yuki.console.terminal.commands;
+package de.mindcollaps.yuki.console.terminal.commands;
 
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public class TCStart implements TerminalCommand{
 
-    private YukiSora yukiSora;
+    private final YukiSora yukiSora;
 
     public TCStart(YukiSora yukiSora) {
         this.yukiSora = yukiSora;

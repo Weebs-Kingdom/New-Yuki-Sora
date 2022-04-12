@@ -1,4 +1,4 @@
-package yuki.application.discord.core;
+package de.mindcollaps.yuki.application.discord.core;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -7,19 +7,19 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import yuki.api.lib.data.DiscApplicationServer;
-import yuki.api.lib.request.FindServerByGuildId;
-import yuki.application.discord.command.commands.DiscCmdAlexa;
-import yuki.application.discord.command.commands.DiscCmdMusic;
-import yuki.application.discord.command.commands.DiscCmdSetup;
-import yuki.application.discord.command.handler.DiscCommandHandler;
-import yuki.application.discord.listener.DiscAutoChannelListener;
-import yuki.application.discord.listener.DiscCommandListener;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
-import yuki.util.FileUtils;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
+import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdAlexa;
+import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdMusic;
+import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdSetup;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandler;
+import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
+import de.mindcollaps.yuki.application.discord.listener.DiscCommandListener;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
+import de.mindcollaps.yuki.util.FileUtils;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class DiscordApplication {
     private final ArrayList<ListenerAdapter> listeners;
     private DiscAutoChannelListener autoChannelListener;
 
-    private DiscCommandHandler commandHandler;
+    private final DiscCommandHandler commandHandler;
 
     private JDABuilder builder;
     private JDA botJDA;

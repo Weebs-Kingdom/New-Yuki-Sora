@@ -1,12 +1,12 @@
-package yuki.api.lib;
+package de.mindcollaps.yuki.api.lib;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
-import yuki.api.lib.data.DiscApplicationServer;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.api.lib.request.FindServerByGuildId;
-import yuki.api.lib.request.FindUserById;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
+import de.mindcollaps.yuki.api.lib.request.FindUserById;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public class LibManager {
 

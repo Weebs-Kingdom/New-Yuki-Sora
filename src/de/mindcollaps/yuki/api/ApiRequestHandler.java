@@ -1,13 +1,13 @@
-package yuki.api;
+package de.mindcollaps.yuki.api;
 
 import org.json.simple.JSONObject;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
-import yuki.util.FileUtils;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
+import de.mindcollaps.yuki.util.FileUtils;
 
 public class ApiRequestHandler {
 
-    private YukiSora yukiSora;
+    private final YukiSora yukiSora;
 
     public ApiRequestHandler(YukiSora yukiSora) {
         this.yukiSora = yukiSora;

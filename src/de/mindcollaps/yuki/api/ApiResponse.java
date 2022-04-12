@@ -1,4 +1,4 @@
-package yuki.api;
+package de.mindcollaps.yuki.api;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

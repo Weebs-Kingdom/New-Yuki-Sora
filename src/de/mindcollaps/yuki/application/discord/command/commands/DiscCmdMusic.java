@@ -1,4 +1,4 @@
-package yuki.application.discord.command.commands;
+package de.mindcollaps.yuki.application.discord.command.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -7,15 +7,15 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
-import yuki.api.lib.data.DiscApplicationServer;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.application.discord.command.CommandAction;
-import yuki.application.discord.command.DiscCommand;
-import yuki.application.discord.command.handler.DiscCommandArgs;
-import yuki.application.discord.command.handler.DiscCommandArgument;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
-import yuki.util.FileUtils;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.application.discord.command.CommandAction;
+import de.mindcollaps.yuki.application.discord.command.DiscCommand;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgument;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
+import de.mindcollaps.yuki.util.FileUtils;
 
 import java.awt.*;
 import java.util.HashMap;

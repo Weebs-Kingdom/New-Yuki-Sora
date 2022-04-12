@@ -1,4 +1,4 @@
-package yuki.console.log;
+package de.mindcollaps.yuki.console.log;
 
 import org.apache.logging.log4j.Level;
 

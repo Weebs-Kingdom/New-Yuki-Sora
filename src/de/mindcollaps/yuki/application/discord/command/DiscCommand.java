@@ -1,4 +1,4 @@
-package yuki.application.discord.command;
+package de.mindcollaps.yuki.application.discord.command;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -11,12 +11,12 @@ import java.util.Arrays;
 
 public abstract class DiscCommand {
 
-    private String invoke;
-    private String description;
-    private ArrayList<CommandOption> options;
-    private ArrayList<SubCommand> subCommands;
+    private final String invoke;
+    private final String description;
+    private final ArrayList<CommandOption> options;
+    private final ArrayList<SubCommand> subCommands;
     private CommandAction action;
-    private boolean createSlashCommands;
+    private final boolean createSlashCommands;
 
     public DiscCommand(String invoke, String description, boolean createSlashCommands) {
         this.invoke = invoke;

@@ -1,12 +1,12 @@
-package yuki.application.discord.command.handler;
+package de.mindcollaps.yuki.application.discord.command.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiscCommandArgs {
 
-    private HashMap<String, DiscCommandArgument> args;
-    private ArrayList<DiscCommandArgument> array;
+    private final HashMap<String, DiscCommandArgument> args;
+    private final ArrayList<DiscCommandArgument> array;
 
     public DiscCommandArgs() {
         args = new HashMap<>();

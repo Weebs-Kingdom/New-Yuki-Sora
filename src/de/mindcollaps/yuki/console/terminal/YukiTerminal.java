@@ -1,17 +1,16 @@
-package yuki.console.terminal;
+package de.mindcollaps.yuki.console.terminal;
 
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.console.terminal.commands.TCList;
-import yuki.console.terminal.commands.TCStart;
-import yuki.console.terminal.commands.TerminalCommand;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.console.terminal.commands.TCList;
+import de.mindcollaps.yuki.console.terminal.commands.TCStart;
+import de.mindcollaps.yuki.console.terminal.commands.TerminalCommand;
 
 import java.util.Scanner;
 
 public class YukiTerminal {
 
-    private static boolean setupDone = false;
+    private static final boolean setupDone = false;
 
     private static TerminalCommand[] terminalCommands;
 

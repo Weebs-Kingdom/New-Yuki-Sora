@@ -1,13 +1,12 @@
-package yuki.application.discord.util;
+package de.mindcollaps.yuki.application.discord.util;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import org.json.simple.JSONArray;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.json.simple.JSONObject;
-import yuki.api.lib.data.DiscApplicationUser;
-import yuki.core.YukiSora;
-
-import java.util.ArrayList;
+import de.mindcollaps.yuki.core.YukiSora;
 
 public class DiscordUtil {
 

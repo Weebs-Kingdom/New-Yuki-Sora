@@ -1,4 +1,4 @@
-package yuki.application.discord.command;
+package de.mindcollaps.yuki.application.discord.command;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class SubCommand {
 
-    private String invoke;
-    private String description;
-    private ArrayList<CommandOption> options;
+    private final String invoke;
+    private final String description;
+    private final ArrayList<CommandOption> options;
     private CommandAction action;
 
     public SubCommand(String invoke, String description) {

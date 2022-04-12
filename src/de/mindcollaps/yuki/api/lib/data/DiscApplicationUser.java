@@ -1,8 +1,8 @@
-package yuki.api.lib.data;
+package de.mindcollaps.yuki.api.lib.data;
 
-import yuki.api.lib.RouteClass;
-import yuki.api.lib.RouteData;
-import yuki.api.lib.RouteField;
+import de.mindcollaps.yuki.api.lib.RouteClass;
+import de.mindcollaps.yuki.api.lib.RouteData;
+import de.mindcollaps.yuki.api.lib.RouteField;
 
 import java.util.Arrays;
 import java.util.Date;

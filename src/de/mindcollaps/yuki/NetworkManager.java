@@ -1,9 +1,9 @@
-package yuki;
+package de.mindcollaps.yuki;
 
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
-import yuki.core.YukiProperties;
-import yuki.core.YukiSora;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

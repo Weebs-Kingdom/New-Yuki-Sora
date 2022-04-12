@@ -1,13 +1,13 @@
-package yuki.application.discord.command;
+package de.mindcollaps.yuki.application.discord.command;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class CommandOption {
 
-    private OptionType optionType;
-    private String name;
-    private String description;
+    private final OptionType optionType;
+    private final String name;
+    private final String description;
 
     public CommandOption(OptionType optionType, String name, String description) {
         this.optionType = optionType;

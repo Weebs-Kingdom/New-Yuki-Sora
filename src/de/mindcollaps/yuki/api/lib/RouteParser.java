@@ -1,9 +1,9 @@
-package yuki.api.lib;
+package de.mindcollaps.yuki.api.lib;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import yuki.console.log.YukiLogInfo;
-import yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
