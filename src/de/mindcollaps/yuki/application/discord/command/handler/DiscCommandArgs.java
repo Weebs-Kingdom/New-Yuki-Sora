@@ -7,10 +7,12 @@ public class DiscCommandArgs {
 
     private final HashMap<String, DiscCommandArgument> args;
     private final ArrayList<DiscCommandArgument> array;
+    private final String[] nativeArgs;
 
-    public DiscCommandArgs() {
-        args = new HashMap<>();
-        array = new ArrayList<>();
+    public DiscCommandArgs(String[] args) {
+        this.nativeArgs = args;
+        this.args = new HashMap<>();
+        this.array = new ArrayList<>();
     }
 
     public void addCommandArgument(DiscCommandArgument argument){

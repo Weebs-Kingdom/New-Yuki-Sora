@@ -2,6 +2,7 @@ package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.ForeignData;
 import de.mindcollaps.yuki.api.lib.RouteClass;
+import de.mindcollaps.yuki.api.lib.RouteData;
 import de.mindcollaps.yuki.api.lib.RouteField;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.core.YukiSora;

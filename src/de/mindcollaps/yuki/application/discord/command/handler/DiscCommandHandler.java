@@ -174,7 +174,7 @@ public class DiscCommandHandler {
 
     private DiscCommandArgs generateCommandArgs(CommandHandlingReport report, DiscCommand command, String[] args, MessageChannel messageChannel, Message message, YukiSora yukiSora) {
         SubCommand subCommand = report.getFoundCommand();
-        DiscCommandArgs discArgs = new DiscCommandArgs();
+        DiscCommandArgs discArgs = new DiscCommandArgs(args);
 
         if (subCommand == null) {
             for (int i = 0; i < command.getOptions().size(); i++) {
