@@ -2,6 +2,8 @@ package de.mindcollaps.yuki.application.discord.command.commands;
 
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.data.UserTwitchConnection;
+import de.mindcollaps.yuki.api.lib.request.FindTwitchUserConByUser;
 import de.mindcollaps.yuki.application.discord.command.CommandAction;
 import de.mindcollaps.yuki.application.discord.command.CommandOption;
 import de.mindcollaps.yuki.application.discord.command.DiscCommand;
@@ -14,8 +16,11 @@ import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+
+import java.io.Serializable;
 
 public class DiscCmdSetup extends DiscCommand {
 
@@ -264,7 +269,76 @@ public class DiscCmdSetup extends DiscCommand {
 
                             @Override
                             public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
-                                //TODO: finish this
+                                User us = args.getArg("member").getUser();
+                                if(us == null){
+                                    TextUtil.sendError("That member can't be found!", event.getChannel());
+                                }
+                                String twitchName = args.getArg("twitch channel name").getString();
+                                if(twitchName == null){
+                                    TextUtil.sendError("That twitch channel is not legit!", event.getChannel());
+                                }
+
+                                UserTwitchConnection con = new FindTwitchUserConByUser(user.getUserID()).makeRequestSingle(yukiSora);
+                                if(con == null){
+                                    con = new UserTwitchConnection();
+                                    con.setUser(user.getUserID());
+                                    con.setTwitchChannelId(twitchName);
+                                    con.setServers(new String[]{server.getServerID()});
+                                    con.postData(yukiSora);
+
+                                    TextUtil.sendSuccess(us.getName() + " was added to the twitch database :relaxed:", event.getTextChannel());
+                                } else {
+                                    boolean found = false;
+                                    for (String conServer : con.getServers()) {
+                                        if(conServer.equals(server.getServerID())){
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if(!found) {
+                                        con.setServers(YukiUtil.addToArray(con.getServers(), server.getServerID()));
+                                        con.updateData(yukiSora);
+                                        TextUtil.sendSuccess(server.getServerName() + " was added to the twitch record of " + us.getName() + " :relaxed:", event.getTextChannel());
+                                    } else {
+                                        TextUtil.sendWarning(server.getServerName() + " is already registered in " + us.getName() + " ", event.getTextChannel());
+                                    }
+                                }
+                            }
+                        }),
+
+                new SubCommand("twitch", "Change how the bot interacts with certain twitch streamers listed in the database")
+                        .addOption(OptionType.SUB_COMMAND, "member", "Change which members are listed on the notification list")
+                        .addOption(OptionType.SUB_COMMAND, "remove", "Add a user to the notification list")
+                        .addOption(OptionType.USER, "member", "The member you want to add")
+                        .addAction(new CommandAction() {
+                            @Override
+                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), event.getTextChannel(), yukiSora);
+                            }
+
+                            @Override
+                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                User us = args.getArg("member").getUser();
+                                if(us == null){
+                                    TextUtil.sendError("That member can't be found!", event.getChannel());
+                                }
+
+                                UserTwitchConnection con = new FindTwitchUserConByUser(user.getUserID()).makeRequestSingle(yukiSora);
+                                if(con == null){
+
+                                } else {
+                                    boolean found = false;
+                                    for (String conServer : con.getServers()) {
+                                        if(conServer.equals(server.getServerID())){
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if(!found) {
+                                        con.setServers(YukiUtil.addToArray(con.getServers(), server.getServerID()));
+                                        con.updateData(yukiSora);
+                                    }
+                                }
                             }
                         })
         );
