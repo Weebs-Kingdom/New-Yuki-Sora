@@ -2,7 +2,7 @@ package de.mindcollaps.yuki.console.terminal.commands;
 
 import de.mindcollaps.yuki.core.YukiSora;
 
-public class TCStart implements TerminalCommand{
+public class TCStart implements TerminalCommand {
 
     private final YukiSora yukiSora;
 

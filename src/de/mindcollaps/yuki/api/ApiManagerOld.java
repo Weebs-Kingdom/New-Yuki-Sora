@@ -1,12 +1,12 @@
 package de.mindcollaps.yuki.api;
 
+import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.core.YukiSora;
+import de.mindcollaps.yuki.util.FileUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import de.mindcollaps.yuki.core.YukiProperties;
-import de.mindcollaps.yuki.core.YukiSora;
-import de.mindcollaps.yuki.util.FileUtils;
 
 public class ApiManagerOld {
 

@@ -15,15 +15,19 @@ public abstract class DiscCommand {
     private final String description;
     private final ArrayList<CommandOption> options;
     private final ArrayList<SubCommand> subCommands;
-    private CommandAction action;
-    private final boolean createSlashCommands;
 
-    public DiscCommand(String invoke, String description, boolean createSlashCommands) {
+    private final ArrayList<SubCommandGroup> subCommandGroups;
+    private CommandAction action;
+
+    private boolean createSlashCommand = true;
+    private boolean adminOnlyCommand = false;
+
+    public DiscCommand(String invoke, String description) {
         this.invoke = invoke;
         this.description = description;
-        this.createSlashCommands = createSlashCommands;
         subCommands = new ArrayList<>();
         options = new ArrayList<>();
+        subCommandGroups = new ArrayList<>();
     }
 
     public abstract String getHelp();
@@ -32,6 +36,10 @@ public abstract class DiscCommand {
         SlashCommandData data = Commands.slash(invoke, description);
         for (SubCommand subCommand : subCommands) {
             data.addSubcommands(subCommand.toSubCommandData());
+        }
+
+        for (SubCommandGroup subCommandGroup : subCommandGroups) {
+            data.addSubcommandGroups(subCommandGroup.toSubCommandGroupData());
         }
 
         return data;
@@ -46,6 +54,19 @@ public abstract class DiscCommand {
         Checks.check(commands.length + subCommands.size() <= 25, "Cannot have more than 25 subcommands for a command!");
 
         subCommands.addAll(Arrays.asList(commands));
+
+        return this;
+    }
+
+    public DiscCommand addSubcommands(SubCommandGroup... commands) {
+        Checks.noneNull(commands, "Subcommands");
+        if (commands.length == 0)
+            return this;
+
+        boolean allowOption = false;
+        Checks.check(commands.length + subCommands.size() <= 25, "Cannot have more than 25 subcommands for a command!");
+
+        subCommandGroups.addAll(Arrays.asList(commands));
 
         return this;
     }
@@ -81,12 +102,28 @@ public abstract class DiscCommand {
         return subCommands;
     }
 
-    public boolean isCreateSlashCommands() {
-        return createSlashCommands;
-    }
-
     public DiscCommand addAction(CommandAction action) {
         this.action = action;
         return this;
+    }
+
+    public boolean isAdminOnlyCommand() {
+        return adminOnlyCommand;
+    }
+
+    public void setAdminOnlyCommand() {
+        this.adminOnlyCommand = true;
+    }
+
+    public void doNotCreateSlashCommand() {
+        this.createSlashCommand = false;
+    }
+
+    public ArrayList<SubCommandGroup> getSubCommandGroups() {
+        return subCommandGroups;
+    }
+
+    public boolean isCreateSlashCommand() {
+        return createSlashCommand;
     }
 }

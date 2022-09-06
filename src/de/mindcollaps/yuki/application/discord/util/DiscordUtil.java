@@ -1,16 +1,16 @@
 package de.mindcollaps.yuki.application.discord.util;
 
+import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import org.json.simple.JSONObject;
-import de.mindcollaps.yuki.core.YukiSora;
 
 public class DiscordUtil {
 
-    public static boolean userHasGuildAdminPermission(Member member, Guild guild, TextChannel textChannel, YukiSora engine) {
+    public static boolean userHasGuildAdminPermission(Member member, Guild guild, MessageChannel messageChannel, YukiSora engine) {
         boolean hasPermission = false;
         for (int i = 0; member.getRoles().size() > i; i++) {
             for (int a = 0; member.getRoles().get(i).getPermissions().toArray().length > a; a++) {
@@ -23,7 +23,7 @@ public class DiscordUtil {
         if (hasPermission) {
             return true;
         } else {
-            TextUtil.sendError("You have no permission for this command! You have to be an Admin to use that command!", textChannel);
+            TextUtil.sendError("You have no permission for this command! You have to be an Admin to use that command!", messageChannel);
             return false;
         }
     }

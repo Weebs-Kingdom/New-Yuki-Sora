@@ -1,11 +1,5 @@
 package de.mindcollaps.yuki.application.discord.listener;
 
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.events.user.UserActivityStartEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 import de.mindcollaps.yuki.api.lib.data.AutoChannel;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
@@ -13,15 +7,20 @@ import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.events.user.UserActivityStartEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DiscAutoChannelListener extends ListenerAdapter {
 
-    private final YukiSora yukiSora;
-
     public static ArrayList<AutoChannel> activeAutoChannels = new ArrayList<>();
+    private final YukiSora yukiSora;
 
     public DiscAutoChannelListener(YukiSora yukiSora) {
         this.yukiSora = yukiSora;

@@ -23,7 +23,7 @@ public class YukiLogInfo {
         this.level = Level.INFO;
     }
 
-    public YukiLogInfo level(Level level){
+    public YukiLogInfo level(Level level) {
         this.level = level;
         return this;
     }

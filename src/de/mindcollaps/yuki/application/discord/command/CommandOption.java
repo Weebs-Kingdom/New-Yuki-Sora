@@ -2,6 +2,7 @@ package de.mindcollaps.yuki.application.discord.command;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 public class CommandOption {
 
@@ -15,7 +16,7 @@ public class CommandOption {
         this.description = description;
     }
 
-    public OptionData toOptionData(){
+    public OptionData toOptionData() {
         return new OptionData(optionType, name, description);
     }
 
@@ -29,5 +30,9 @@ public class CommandOption {
 
     public OptionType getType() {
         return optionType;
+    }
+
+    public SubcommandData toSubCommandData() {
+        return new SubcommandData(name, description);
     }
 }

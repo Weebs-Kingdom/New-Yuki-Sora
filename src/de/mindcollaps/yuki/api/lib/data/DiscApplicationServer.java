@@ -30,7 +30,6 @@ public class DiscApplicationServer extends RouteData {
 
     @RouteField
     private String twitchNotifyChannel;
-
     @RouteField
     private String vipRoleId;
     @RouteField
@@ -80,7 +79,7 @@ public class DiscApplicationServer extends RouteData {
 
         for (int i = channels; i < 2; i++) {
             VoiceChannel nVC = category.createVoiceChannel("\uD83D\uDCCA Statistic ...").complete();
-            nVC.createPermissionOverride(mrole).setAllow(Permission.ALL_VOICE_PERMISSIONS).setDeny(Permission.VOICE_CONNECT, Permission.VOICE_SPEAK).queue();
+            nVC.upsertPermissionOverride(mrole).setAllowed(Permission.ALL_VOICE_PERMISSIONS).setDenied(Permission.VOICE_CONNECT, Permission.VOICE_SPEAK).queue();
         }
 
         if (channels > 0)

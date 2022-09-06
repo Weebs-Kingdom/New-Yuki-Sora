@@ -35,11 +35,11 @@ public class AutoChannel extends RouteData {
         return this;
     }
 
-    public void init(YukiSora yukiSora) throws Exception{
+    public void init(YukiSora yukiSora) throws Exception {
         audioChannel = yukiSora.getDiscordApplication().getBotJDA().getGuildById(server).getVoiceChannelById(channelId);
     }
 
-    public AudioChannel getVc(){
+    public AudioChannel getVc() {
         return audioChannel;
     }
 
@@ -83,7 +83,7 @@ public class AutoChannel extends RouteData {
 
         gc.modifyVoiceChannelPositions().selectPosition(nvc).moveTo(vc.getPosition() + 1).queue();
         for (PermissionOverride or : vc.getPermissionOverrides()) {
-            nvc.createPermissionOverride(or.getRole()).setAllow(or.getAllowed()).setDeny(or.getDenied()).complete();
+            nvc.upsertPermissionOverride(or.getRole()).setAllowed(or.getAllowed()).setDenied(or.getDenied()).complete();
         }
         try {
             gc.moveVoiceMember(m, nvc).complete();

@@ -10,31 +10,22 @@ import java.util.Properties;
 
 public class YukiProperties implements Serializable {
 
-    private static final String consMsgDef = "[YukiProperties]";
-
-    private static final String yukiPropertiesPath = FileUtils.home + "/yuki.properties";
-    private static final String yukiApplicationSettingsPath = FileUtils.home + "/application.dat";
-
     //Default properties keys
     public static final String dPDefaultCommandPrefix = "disc-application-prefix";
     public static final String dPPomFileLocation = "bot-pomfile-location";
-
     public static final String dPApiPort = "botapi-port";
     public static final String dPApiUrl = "botapi-url";
-
     public static final String dPDbApiUrl = "botapi-yukidb-url";
     public static final String dPDbApiToken = "botapi-yukidb-token";
-
     public static final String dPMusicSlaveArr = "botapi-botslave";
-
     public static final String dPDbApiUrlOld = "old-botapi-yukidb-url";
-
     public static final String dPTwitchSecret = "twitch-secret";
     public static final String dPTwitchToken = "twitch-token";
     public static final String dPClientId = "twitch-client-id";
-
     public static final String dPDiscordToken = "disc-application-token";
-
+    private static final String consMsgDef = "[YukiProperties]";
+    private static final String yukiPropertiesPath = FileUtils.home + "/yuki.properties";
+    private static final String yukiApplicationSettingsPath = FileUtils.home + "/application.dat";
     private static final String[][] defaultProperties = new String[][]{
             new String[]{dPDefaultCommandPrefix, "-"},
 
@@ -59,6 +50,17 @@ public class YukiProperties implements Serializable {
     private static Properties properties;
 
     private static YukiProperties applicationSettings;
+    //Automated Properties
+    //Maven
+    public String mvnVersion = "";
+    public String mvnGroup = "";
+    public String mvnArtifact = "";
+    //Engine stuff
+    public boolean debug = false;
+    public boolean fineDebug = false;
+    public boolean showTime = true;
+    public String api;
+    public int apiPort = 5003;
 
     public static String getProperties(String key) {
         if (properties == null)
@@ -180,17 +182,4 @@ public class YukiProperties implements Serializable {
     public static YukiProperties getApplicationSettings() {
         return applicationSettings;
     }
-
-    //Automated Properties
-    //Maven
-    public String mvnVersion = "";
-    public String mvnGroup = "";
-    public String mvnArtifact = "";
-
-    //Engine stuff
-    public boolean debug = false;
-    public boolean fineDebug = false;
-    public boolean showTime = true;
-    public String api;
-    public int apiPort = 5003;
 }

@@ -1,17 +1,20 @@
 package de.mindcollaps.yuki.application.discord.command.handler;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import de.mindcollaps.yuki.application.discord.command.CommandAction;
-import de.mindcollaps.yuki.application.discord.command.CommandOption;
-import de.mindcollaps.yuki.application.discord.command.DiscCommand;
-import de.mindcollaps.yuki.application.discord.command.SubCommand;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
+import de.mindcollaps.yuki.application.discord.command.*;
 import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -37,12 +40,13 @@ public class DiscCommandHandler {
         if (command.getAction() != null)
             return command.getAction();
 
-        if (checkCommandOptions(command.getOptions().toArray(new CommandOption[0]), args, 0, report))
-            return command.getAction();
-
         SubCommand subCommand = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, 0, report);
-        if (subCommand == null)
-            return null;
+
+        if (subCommand == null) {
+            subCommand = checkSubCommandGroups(command.getSubCommandGroups().toArray(new SubCommandGroup[0]), args, 0, report);
+            if (subCommand == null)
+                return null;
+        }
         report.setFoundCommand(subCommand);
 
 
@@ -54,23 +58,27 @@ public class DiscCommandHandler {
             for (SubCommand command : commands) {
                 if (command.getInvoke().equalsIgnoreCase(args[checkI])) {
                     report.foundCommand = command;
-                    if (checkCommandOptions(command.getOptions().toArray(new CommandOption[0]), args, checkI + 1, report))
-                        return command;
+                    return command;
                 }
             }
         return null;
     }
 
-    private boolean checkCommandOptions(CommandOption[] options, String[] args, int checkI, CommandHandlingReport report) {
-        for (int i = 0; i < options.length; i++) {
-            //If options is a sub command
-            if (args.length - 1 > checkI)
-                if (options[i].getType() == OptionType.SUB_COMMAND)
-                    return args[checkI].equalsIgnoreCase(options[i].getName());
-                else continue;
-            else return false;
-        }
-        return false;
+    private SubCommand checkSubCommandGroups(SubCommandGroup[] commands, String[] args, int checkI, CommandHandlingReport report) {
+        if (args.length - 1 >= checkI)
+            for (SubCommandGroup command : commands) {
+                if (command.getInvoke().equalsIgnoreCase(args[checkI])) {
+                    report.setFoundGroup(command);
+                    SubCommand command1 = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, checkI + 1, report);
+                    if (command1 != null)
+                        return command1;
+                }
+            }
+        return null;
+    }
+
+    private String getReportErrorMessage(CommandHandlingReport report, DiscCommand command) {
+        return ":warning: Please check the validity of your command arguments :warning:\n\nErrors:\n" + report.build() + "\n\nUse **-" + command.getInvoke() + " help** if you need further details";
     }
 
     private void printErrorMessage(String error, MessageChannel messageChannel) {
@@ -83,11 +91,24 @@ public class DiscCommandHandler {
         ).queue();
     }
 
-    private void sendHelp(DiscCommand command, SubCommand subCommand, MessageChannel messageChannel) {
+    private void printErrorMessage(String error, SlashCommandInteraction interaction) {
+        interaction.replyEmbeds(
+                new EmbedBuilder()
+                        .setColor(Color.RED)
+                        .setTitle("That didn't work")
+                        .setDescription(error)
+                        .build()
+        ).queue();
+    }
+
+    private void sendHelp(DiscCommand command, SubCommand subCommand, SubCommandGroup subCommandGroup, MessageChannel messageChannel) {
         String help = command.getHelp();
         if (help == null) {
             if (subCommand == null) {
-                messageChannel.sendMessageEmbeds(buildHelp(command).build()).queue();
+                if (subCommandGroup == null)
+                    messageChannel.sendMessageEmbeds(buildHelp(command).build()).queue();
+                else
+                    messageChannel.sendMessageEmbeds(buildHelp(command, subCommandGroup).build()).queue();
             } else {
                 messageChannel.sendMessageEmbeds(buildHelp(command, subCommand).build()).queue();
             }
@@ -101,8 +122,29 @@ public class DiscCommandHandler {
         }
     }
 
+    private void sendHelp(DiscCommand command, SubCommand subCommand, SubCommandGroup subCommandGroup, SlashCommandInteraction interaction) {
+        String help = command.getHelp();
+        if (help == null) {
+            if (subCommand == null) {
+                if (subCommandGroup == null)
+                    interaction.replyEmbeds(buildHelp(command).build()).queue();
+                else
+                    interaction.replyEmbeds(buildHelp(command, subCommandGroup).build()).queue();
+            } else {
+                interaction.replyEmbeds(buildHelp(command, subCommand).build()).queue();
+            }
+        } else {
+            interaction.replyEmbeds(new EmbedBuilder()
+                    .setColor(Color.BLUE)
+                    .setTitle(command.getInvoke() + " help")
+                    .setDescription(help)
+                    .build()
+            ).queue();
+        }
+    }
+
     private EmbedBuilder buildHelp(DiscCommand command) {
-        StringBuilder builder = new StringBuilder("```\n").append(command.getDescription()).append("\n```\n\n");
+        StringBuilder builder = new StringBuilder().append(command.getDescription()).append("\n\n");
         ArrayList<String> commandsAdded = new ArrayList<>();
 
         if (command.getAction() == null) {
@@ -111,7 +153,14 @@ public class DiscCommandHandler {
                 if (commandsAdded.contains(subCommand.getInvoke()))
                     continue;
 
-                builder.append("- ").append(subCommand.getInvoke()).append("\n");
+                builder.append("... **").append(subCommand.getInvoke()).append("**\n");
+                commandsAdded.add(subCommand.getInvoke());
+            }
+            for (SubCommandGroup subCommand : command.getSubCommandGroups()) {
+                if (commandsAdded.contains(subCommand.getInvoke()))
+                    continue;
+
+                builder.append("... **").append(subCommand.getInvoke()).append("**\n");
                 commandsAdded.add(subCommand.getInvoke());
             }
         } else {
@@ -132,7 +181,7 @@ public class DiscCommandHandler {
     }
 
     private EmbedBuilder buildHelp(DiscCommand rcommand, SubCommand command) {
-        StringBuilder builder = new StringBuilder("```\n").append(command.getDescription()).append("\n```\n\n");
+        StringBuilder builder = new StringBuilder("\n").append(command.getDescription()).append("\n\nList of options:\n");
 
         ArrayList<SubCommand> commands = new ArrayList<>();
         for (SubCommand subCommand : rcommand.getSubCommands()) {
@@ -141,22 +190,48 @@ public class DiscCommandHandler {
         }
 
         for (SubCommand subCommand : commands) {
-            builder.append("**").append(subCommand.getInvoke()).append("**").append(" ");
-            for (CommandOption option : subCommand.getOptions()) {
+            helpBuild(builder, subCommand);
+        }
+
+        if (command.getOptions().size() > 0) {
+            for (CommandOption option : command.getOptions()) {
+                builder.append("... ");
                 builder.append(buildOptionHelp(option)).append(" ");
             }
+        }
 
-            String desciption = null;
+        builder.deleteCharAt(builder.length() - 1);
 
-            for (CommandOption option : subCommand.getOptions()) {
-                if (option.getType() == OptionType.SUB_COMMAND)
-                    desciption = option.getDescription();
-            }
+        return new EmbedBuilder()
+                .setColor(Color.BLUE)
+                .setTitle(command.getInvoke() + " subcommand help")
+                .setDescription(builder.toString());
+    }
 
-            if (desciption != null)
-                builder.append(" - _").append(desciption).append("_");
+    private void helpBuild(StringBuilder builder, SubCommand subCommand) {
+        builder.append("... **").append(subCommand.getInvoke()).append("**").append(" ");
+        for (CommandOption option : subCommand.getOptions()) {
+            builder.append(buildOptionHelp(option)).append(" ");
+        }
 
-            builder.append("\n");
+        String desciption = null;
+
+        for (CommandOption option : subCommand.getOptions()) {
+            if (option.getType() == OptionType.SUB_COMMAND)
+                desciption = option.getDescription();
+        }
+
+        if (desciption != null)
+            builder.append(" - _").append(desciption).append("_");
+
+        builder.append("\n");
+    }
+
+    private EmbedBuilder buildHelp(DiscCommand rcommand, SubCommandGroup command) {
+        StringBuilder builder = new StringBuilder("\n").append(command.getDescription()).append("\n\nList of subcommands:\n");
+
+        for (SubCommand subCommand : command.getSubCommands()) {
+            helpBuild(builder, subCommand);
         }
 
         builder.deleteCharAt(builder.length() - 1);
@@ -210,6 +285,127 @@ public class DiscCommandHandler {
         return discArgs;
     }
 
+    private DiscCommandArgs generateCommandArgs(CommandHandlingReport report, DiscCommand command, String[] args, SlashCommandInteractionEvent event, YukiSora yukiSora) {
+        SubCommand subCommand = report.getFoundCommand();
+        DiscCommandArgs discArgs = new DiscCommandArgs(args);
+
+        if (subCommand == null) {
+            for (int i = 0; i < command.getOptions().size(); i++) {
+                CommandOption option = command.getOptions().get(i);
+                DiscCommandArgument argument = new DiscCommandArgument(option.getName(), option.getType());
+                if (option.getType() == OptionType.SUB_COMMAND || option.getType() == OptionType.SUB_COMMAND_GROUP)
+                    continue;
+
+                discArgs.addCommandArgument(argument);
+            }
+            return discArgs;
+        }
+
+
+        discArgs.addCommandArgument(new DiscCommandArgument(subCommand.getInvoke(), OptionType.SUB_COMMAND));
+        for (int i = 0; i < subCommand.getOptions().size(); i++) {
+            CommandOption option = subCommand.getOptions().get(i);
+            DiscCommandArgument argument = new DiscCommandArgument(option.getName(), option.getType());
+
+            if (option.getType() == OptionType.SUB_COMMAND || option.getType() == OptionType.SUB_COMMAND_GROUP) {
+                discArgs.addCommandArgument(argument);
+                continue;
+            }
+
+            if (args.length - 1 >= i) {
+                OptionMapping mapping = event.getOption(option.getName());
+                if (mapping == null) {
+                    report.addError("Option **" + option.getName() + "** is empty!");
+                } else {
+                    testArgValidity(argument, report, option, mapping, yukiSora);
+                }
+            } else
+                report.invalid = true;
+            discArgs.addCommandArgument(argument);
+        }
+
+        return discArgs;
+    }
+
+    private void testArgValidity(DiscCommandArgument argument, CommandHandlingReport report, CommandOption option, OptionMapping optionMapping, YukiSora yukiSora) {
+        switch (option.getType()) {
+            case ATTACHMENT:
+            case MENTIONABLE:
+            case UNKNOWN:
+            case SUB_COMMAND:
+            case SUB_COMMAND_GROUP:
+                break;
+            case STRING:
+                argument.setString(optionMapping.toString());
+                break;
+            case INTEGER:
+                try {
+                    argument.setInteger(optionMapping.getAsInt());
+                } catch (Exception e) {
+                    addCastError(report, option, optionMapping.getAsString());
+                }
+                break;
+            case BOOLEAN:
+                try {
+                    argument.setaBoolean(optionMapping.getAsBoolean());
+                } catch (Exception e) {
+                    addCastError(report, option, optionMapping.getAsString());
+                }
+                break;
+            case USER:
+                boolean userError = false;
+                try {
+                    User user = optionMapping.getAsUser();
+                    if (user == null)
+                        userError = true;
+                    else
+                        argument.setUser(user);
+                } catch (Exception e) {
+                    userError = true;
+                }
+                if (userError) {
+                    addCastError(report, option, optionMapping.getAsString());
+                }
+                break;
+            case CHANNEL:
+                boolean channelError = false;
+                try {
+                    GuildChannel channel = optionMapping.getAsChannel();
+                    if (channel == null)
+                        channelError = true;
+                    else
+                        argument.setGuildChannel(channel);
+                } catch (Exception e) {
+                    channelError = true;
+                }
+                if (channelError)
+                    addCastError(report, option, optionMapping.getAsString());
+                break;
+            case ROLE:
+                boolean roleError = false;
+                try {
+                    Role role = optionMapping.getAsRole();
+                    if (role == null)
+                        roleError = true;
+                    else
+                        argument.setRole(role);
+                } catch (Exception e) {
+                    roleError = true;
+                }
+
+                if (roleError)
+                    addCastError(report, option, optionMapping.getAsString());
+                break;
+            case NUMBER:
+                try {
+                    argument.setaDouble(optionMapping.getAsDouble());
+                } catch (Exception e) {
+                    addCastError(report, option, optionMapping.getAsString());
+                }
+                break;
+        }
+    }
+
     private void testArgValidity(DiscCommandArgument argument, CommandHandlingReport report, String arg, MessageChannel messageChannel, CommandOption option, Message message, YukiSora yukiSora) {
         int users = 0;
         int roles = 0;
@@ -242,7 +438,7 @@ public class DiscCommandHandler {
             case USER:
                 boolean userError = false;
                 try {
-                    User user = message.getMentionedUsers().get(users);
+                    User user = message.getMentions().getUsers().get(users);
                     if (user == null)
                         userError = true;
                     else
@@ -270,22 +466,22 @@ public class DiscCommandHandler {
             case CHANNEL:
                 boolean channelError = false;
                 try {
-                    MessageChannel channel = message.getMentionedChannels().get(channels);
+                    GuildChannel channel = message.getMentions().getChannels().get(channels);
                     if (channel == null)
                         channelError = true;
                     else
-                        argument.setMessageChannel(channel);
+                        argument.setGuildChannel(channel);
                 } catch (Exception e) {
                     channelError = true;
                 }
                 if (channelError) {
                     channelError = false;
                     try {
-                        MessageChannel channel = yukiSora.getDiscordApplication().getBotJDA().getTextChannelById(arg);
+                        GuildChannel channel = yukiSora.getDiscordApplication().getBotJDA().getGuildChannelById(arg);
                         if (channel == null)
                             channelError = true;
                         else
-                            argument.setMessageChannel(channel);
+                            argument.setGuildChannel(channel);
                     } catch (Exception e) {
                         channelError = true;
                     }
@@ -310,7 +506,7 @@ public class DiscCommandHandler {
             case ROLE:
                 boolean roleError = false;
                 try {
-                    Role role = message.getMentionedRoles().get(roles);
+                    Role role = message.getMentions().getRoles().get(roles);
                     if (role == null)
                         roleError = true;
                     else
@@ -361,27 +557,36 @@ public class DiscCommandHandler {
             CommandAction action = findAction(command, cmd.args, report);
             if (cmd.args.length > 0)
                 if (cmd.args[0].equalsIgnoreCase("help")) {
-                    sendHelp(command, report.foundCommand, cmd.event.getChannel());
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
                     return;
-                } else if (cmd.args.length > 1)
-                    if (cmd.args[1].equalsIgnoreCase("help")) {
-                        sendHelp(command, report.foundCommand, cmd.event.getChannel());
-                        return;
-                    }
+                }
+            if (cmd.args.length > 1) {
+                if (cmd.args[1].equalsIgnoreCase("help")) {
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
+                    return;
+                }
+            }
+            if (cmd.args.length > 2)
+                if (cmd.args[2].equalsIgnoreCase("help")) {
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
+                    return;
+                }
 
             DiscCommandArgs args = generateCommandArgs(report, command, cmd.args, cmd.event.getChannel(), cmd.event.getMessage(), cmd.yukiSora);
             boolean exe = false;
 
             if (report.errors.size() > 0 || report.invalid || action == null) {
                 if (report.foundCommand == null || report.errors.size() > 0)
-                    printErrorMessage("Please check the validity of your command arguments\n\n" + report.build() + "\nUse **-" + command.getInvoke() + " help** if you need further details", cmd.event.getChannel());
+                    printErrorMessage(":warning: Please check the validity of your command arguments :warning:\n\nErrors:\n" + report.build() + "\n\nUse **-" + command.getInvoke() + " help** if you need further details", cmd.event.getChannel());
                 else
-                    sendHelp(command, report.foundCommand, cmd.event.getChannel());
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
                 return;
             }
 
             try {
                 exe = action.calledServer(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+            } catch (ActionNotImplementedException e) {
+                printErrorMessage(getReportErrorMessage(report, command), cmd.event.getChannel());
             } catch (Exception e) {
                 YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
             }
@@ -389,12 +594,60 @@ public class DiscCommandHandler {
             if (exe) {
                 try {
                     action.actionServer(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+                } catch (ActionNotImplementedException e) {
+                    printErrorMessage("This command has not been implemented as guild command yet. We are working on it :tools:", cmd.event.getChannel());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("Handle server command had an error while performing the command action", consMsgDef).trace(e));
                 }
             }
         }
+    }
 
+    public void handleSlashCommand(DiscCommandParser.SlashCommandContainer cmd) {
+        DiscCommand command = findCommand(cmd.invoke);
+        if (command == null) {
+            printErrorMessage("Couldn't find a command matching " + cmd.invoke, cmd.event.getInteraction());
+        } else {
+            CommandHandlingReport report = new CommandHandlingReport();
+            CommandAction action = findAction(command, cmd.args, report);
+            if (cmd.args.length > 0)
+                if (cmd.args[0].equalsIgnoreCase("help")) {
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getInteraction());
+                    return;
+                } else if (cmd.args.length > 1)
+                    if (cmd.args[1].equalsIgnoreCase("help")) {
+                        sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getInteraction());
+                        return;
+                    }
+            DiscCommandArgs args = generateCommandArgs(report, command, cmd.args, cmd.event, cmd.yukiSora);
+            boolean exe = false;
+
+            if (report.errors.size() > 0 || report.invalid || action == null) {
+                if (report.foundCommand == null || report.errors.size() > 0)
+                    printErrorMessage(getReportErrorMessage(report, command), cmd.event.getInteraction());
+                else
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getInteraction());
+                return;
+            }
+
+            try {
+                exe = action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+            } catch (ActionNotImplementedException e) {
+                printErrorMessage("This command has not been implemented as slash command yet. We are working on it :tools:", cmd.event.getInteraction());
+            } catch (Exception e) {
+                YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
+            }
+
+            if (exe) {
+                try {
+                    action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+                } catch (ActionNotImplementedException e) {
+                    printErrorMessage("This command has not been implemented as slash command yet. We are working on it :tools:", cmd.event.getInteraction());
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("Handle server command had an error while performing the command action", consMsgDef).trace(e));
+                }
+            }
+        }
     }
 
     public void handleClientCommand(DiscCommandParser.ClientCommandContainer cmd) {
@@ -406,27 +659,29 @@ public class DiscCommandHandler {
             CommandAction action = findAction(command, cmd.args, report);
             if (cmd.args.length > 0)
                 if (cmd.args[0].equalsIgnoreCase("help")) {
-                    sendHelp(command, report.foundCommand, cmd.event.getChannel());
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
                     return;
                 } else if (cmd.args.length > 1)
                     if (cmd.args[1].equalsIgnoreCase("help")) {
-                        sendHelp(command, report.foundCommand, cmd.event.getChannel());
+                        sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
                         return;
                     }
 
             DiscCommandArgs args = generateCommandArgs(report, command, cmd.args, cmd.event.getChannel(), cmd.event.getMessage(), cmd.yukiSora);
             boolean exe = false;
 
-            if (report.errors.size() > 0 || report.invalid  || action == null) {
+            if (report.errors.size() > 0 || report.invalid || action == null) {
                 if (report.foundCommand == null || report.errors.size() > 0)
-                    printErrorMessage("Please check the validity of your command arguments!\n\n" + report.build() + "\nUse **-" + command.getInvoke() + " help** if you need further details", cmd.event.getChannel());
+                    printErrorMessage(getReportErrorMessage(report, command), cmd.event.getChannel());
                 else
-                    sendHelp(command, report.foundCommand, cmd.event.getChannel());
+                    sendHelp(command, report.foundCommand, report.foundGroup, cmd.event.getChannel());
                 return;
             }
 
             try {
                 exe = action.calledPrivate(args, cmd.event, cmd.user, cmd.yukiSora);
+            } catch (ActionNotImplementedException e) {
+                printErrorMessage("This command has not been implemented as private command yet. We are working on it :tools:", cmd.event.getChannel());
             } catch (Exception e) {
                 YukiLogger.log(new YukiLogInfo("Handle client command had an error while checking if the command can be called!", consMsgDef).trace(e));
             }
@@ -434,6 +689,8 @@ public class DiscCommandHandler {
             if (exe) {
                 try {
                     action.actionPrivate(args, cmd.event, cmd.user, cmd.yukiSora);
+                } catch (ActionNotImplementedException e) {
+                    printErrorMessage("This command has not been implemented as private command yet. We are working on it :tools:", cmd.event.getChannel());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("Handle client command had an error while performing the command action", consMsgDef).trace(e));
                 }
@@ -453,16 +710,29 @@ public class DiscCommandHandler {
     }
 
     public void registerCommands(YukiSora yukiSora) {
-        ArrayList<CommandData> list = new ArrayList<>();
+        ArrayList<CommandData> publicCommands = new ArrayList<>();
+        ArrayList<CommandData> adminCommands = new ArrayList<>();
         for (String s : commandIvokes) {
             DiscCommand cmd = commands.get(s);
-            if (!cmd.isCreateSlashCommands())
+            if (!cmd.isCreateSlashCommand())
                 continue;
+
             CommandData data = cmd.toCommandData();
-            if (data != null)
-                list.add(data);
+            if (data != null) {
+                if (!cmd.isAdminOnlyCommand())
+                    publicCommands.add(data);
+                else
+                    adminCommands.add(data);
+            }
         }
-        yukiSora.getDiscordApplication().getBotJDA().updateCommands().addCommands(list).queue();
+        yukiSora.getDiscordApplication().getBotJDA().updateCommands().addCommands(publicCommands).queue();
+
+        for (Guild guild : yukiSora.getDiscordApplication().getBotJDA().getGuilds()) {
+            DiscApplicationServer server = new FindServerByGuildId(guild.getId()).makeRequestSingle(yukiSora);
+            for (CommandData adminCommand : adminCommands) {
+                adminCommand.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
+            }
+        }
     }
 
     private class CommandHandlingReport {
@@ -470,6 +740,7 @@ public class DiscCommandHandler {
         private ArrayList<String> errors;
 
         private SubCommand foundCommand;
+        private SubCommandGroup foundGroup;
 
         public CommandHandlingReport() {
             errors = new ArrayList<>();
@@ -478,7 +749,7 @@ public class DiscCommandHandler {
         public String build() {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < errors.size(); i++) {
-                builder.append(errors.get(i));
+                builder.append("> " + errors.get(i));
                 if (i != errors.size() - 1)
                     builder.append("\n");
             }
@@ -503,6 +774,14 @@ public class DiscCommandHandler {
 
         public void setFoundCommand(SubCommand foundCommand) {
             this.foundCommand = foundCommand;
+        }
+
+        public SubCommandGroup getFoundGroup() {
+            return foundGroup;
+        }
+
+        public void setFoundGroup(SubCommandGroup foundGroup) {
+            this.foundGroup = foundGroup;
         }
     }
 }

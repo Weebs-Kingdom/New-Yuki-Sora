@@ -1,7 +1,5 @@
 package de.mindcollaps.yuki.core;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import de.mindcollaps.yuki.NetworkManager;
 import de.mindcollaps.yuki.api.ApiManagerOld;
 import de.mindcollaps.yuki.api.ApiRequestHandler;
@@ -9,6 +7,8 @@ import de.mindcollaps.yuki.api.YukiApi;
 import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
 import java.io.FileReader;
 
@@ -99,10 +99,10 @@ public class YukiSora {
         System.out.println("-------------------------------------------\n\n");
     }
 
-    private void onShutdown(){
+    private void onShutdown() {
         YukiProperties.saveApplicationSettings();
 
-        if(application != null)
+        if (application != null)
             application.onShutdown();
     }
 

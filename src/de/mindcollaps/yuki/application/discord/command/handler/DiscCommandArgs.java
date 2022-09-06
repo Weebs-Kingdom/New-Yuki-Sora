@@ -15,17 +15,17 @@ public class DiscCommandArgs {
         this.array = new ArrayList<>();
     }
 
-    public void addCommandArgument(DiscCommandArgument argument){
+    public void addCommandArgument(DiscCommandArgument argument) {
         args.put(argument.getName().toLowerCase(), argument);
         array.add(argument);
     }
 
-    public DiscCommandArgument getArg(String name){
+    public DiscCommandArgument getArg(String name) {
         name = name.toLowerCase();
         return args.get(name);
     }
 
-    public DiscCommandArgument getArg(int i){
+    public DiscCommandArgument getArg(int i) {
         return array.get(i);
     }
 

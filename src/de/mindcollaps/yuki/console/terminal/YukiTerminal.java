@@ -30,7 +30,7 @@ public class YukiTerminal {
         };
     }
 
-    private static void setupListener(){
+    private static void setupListener() {
         new Thread(new ConsoleCommandHandler()).start();
     }
 
@@ -38,21 +38,21 @@ public class YukiTerminal {
         return terminalCommands;
     }
 
-    private static class ConsoleCommandHandler implements Runnable{
+    private static class ConsoleCommandHandler implements Runnable {
 
         @Override
         public void run() {
             Scanner scanner = new Scanner(System.in);
             String line = "";
             YukiLogger.log(new YukiLogInfo("Console Command Handler initialized!", "Console Command Handler").debug());
-            for (;;){
+            for (; ; ) {
                 try {
                     line = scanner.nextLine();
-                } catch (Exception ignored){
+                } catch (Exception ignored) {
                 }
                 try {
                     System.out.println(YukiTerminalCommandHandler.handleCommand(line));
-                } catch (Exception e){
+                } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("An error occurred while executing the command!", "Console Command Handler").trace(e));
                 }
             }

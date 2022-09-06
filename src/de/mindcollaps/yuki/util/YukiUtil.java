@@ -23,7 +23,7 @@ public class YukiUtil {
         return newArr;
     }
 
-    public static String[] addToArray(String[] oldArray, String id){
+    public static String[] addToArray(String[] oldArray, String id) {
         String[] newArr = new String[oldArray.length + 1];
         for (int i = 0; i < oldArray.length; i++)
             newArr[i] = oldArray[i];

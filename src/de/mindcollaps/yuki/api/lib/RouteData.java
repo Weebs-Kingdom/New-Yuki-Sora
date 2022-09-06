@@ -13,23 +13,23 @@ public abstract class RouteData extends Route {
     public void fetchData(String databaseId, YukiSora yukiSora) {
         this.databaseId = databaseId;
 
-        if(!this.isValid())
+        if (!this.isValid())
             return;
 
         fetchData(yukiSora);
     }
 
-    public <J extends RouteData> J getForeignData(Class<J> clazz, YukiSora yukiSora){
+    public <J extends RouteData> J getForeignData(Class<J> clazz, YukiSora yukiSora) {
         for (Field declaredField : this.getClass().getDeclaredFields()) {
-            if(declaredField.isAnnotationPresent(ForeignData.class)){
+            if (declaredField.isAnnotationPresent(ForeignData.class)) {
                 ForeignData anno = declaredField.getAnnotation(ForeignData.class);
-                if(!anno.value().equals(clazz))
+                if (!anno.value().equals(clazz))
                     continue;
 
                 String value = "";
 
                 for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
-                    if(declaredMethod.getName().equalsIgnoreCase("get"+declaredField.getName())) {
+                    if (declaredMethod.getName().equalsIgnoreCase("get" + declaredField.getName())) {
                         try {
                             value = (String) declaredMethod.invoke(this, null);
                         } catch (Exception e) {
@@ -39,7 +39,7 @@ public abstract class RouteData extends Route {
                     }
                 }
 
-                if(value == null)
+                if (value == null)
                     continue;
 
                 J data = null;
@@ -49,7 +49,7 @@ public abstract class RouteData extends Route {
                     e.printStackTrace();
                 }
 
-                if(data == null)
+                if (data == null)
                     return null;
 
                 data.fetchData(value, yukiSora);
@@ -60,10 +60,10 @@ public abstract class RouteData extends Route {
     }
 
     public void fetchData(YukiSora yukiSora) {
-        if(databaseId == null)
+        if (databaseId == null)
             return;
 
-        if(!this.isValid())
+        if (!this.isValid())
             return;
 
         ApiResponse response = yukiSora.getRequestHandler().get(getRoute() + "?id=" + databaseId);
@@ -72,7 +72,7 @@ public abstract class RouteData extends Route {
     }
 
     public void updateData(YukiSora yukiSora) {
-        if(!this.isValid())
+        if (!this.isValid())
             return;
 
         ApiResponse response = yukiSora.getRequestHandler().patch(getRoute() + "?id=" + databaseId, RouteParser.pack(this));
@@ -81,15 +81,15 @@ public abstract class RouteData extends Route {
     }
 
     public void deleteData(YukiSora yukiSora) {
-        if(!this.isValid())
+        if (!this.isValid())
             return;
 
         ApiResponse response = yukiSora.getRequestHandler().delete(getRoute() + "?id=" + databaseId, RouteParser.pack(this));
         RouteParser.load(this, response.getData());
     }
 
-    public void postData(YukiSora yukiSora){
-        if(!this.isValid())
+    public void postData(YukiSora yukiSora) {
+        if (!this.isValid())
             return;
 
         ApiResponse response = yukiSora.getRequestHandler().post(getRoute(), RouteParser.pack(this));

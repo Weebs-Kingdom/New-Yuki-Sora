@@ -1,12 +1,5 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.json.simple.JSONObject;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.application.discord.command.CommandAction;
@@ -16,6 +9,13 @@ import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgume
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.FileUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.json.simple.JSONObject;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class DiscCmdMusic extends DiscCommand {
     private final HashMap<String, String> channelMusicBots = new HashMap<>();
 
     public DiscCmdMusic() {
-        super("m", "A command to play music from one of the music bots", true);
+        super("m", "A command to play music from one of the music bots");
 
         addAction(new CommandAction() {
             @Override
@@ -35,7 +35,7 @@ public class DiscCmdMusic extends DiscCommand {
 
             @Override
             public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
-                event.getTextChannel().sendMessageEmbeds(disputeCommand(event.getGuild(), event.getMember(), yukiSora, args)).queue();
+                event.getChannel().sendMessageEmbeds(disputeCommand(event.getGuild(), event.getMember(), yukiSora, args)).queue();
             }
 
             @Override
@@ -56,7 +56,7 @@ public class DiscCmdMusic extends DiscCommand {
                         }
                 }
                 if (g != null)
-                    event.getPrivateChannel().sendMessageEmbeds(disputeCommand(g, m, yukiSora, args)).queue();
+                    event.getChannel().sendMessageEmbeds(disputeCommand(g, m, yukiSora, args)).queue();
             }
 
             @Override

@@ -12,36 +12,36 @@ import java.util.List;
 
 public class TextUtil {
 
-    public static void sendNormalTxt(String txt, MessageChannel channel){
+    public static void sendNormalTxt(String txt, MessageChannel channel) {
         channel.sendMessage(txt).queue();
     }
 
-    public static void sendColoredText(String txt, Color color, MessageChannel channel){
+    public static void sendColoredText(String txt, Color color, MessageChannel channel) {
         channel.sendMessageEmbeds(
                 new EmbedBuilder().setColor(color).setDescription(txt).build()
         ).queue();
     }
 
-    public static void sendSuccess(String txt, MessageChannel channel){
+    public static void sendSuccess(String txt, MessageChannel channel) {
         channel.sendMessageEmbeds(
                 new EmbedBuilder().setColor(Color.GREEN).setDescription(txt).build()
         ).queue();
     }
 
-    public static void sendWarning(String txt, MessageChannel channel){
+    public static void sendWarning(String txt, MessageChannel channel) {
         channel.sendMessageEmbeds(
                 new EmbedBuilder().setColor(Color.YELLOW).setDescription(txt).build()
         ).queue();
     }
 
-    public static void sendError(String txt, MessageChannel channel){
+    public static void sendError(String txt, MessageChannel channel) {
         channel.sendMessageEmbeds(
                 new EmbedBuilder().setColor(Color.RED).setDescription(txt).build()
         ).queue();
     }
 
     public static void deleteUserMessage(int size, MessageReceivedEvent event) {
-        if(event.getChannelType() == ChannelType.TEXT){
+        if (event.getChannelType() == ChannelType.TEXT) {
             MessageHistory history = new MessageHistory(event.getChannel());
             List<Message> msgs;
 
@@ -49,7 +49,7 @@ public class TextUtil {
 
             msgs = history.retrievePast(size).complete();
             try {
-                event.getTextChannel().deleteMessages(msgs).queue();
+                event.getChannel().purgeMessages(msgs);
             } catch (Exception e) {
             }
         }

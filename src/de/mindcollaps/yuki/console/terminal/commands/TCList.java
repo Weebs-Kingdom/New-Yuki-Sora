@@ -2,7 +2,7 @@ package de.mindcollaps.yuki.console.terminal.commands;
 
 import de.mindcollaps.yuki.console.terminal.YukiTerminal;
 
-public class TCList implements TerminalCommand{
+public class TCList implements TerminalCommand {
     @Override
     public String onExecute(String[] args) {
         StringBuilder list = new StringBuilder("Command List:\n");

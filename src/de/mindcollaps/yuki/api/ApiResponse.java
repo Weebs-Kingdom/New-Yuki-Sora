@@ -12,9 +12,9 @@ public class ApiResponse {
     private String message;
 
     public ApiResponse(JSONObject apiResponse) {
-        if(apiResponse == null)
+        if (apiResponse == null)
             return;
-        if(apiResponse.get("data") instanceof JSONObject){
+        if (apiResponse.get("data") instanceof JSONObject) {
             this.data = (JSONObject) apiResponse.get("data");
             isArray = false;
         } else {
@@ -53,12 +53,12 @@ public class ApiResponse {
         return array;
     }
 
-    public void setArray(JSONArray array) {
-        this.array = array;
-    }
-
     public boolean isArray() {
         return isArray;
+    }
+
+    public void setArray(JSONArray array) {
+        this.array = array;
     }
 
     public void setArray(boolean array) {

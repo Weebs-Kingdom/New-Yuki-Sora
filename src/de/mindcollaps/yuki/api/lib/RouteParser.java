@@ -1,9 +1,9 @@
 package de.mindcollaps.yuki.api.lib;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -80,7 +80,7 @@ public class RouteParser {
                     data = array.toArray(new String[array.size()]);
                 }
 
-                if(data instanceof Long){
+                if (data instanceof Long) {
                     long d = (long) data;
                     data = Math.toIntExact(d);
                 }
@@ -90,7 +90,7 @@ public class RouteParser {
                         try {
                             method.invoke(obj, data);
                         } catch (Exception e) {
-                            YukiLogger.log(new YukiLogInfo("The packer found a field without a setter method or the datatype does not match! Data class: "  + data.getClass() + " method parameter: " + method.getParameterTypes()[0]).trace(e));
+                            YukiLogger.log(new YukiLogInfo("The packer found a field without a setter method or the datatype does not match! Data class: " + data.getClass() + " method parameter: " + method.getParameterTypes()[0]).trace(e));
                         }
                         break;
                     }

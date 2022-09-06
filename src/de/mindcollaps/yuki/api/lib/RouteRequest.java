@@ -1,10 +1,10 @@
 package de.mindcollaps.yuki.api.lib;
 
-import org.json.simple.JSONObject;
 import de.mindcollaps.yuki.api.ApiResponse;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
+import org.json.simple.JSONObject;
 
 public abstract class RouteRequest<T extends RouteData> extends Route {
 
@@ -14,12 +14,12 @@ public abstract class RouteRequest<T extends RouteData> extends Route {
         this.clazz = clazz;
     }
 
-    public T makeRequestSingle(YukiSora yukiSora){
+    public T makeRequestSingle(YukiSora yukiSora) {
         T[] data = makeRequest(yukiSora);
 
-        if(data == null)
+        if (data == null)
             return null;
-        if(data.length == 0)
+        if (data.length == 0)
             return null;
         return data[0];
     }
@@ -30,11 +30,11 @@ public abstract class RouteRequest<T extends RouteData> extends Route {
 
         try {
             response = yukiSora.getRequestHandler().post(getRoute(), RouteParser.pack(this));
-        } catch (Exception e){
+        } catch (Exception e) {
             YukiLogger.log(new YukiLogInfo("The request " + clazz.getSimpleName() + " had an error while fetching the data from the API!").trace(e));
         }
 
-        if(response == null){
+        if (response == null) {
             return (T[]) erData;
         }
 

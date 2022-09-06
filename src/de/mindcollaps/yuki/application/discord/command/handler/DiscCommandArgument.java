@@ -1,6 +1,6 @@
 package de.mindcollaps.yuki.application.discord.command.handler;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -16,7 +16,7 @@ public class DiscCommandArgument {
     private double aDouble;
     private boolean aBoolean;
     private User user;
-    private MessageChannel messageChannel;
+    private GuildChannel guildChannel;
     private VoiceChannel voiceChannel;
     private Role role;
 
@@ -73,12 +73,12 @@ public class DiscCommandArgument {
         this.user = user;
     }
 
-    public MessageChannel getMessageChannel() {
-        return messageChannel;
+    public GuildChannel getGuildChannel() {
+        return guildChannel;
     }
 
-    public void setMessageChannel(MessageChannel messageChannel) {
-        this.messageChannel = messageChannel;
+    public void setGuildChannel(GuildChannel guildChannel) {
+        this.guildChannel = guildChannel;
     }
 
     public VoiceChannel getVoiceChannel() {
