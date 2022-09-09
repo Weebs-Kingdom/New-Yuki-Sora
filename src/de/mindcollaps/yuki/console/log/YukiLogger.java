@@ -22,22 +22,10 @@ public class YukiLogger {
     }
 
     public static void log(YukiLogInfo info) {
-        if (info.getLevel().intLevel() <= 400) {
-            logger.log(info.getLevel(), info.getMessage());
+        if(info.getLevel() == Level.INFO){
+            logger.log(info.getLevel(), info);
         } else {
-            debug.log(info.getLevel(), info.getMessage());
-            if (info.getLevel() == Level.TRACE)
-                debug.log(info.getLevel(), getExceptionText(info));
+            debug.log(info.getLevel(), info);
         }
-    }
-
-    private static String getExceptionText(YukiLogInfo info) {
-        StringBuilder b = new StringBuilder();
-        b.append("We found and error ;_;\n");
-        b.append(info.getException());
-        for (StackTraceElement traceElement : info.getException().getStackTrace())
-            b.append("\n\tat ").append(traceElement);
-
-        return b.toString();
     }
 }

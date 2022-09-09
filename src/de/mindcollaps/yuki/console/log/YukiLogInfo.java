@@ -5,20 +5,29 @@ import org.apache.logging.log4j.Level;
 public class YukiLogInfo {
 
     private String message;
-    private String module;
+    private String origin;
     private Exception exception;
     private Level level;
 
     public YukiLogInfo(String message, String module) {
         this.message = message;
-        this.module = module;
+        this.origin = module;
         this.exception = null;
         this.level = Level.INFO;
     }
 
     public YukiLogInfo(String message) {
+        String origin = "";
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        origin = stackTraceElements[stackTraceElements.length -1].getClassName();
+        int min = -2;
+        while (origin.equals("java.lang.Thread") ||origin.equals("java.util.TimerThread")){
+            origin = stackTraceElements[stackTraceElements.length + min].getClassName();
+            min --;
+        }
+
         this.message = message;
-        this.module = null;
+        this.origin = origin;
         this.exception = null;
         this.level = Level.INFO;
     }
@@ -62,12 +71,12 @@ public class YukiLogInfo {
         this.message = message;
     }
 
-    public String getModule() {
-        return module;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setModule(String module) {
-        this.module = module;
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 
     public Exception getException() {
@@ -82,27 +91,33 @@ public class YukiLogInfo {
         return level;
     }
 
+    private String getExceptionText() {
+        StringBuilder b = new StringBuilder();
+        //b.append("We found and error ;_;\n");
+        b.append(exception);
+        for (StackTraceElement traceElement : exception.getStackTrace())
+            b.append("\n\tat ").append(traceElement);
+
+        return b.toString();
+    }
+
     @Override
     public String toString() {
-        StringBuilder stack = new StringBuilder();
+        String stack = "";
         if (level == Level.ERROR) {
             if (exception != null) {
-                if (exception.getCause() != null)
-                    stack.append(exception.getCause().getMessage());
-                for (StackTraceElement traceElement : exception.getStackTrace()) {
-                    stack.append(traceElement.toString() + "\n");
-                }
+                stack = getExceptionText();
             } else {
-                stack.append("Stack Trace is empty!");
+                stack = "Stack Trace is empty!";
             }
             return
-                    "\nModul: " + module +
+                    "!We found an error ;_;!\n--------\nOrigin: " + origin +
                             "\nMessage: " + message +
-                            "\nStack trace: \n" + stack
+                            "\nStack trace: \n" + stack + "\n--------"
                     ;
         }
-        if (module != null)
-            return "[" + module + "] " + message;
+        if (origin != null && level.isInRange(Level.DEBUG, Level.TRACE))
+            return "[" + origin + "] " + message;
         else
             return message;
     }
