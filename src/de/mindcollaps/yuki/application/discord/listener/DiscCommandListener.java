@@ -1,6 +1,6 @@
 package de.mindcollaps.yuki.application.discord.listener;
 
-import de.mindcollaps.yuki.api.lib.LibManager;
+import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandParser;
@@ -72,14 +72,14 @@ public class DiscCommandListener extends ListenerAdapter {
             hasPermission = false;
         }
         if (!hasPermission) {
-            TextUtil.sendError("Hello? I don't have admin permissions here. I won't operate until I have them :triumph:", event.getChannel());
+            TextUtil.sendError("Hello? I don't have admin permissions here. I won't operate until I have them :triumph:", new TextUtil.ResponseInstance(event.getChannel()));
         } else {
             DiscApplicationUser user = LibManager.retrieveUser(event.getAuthor(), yukiSora);
             DiscApplicationServer server = LibManager.retrieveServer(event.getGuild(), yukiSora);
             try {
                 yukiSora.getDiscordApplication().getCommandHandler().handleServerCommand(DiscCommandParser.parseServerMessage(event.getMessage().getContentRaw(), event, server, user, yukiSora));
             } catch (Exception e) {
-                TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), event.getChannel());
+                TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), new TextUtil.ResponseInstance(event.getChannel()));
                 YukiLogger.log(new YukiLogInfo("Sending client command failed!", "DiscCommandListener").trace(e));
             }
         }
@@ -94,14 +94,14 @@ public class DiscCommandListener extends ListenerAdapter {
             hasPermission = false;
         }
         if (!hasPermission) {
-            TextUtil.sendError("Hello? I don't have admin permissions here. I won't operate until I have them :triumph:", event.getChannel());
+            TextUtil.sendError("Hello? I don't have admin permissions here. I won't operate until I have them :triumph:", new TextUtil.ResponseInstance(event.getChannel()));
         } else {
             DiscApplicationUser user = LibManager.retrieveUser(event.getUser(), yukiSora);
             DiscApplicationServer server = LibManager.retrieveServer(event.getGuild(), yukiSora);
             try {
                 yukiSora.getDiscordApplication().getCommandHandler().handleSlashCommand(DiscCommandParser.parseSlashMessage(event.getCommandString(), event, server, user, yukiSora));
             } catch (Exception e) {
-                TextUtil.sendError("Fatal command error on command: " + event.getCommandString(), event.getChannel());
+                TextUtil.sendError("Fatal command error on command: " + event.getCommandString(), new TextUtil.ResponseInstance(event.getChannel()));
                 YukiLogger.log(new YukiLogInfo("Sending client command failed!", "DiscCommandListener").trace(e));
             }
         }
@@ -113,7 +113,7 @@ public class DiscCommandListener extends ListenerAdapter {
         try {
             yukiSora.getDiscordApplication().getCommandHandler().handleClientCommand(DiscCommandParser.parseClientMessage(event.getMessage().getContentRaw(), event, user, yukiSora));
         } catch (Exception e) {
-            TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), event.getChannel());
+            TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), new TextUtil.ResponseInstance(event.getChannel()));
             YukiLogger.log(new YukiLogInfo("Sending client command failed!", "DiscCommandListener").trace(e));
         }
     }

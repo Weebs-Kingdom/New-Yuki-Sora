@@ -583,12 +583,14 @@ public class DiscCommandHandler {
                 return;
             }
 
-            try {
-                exe = action.calledServer(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
-            } catch (ActionNotImplementedException e) {
-                printErrorMessage(getReportErrorMessage(report, command), cmd.event.getChannel());
-            } catch (Exception e) {
-                YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
+            if(command.isCallableServer()){
+                try {
+                    exe = action.calledServer(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+                } catch (ActionNotImplementedException e) {
+                    printErrorMessage(getReportErrorMessage(report, command), cmd.event.getChannel());
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
+                }
             }
 
             if (exe) {
@@ -630,19 +632,22 @@ public class DiscCommandHandler {
                 return;
             }
 
-            try {
-                exe = action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
-            } catch (ActionNotImplementedException e) {
-                printErrorMessage("This command has not been implemented as slash command yet. We are working on it :tools:", cmd.event.getInteraction());
-            } catch (Exception e) {
-                YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
+            if(command.isCallableSlash()){
+                try {
+                    exe = action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+                } catch (ActionNotImplementedException e) {
+                    printErrorMessage("This command has not been implemented as slash command yet. We are working on it :tools:", cmd.event.getInteraction());
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
+                }
             }
 
             if (exe) {
                 try {
-                    action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
+                    action.actionSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
                 } catch (ActionNotImplementedException e) {
                     printErrorMessage("This command has not been implemented as slash command yet. We are working on it :tools:", cmd.event.getInteraction());
+                    YukiLogger.log(new YukiLogInfo("The command " + command + " has not been implemented as slash command yet!", consMsgDef).trace(e).warning());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("Handle server command had an error while performing the command action", consMsgDef).trace(e));
                 }
@@ -678,12 +683,14 @@ public class DiscCommandHandler {
                 return;
             }
 
-            try {
-                exe = action.calledPrivate(args, cmd.event, cmd.user, cmd.yukiSora);
-            } catch (ActionNotImplementedException e) {
-                printErrorMessage("This command has not been implemented as private command yet. We are working on it :tools:", cmd.event.getChannel());
-            } catch (Exception e) {
-                YukiLogger.log(new YukiLogInfo("Handle client command had an error while checking if the command can be called!", consMsgDef).trace(e));
+            if(command.isCallableClient()){
+                try {
+                    exe = action.calledPrivate(args, cmd.event, cmd.user, cmd.yukiSora);
+                } catch (ActionNotImplementedException e) {
+                    printErrorMessage("This command has not been implemented as private command yet. We are working on it :tools:", cmd.event.getChannel());
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("Handle client command had an error while checking if the command can be called!", consMsgDef).trace(e));
+                }
             }
 
             if (exe) {
@@ -719,7 +726,7 @@ public class DiscCommandHandler {
 
             CommandData data = cmd.toCommandData();
             if (data != null) {
-                if (!cmd.isAdminOnlyCommand())
+                if (!cmd.adminOnlyCommand())
                     publicCommands.add(data);
                 else
                     adminCommands.add(data);
@@ -782,6 +789,16 @@ public class DiscCommandHandler {
 
         public void setFoundGroup(SubCommandGroup foundGroup) {
             this.foundGroup = foundGroup;
+        }
+
+        @Override
+        public String toString() {
+            return "CommandHandlingReport{" +
+                    "invalid=" + invalid +
+                    ", errors=" + errors +
+                    ", foundCommand=" + foundCommand +
+                    ", foundGroup=" + foundGroup +
+                    '}';
         }
     }
 }

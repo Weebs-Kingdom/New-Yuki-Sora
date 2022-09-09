@@ -2,7 +2,7 @@ package de.mindcollaps.yuki.application.discord.listener;
 
 import de.mindcollaps.yuki.api.lib.data.AutoChannel;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
-import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
+import de.mindcollaps.yuki.api.lib.request.FindAutoChannelsByGuildId;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
@@ -10,10 +10,13 @@ import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -28,7 +31,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
-        if (checkVc(event.getGuild(), event.getGuild().getVoiceChannelById(event.getChannelJoined().getId()), event.getEntity()))
+        if (checkBaseAcAndAdd(event.getGuild(), event.getGuild().getVoiceChannelById(event.getChannelJoined().getId()), event.getEntity()))
             return;
         checkActivities(event.getMember());
     }
@@ -36,28 +39,27 @@ public class DiscAutoChannelListener extends ListenerAdapter {
     @Override
     public void onChannelDelete(ChannelDeleteEvent event) {
         if (event.getChannelType() == ChannelType.VOICE) {
-            DiscApplicationServer server = new FindServerByGuildId(event.getGuild().getId()).makeRequestSingle(yukiSora);
-            if (server == null) {
-                YukiLogger.log(new YukiLogInfo("Can't find the server!!!", "[Guild Voice Join]").error());
-                return;
-            }
+            AutoChannel[] autoChannels = new FindAutoChannelsByGuildId(event.getGuild().getId()).makeRequest(yukiSora);
 
-            for (String vc : server.getAutoChannels()) {
-                if (vc.equals(event.getChannel().getId())) {
-                    server.removeAutoChannel(vc);
-                    server.removeGamingChannel(vc);
+            for (AutoChannel ac : autoChannels) {
+                if (ac.getChannelId().equals(event.getChannel().getId())) {
+                    ac.deleteData(yukiSora);
                 }
             }
+        }
+    }
 
-            Iterator<AutoChannel> iterator = activeAutoChannels.iterator();
-            while (iterator.hasNext()) {
-                AutoChannel ac = iterator.next();
-                AudioChannel vc = ac.getVc();
-                if (vc.getId().equals(event.getChannel().getId())) {
-                    iterator.remove();
-                    vc.delete().queue();
-                }
-            }
+    public void onGuildVoiceMove(@Nonnull GuildVoiceMoveEvent event) {
+        if(event.getChannelLeft().getMembers().size() == 0){
+            checkAcAndRemove(event.getChannelLeft());
+        }
+        if (checkBaseAcAndAdd(event.getGuild(), event.getGuild().getVoiceChannelById(event.getChannelJoined().getId()), event.getEntity()))
+            return;
+        checkActivities(event.getMember());
+    }
+    public void onGuildVoiceLeave(@Nonnull GuildVoiceLeaveEvent event) {
+        if(event.getChannelLeft().getMembers().size() == 0){
+            checkAcAndRemove(event.getChannelLeft());
         }
     }
 
@@ -66,31 +68,41 @@ public class DiscAutoChannelListener extends ListenerAdapter {
         checkActivities(event.getMember());
     }
 
-    private boolean checkVc(Guild guild, VoiceChannel channelJoined, Member entity) {
-        DiscApplicationServer server = new FindServerByGuildId(guild.getId()).makeRequestSingle(yukiSora);
-        if (server == null) {
-            YukiLogger.log(new YukiLogInfo("Can't find the server!!!", "[Guild Voice Join]").error());
-            return false;
-        }
+    private boolean checkBaseAcAndAdd(Guild guild, VoiceChannel channelJoined, Member entity) {
+        AutoChannel[] autoChannels = new FindAutoChannelsByGuildId(guild.getId()).makeRequest(yukiSora);
 
-        for (String vcI : server.getAutoChannels()) {
-            if (vcI.equals(channelJoined.getId())) {
-                VoiceChannel vc = channelJoined;
-                AutoChannel ac = new AutoChannel().createAutoChan(vc, guild, entity);
-                activeAutoChannels.add(ac);
-                return true;
-            }
-        }
+        for (AutoChannel ac : autoChannels) {
+            if (ac.getChannelId().equals(channelJoined.getId())) {
+                try {
+                    ac.init(guild, yukiSora);
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("Failed to initialize Auto Channel!").trace(e));
+                    return false;
+                }
+                AutoChannel newAutoChannel = ac.createChildAutoChannel(entity);
+                if(newAutoChannel == null)
+                    return false;
 
-        for (String vcI : server.getGamingChannels()) {
-            if (vcI.equals(channelJoined.getId())) {
-                VoiceChannel vc = channelJoined;
-                AutoChannel ac = new AutoChannel().createGamingChan(vc, guild, entity);
-                activeAutoChannels.add(ac);
+                activeAutoChannels.add(newAutoChannel);
                 return true;
             }
         }
         return false;
+    }
+
+    private void checkAcAndRemove(AudioChannel voiceChannel){
+        for (int i = 0; i < activeAutoChannels.size(); i++) {
+            AutoChannel activeAutoChannel = activeAutoChannels.get(i);
+            if (activeAutoChannel.getGuild().getId().equals(activeAutoChannel.getGuild().getId())) {
+                if (activeAutoChannel.getVoiceChannel().getId().equals(voiceChannel.getId())) {
+                    if (voiceChannel.getMembers().size() == 0) {
+                        voiceChannel.delete().queue();
+                        activeAutoChannels.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private void checkActivities(Member member) {
@@ -102,7 +114,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
                     String most = "";
                     int mostI = 0;
 
-                    for (Member m : ac.getAudioChannel().getMembers()) {
+                    for (Member m : ac.getVoiceChannel().getMembers()) {
                         String g = DiscordUtil.getGame(m);
                         if (g != null)
                             games.add(g);
@@ -135,7 +147,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
         Iterator<AutoChannel> iterator = activeAutoChannels.iterator();
         while (iterator.hasNext()) {
             AutoChannel ac = iterator.next();
-            AudioChannel vc = ac.getAudioChannel();
+            AudioChannel vc = ac.getVoiceChannel();
             AudioChannel svc = m.getVoiceState().getChannel();
             if (svc == null)
                 return null;
@@ -168,7 +180,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
             AutoChannel ac = iterator.next();
             AudioChannel vcc = null;
             try {
-                vcc = ac.getAudioChannel().getGuild().getVoiceChannelById(ac.getAudioChannel().getId());
+                vcc = ac.getVoiceChannel().getGuild().getVoiceChannelById(ac.getVoiceChannel().getId());
             } catch (Exception ignored) {
             }
             if (vcc == null) {
@@ -184,15 +196,15 @@ public class DiscAutoChannelListener extends ListenerAdapter {
     public ArrayList<String> getAutoChanList() {
         ArrayList<String> ids = new ArrayList<>();
         for (AutoChannel ac : activeAutoChannels) {
-            AudioChannel vc = ac.getAudioChannel();
+            AudioChannel vc = ac.getVoiceChannel();
             ids.add(vc.getId());
         }
         return ids;
     }
 
-    public void loadAutoChans(ArrayList<String> ids, DiscApplicationServer server) {
+    public void loadAutoChans(ArrayList<String> ids, Guild g, DiscApplicationServer server) {
         for (String s : ids) {
-            AudioChannel vc = null;
+            VoiceChannel vc = null;
             try {
                 vc = yukiSora.getDiscordApplication().getBotJDA().getVoiceChannelById(s);
             } catch (Exception e) {
@@ -202,7 +214,10 @@ public class DiscAutoChannelListener extends ListenerAdapter {
                 if (vc.getMembers().size() == 0) {
                     vc.delete().queue();
                 } else {
-                    AutoChannel ac = new AutoChannel().recreate(vc, 0);
+                    VoiceChannel channel = g.getVoiceChannelById(s);
+                    if(channel == null)
+                        continue;
+                    AutoChannel ac = new AutoChannel(channel).recreate(vc, 0);
                     activeAutoChannels.add(ac);
                 }
             }

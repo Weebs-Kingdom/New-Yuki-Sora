@@ -35,4 +35,13 @@ public class CommandOption {
     public SubcommandData toSubCommandData() {
         return new SubcommandData(name, description);
     }
+
+    @Override
+    public String toString() {
+        return "CommandOption{" +
+                "optionType=" + optionType +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

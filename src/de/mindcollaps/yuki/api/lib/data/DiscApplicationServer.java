@@ -1,8 +1,8 @@
 package de.mindcollaps.yuki.api.lib.data;
 
-import de.mindcollaps.yuki.api.lib.RouteClass;
-import de.mindcollaps.yuki.api.lib.RouteData;
-import de.mindcollaps.yuki.api.lib.RouteField;
+import de.mindcollaps.yuki.api.lib.route.RouteClass;
+import de.mindcollaps.yuki.api.lib.route.RouteData;
+import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
@@ -18,7 +18,7 @@ public class DiscApplicationServer extends RouteData {
     @RouteField
     private String serverName = "";
     @RouteField
-    private String serverID = "";
+    private String serverId = "";
 
     @RouteField
     private String[] defaultRoles = new String[]{};
@@ -29,7 +29,7 @@ public class DiscApplicationServer extends RouteData {
     private String shopChannelId;
 
     @RouteField
-    private String twitchNotifyChannel;
+    private String twitchNotifyChannelId;
     @RouteField
     private String vipRoleId;
     @RouteField
@@ -49,9 +49,7 @@ public class DiscApplicationServer extends RouteData {
     private String defaultTempGamerRoleId = "";
 
     @RouteField
-    private String welcomeMessageChannel = "";
-    @RouteField
-    private String welcomeText = "";
+    private String welcomeMessageChannelId = "";
 
     @RouteField
     private String statisticsCategoryId = "";
@@ -61,11 +59,16 @@ public class DiscApplicationServer extends RouteData {
     @RouteField
     private String[] gamingChannels = new String[]{};
 
+    public DiscApplicationServer() {
+    }
+
     public void updateServerStats(YukiSora yukiSora) {
-        Guild g = yukiSora.getDiscordApplication().getBotJDA().getGuildById(serverID);
+        if(YukiUtil.isEmpty(serverId))
+            return;
+        Guild g = yukiSora.getDiscordApplication().getBotJDA().getGuildById(serverId);
         if (g == null)
             return;
-        if (statisticsCategoryId == null)
+        if (YukiUtil.isEmpty(statisticsCategoryId))
             return;
         Category category = yukiSora.getDiscordApplication().getBotJDA().getCategoryById(statisticsCategoryId);
         if (category == null)
@@ -118,12 +121,12 @@ public class DiscApplicationServer extends RouteData {
         this.serverName = serverName;
     }
 
-    public String getServerID() {
-        return serverID;
+    public String getServerId() {
+        return serverId;
     }
 
-    public void setServerID(String serverID) {
-        this.serverID = serverID;
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 
     public String[] getDefaultRoles() {
@@ -150,12 +153,12 @@ public class DiscApplicationServer extends RouteData {
         this.shopChannelId = shopChannelId;
     }
 
-    public String getTwitchNotifyChannel() {
-        return twitchNotifyChannel;
+    public String getTwitchNotifyChannelId() {
+        return twitchNotifyChannelId;
     }
 
-    public void setTwitchNotifyChannel(String twitchNotifyChannel) {
-        this.twitchNotifyChannel = twitchNotifyChannel;
+    public void setTwitchNotifyChannelId(String twitchNotifyChannelId) {
+        this.twitchNotifyChannelId = twitchNotifyChannelId;
     }
 
     public String getVipRoleId() {
@@ -222,20 +225,12 @@ public class DiscApplicationServer extends RouteData {
         this.defaultTempGamerRoleId = defaultTempGamerRoleId;
     }
 
-    public String getWelcomeMessageChannel() {
-        return welcomeMessageChannel;
+    public String getWelcomeMessageChannelId() {
+        return welcomeMessageChannelId;
     }
 
-    public void setWelcomeMessageChannel(String welcomeMessageChannel) {
-        this.welcomeMessageChannel = welcomeMessageChannel;
-    }
-
-    public String getWelcomeText() {
-        return welcomeText;
-    }
-
-    public void setWelcomeText(String welcomeText) {
-        this.welcomeText = welcomeText;
+    public void setWelcomeMessageChannelId(String welcomeMessageChannelId) {
+        this.welcomeMessageChannelId = welcomeMessageChannelId;
     }
 
     public String getStatisticsCategoryId() {

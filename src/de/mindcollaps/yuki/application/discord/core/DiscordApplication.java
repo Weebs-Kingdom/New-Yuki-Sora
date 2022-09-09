@@ -1,6 +1,8 @@
 package de.mindcollaps.yuki.application.discord.core;
 
+import de.mindcollaps.yuki.api.YukiApi;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdAlexa;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdMusic;
@@ -57,10 +59,9 @@ public class DiscordApplication {
         YukiLogger.log(new YukiLogInfo("!Bot start initialized!", consMsgDef));
         isRunning = true;
 
-        builder = JDABuilder.createDefault(discToken);
+        builder = JDABuilder.create(discToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES);
         builder.setAutoReconnect(true);
         builder.setStatus(OnlineStatus.ONLINE);
-        builder.enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES);
         builder.enableCache(CacheFlag.CLIENT_STATUS, CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.STICKER);
 
         try {
@@ -86,22 +87,28 @@ public class DiscordApplication {
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
+                ArrayList<String> autos = null;
+                try {
+                    autos = (ArrayList<String>) FileUtils.loadObject(FileUtils.home + "/autochans.dat");
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("Can't find autochans.dat probably no autochans saved").warning());
+                }
                 for (Guild g : botJDA.getGuilds()) {
-                    DiscApplicationServer s = new FindServerByGuildId(g.getId()).makeRequestSingle(yukiSora);
+                    DiscApplicationServer s = LibManager.retrieveServer(g, yukiSora);
                     if (s == null)
                         continue;
 
-                    s.updateServerStats(yukiSora);
-                    ArrayList<String> autos = null;
                     try {
-                        autos = (ArrayList<String>) FileUtils.loadObject(FileUtils.home + "/autochans.dat");
-                    } catch (Exception e) {
+                        s.updateServerStats(yukiSora);
+                    } catch (Exception e){
+                        YukiLogger.log(new YukiLogInfo("Failed to init server stats of " + g.getName() + "(" + g.getId() + ")", consMsgDef).trace(e));
                     }
+
                     if (autos == null)
                         autos = new ArrayList<>();
-                    autoChannelListener.loadAutoChans(autos, s);
+                    autoChannelListener.loadAutoChans(autos, g, s);
 
-                    System.out.println(consMsgDef + " " + s.getServerName() + " initialized");
+                    YukiLogger.log(new YukiLogInfo(" " + s.getServerName() + " initialized", consMsgDef));
                 }
             }
         };

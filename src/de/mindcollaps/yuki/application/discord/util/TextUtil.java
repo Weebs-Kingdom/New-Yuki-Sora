@@ -1,11 +1,9 @@
 package de.mindcollaps.yuki.application.discord.util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 import java.awt.*;
 import java.util.List;
@@ -16,28 +14,40 @@ public class TextUtil {
         channel.sendMessage(txt).queue();
     }
 
-    public static void sendColoredText(String txt, Color color, MessageChannel channel) {
-        channel.sendMessageEmbeds(
-                new EmbedBuilder().setColor(color).setDescription(txt).build()
-        ).queue();
+    public static void sendColoredText(String txt, Color color, ResponseInstance res) {
+        MessageEmbed me = new EmbedBuilder().setColor(color).setDescription(txt).build();
+
+        if (res.isChannel)
+            res.getChannel().sendMessageEmbeds(me).queue();
+        else
+            res.getInteraction().replyEmbeds(me).queue();
     }
 
-    public static void sendSuccess(String txt, MessageChannel channel) {
-        channel.sendMessageEmbeds(
-                new EmbedBuilder().setColor(Color.GREEN).setDescription(txt).build()
-        ).queue();
+    public static void sendSuccess(String txt, ResponseInstance res) {
+        MessageEmbed me = new EmbedBuilder().setColor(Color.GREEN).setDescription(txt).build();
+
+        if (res.isChannel())
+            res.getChannel().sendMessageEmbeds(me).queue();
+        else
+            res.getInteraction().replyEmbeds(me).queue();
     }
 
-    public static void sendWarning(String txt, MessageChannel channel) {
-        channel.sendMessageEmbeds(
-                new EmbedBuilder().setColor(Color.YELLOW).setDescription(txt).build()
-        ).queue();
+    public static void sendWarning(String txt, ResponseInstance res) {
+        MessageEmbed me = new EmbedBuilder().setColor(Color.YELLOW).setDescription(txt).build();
+
+        if (res.isChannel())
+            res.getChannel().sendMessageEmbeds(me).queue();
+        else
+            res.getInteraction().replyEmbeds(me).queue();
     }
 
-    public static void sendError(String txt, MessageChannel channel) {
-        channel.sendMessageEmbeds(
-                new EmbedBuilder().setColor(Color.RED).setDescription(txt).build()
-        ).queue();
+    public static void sendError(String txt, ResponseInstance res) {
+        MessageEmbed me = new EmbedBuilder().setColor(Color.RED).setDescription(txt).build();
+
+        if (res.isChannel())
+            res.getChannel().sendMessageEmbeds(me).queue();
+        else
+            res.getInteraction().replyEmbeds(me).queue();
     }
 
     public static void deleteUserMessage(int size, MessageReceivedEvent event) {
@@ -52,6 +62,34 @@ public class TextUtil {
                 event.getChannel().purgeMessages(msgs);
             } catch (Exception e) {
             }
+        }
+    }
+
+    public static class ResponseInstance {
+        private MessageChannel channel;
+        private SlashCommandInteraction interaction;
+        boolean isChannel = true;
+
+        public ResponseInstance(MessageChannel channel) {
+            this.channel = channel;
+            this.isChannel = true;
+        }
+
+        public ResponseInstance(SlashCommandInteraction interaction) {
+            this.interaction = interaction;
+            this.isChannel = false;
+        }
+
+        public MessageChannel getChannel() {
+            return channel;
+        }
+
+        public SlashCommandInteraction getInteraction() {
+            return interaction;
+        }
+
+        public boolean isChannel() {
+            return isChannel;
         }
     }
 }

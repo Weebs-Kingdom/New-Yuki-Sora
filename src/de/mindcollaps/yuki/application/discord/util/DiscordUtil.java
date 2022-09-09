@@ -5,12 +5,16 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
 import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DiscordUtil {
 
-    public static boolean userHasGuildAdminPermission(Member member, Guild guild, MessageChannel messageChannel, YukiSora engine) {
+    public static boolean userHasGuildAdminPermission(Member member, Guild guild, TextUtil.ResponseInstance res, YukiSora engine) {
         boolean hasPermission = false;
         for (int i = 0; member.getRoles().size() > i; i++) {
             for (int a = 0; member.getRoles().get(i).getPermissions().toArray().length > a; a++) {
@@ -19,11 +23,13 @@ public class DiscordUtil {
                     break;
                 }
             }
+            if (hasPermission)
+                break;
         }
         if (hasPermission) {
             return true;
         } else {
-            TextUtil.sendError("You have no permission for this command! You have to be an Admin to use that command!", messageChannel);
+            TextUtil.sendError("You have no permission for this command! You have to be an Admin to use that command!", res);
             return false;
         }
     }
@@ -57,6 +63,28 @@ public class DiscordUtil {
             return Math.toIntExact((Long) o.get(r));
         } catch (Exception e) {
             return Math.toIntExact(Math.round((Double) o.get(r)));
+        }
+    }
+
+    public static void assignRolesToMembers(Guild g, List<Member> members, ArrayList<Role> roles) {
+        for (Member member : members) {
+            for (Role role : roles) {
+                try {
+                    g.addRoleToMember(member, role).queue();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
+
+    public static void removeRolesFromMembers(Guild g, List<Member> members, ArrayList<Role> roles) {
+        for (Member member : members) {
+            for (Role role : roles) {
+                try {
+                    g.removeRoleFromMember(member, role).queue();
+                } catch (Exception e) {
+                }
+            }
         }
     }
 }

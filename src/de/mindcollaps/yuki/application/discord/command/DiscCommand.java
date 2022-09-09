@@ -22,6 +22,10 @@ public abstract class DiscCommand {
     private boolean createSlashCommand = true;
     private boolean adminOnlyCommand = false;
 
+    private boolean isCallableSlash = true;
+    private boolean isCallableServer = true;
+    private boolean isCallableClient = true;
+
     public DiscCommand(String invoke, String description) {
         this.invoke = invoke;
         this.description = description;
@@ -82,6 +86,21 @@ public abstract class DiscCommand {
         return this;
     }
 
+    public DiscCommand noCallClient(){
+        this.isCallableClient = false;
+        return this;
+    }
+
+    public DiscCommand noCallServer(){
+        this.isCallableServer = false;
+        return this;
+    }
+
+    public DiscCommand noCallSlash(){
+        this.isCallableSlash = false;
+        return this;
+    }
+
     public String getInvoke() {
         return invoke;
     }
@@ -107,7 +126,7 @@ public abstract class DiscCommand {
         return this;
     }
 
-    public boolean isAdminOnlyCommand() {
+    public boolean adminOnlyCommand() {
         return adminOnlyCommand;
     }
 
@@ -125,5 +144,31 @@ public abstract class DiscCommand {
 
     public boolean isCreateSlashCommand() {
         return createSlashCommand;
+    }
+
+    public boolean isCallableSlash() {
+        return isCallableSlash;
+    }
+
+    public boolean isCallableServer() {
+        return isCallableServer;
+    }
+
+    public boolean isCallableClient() {
+        return isCallableClient;
+    }
+
+    @Override
+    public String toString() {
+        return "DiscCommand{" +
+                "invoke='" + invoke + '\'' +
+                ", description='" + description + '\'' +
+                ", options=" + options +
+                ", subCommands=" + subCommands +
+                ", subCommandGroups=" + subCommandGroups +
+                ", action=" + action +
+                ", createSlashCommand=" + createSlashCommand +
+                ", adminOnlyCommand=" + adminOnlyCommand +
+                '}';
     }
 }

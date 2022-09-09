@@ -1,8 +1,8 @@
 package de.mindcollaps.yuki.api.lib.data;
 
-import de.mindcollaps.yuki.api.lib.RouteClass;
-import de.mindcollaps.yuki.api.lib.RouteData;
-import de.mindcollaps.yuki.api.lib.RouteField;
+import de.mindcollaps.yuki.api.lib.route.RouteClass;
+import de.mindcollaps.yuki.api.lib.route.RouteData;
+import de.mindcollaps.yuki.api.lib.route.RouteField;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -13,7 +13,7 @@ public class DiscApplicationUser extends RouteData {
     @RouteField
     private String[] servers = new String[]{};
     @RouteField
-    private String userName = "";
+    private String username = "";
     @RouteField
     private String userID = "";
     @RouteField
@@ -46,6 +46,9 @@ public class DiscApplicationUser extends RouteData {
     @RouteField
     private String[] boosterChans = new String[]{};
 
+    public DiscApplicationUser() {
+    }
+
     public String[] getServers() {
         return servers;
     }
@@ -54,12 +57,12 @@ public class DiscApplicationUser extends RouteData {
         this.servers = servers;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUserID() {
@@ -170,7 +173,7 @@ public class DiscApplicationUser extends RouteData {
     public String toString() {
         return "DiscApplicationUser{" +
                 "servers=" + Arrays.toString(servers) +
-                ", userName='" + userName + '\'' +
+                ", userName='" + username + '\'' +
                 ", userId='" + userID + '\'' +
                 ", admin=" + isBotAdmin +
                 ", lang='" + lang + '\'' +

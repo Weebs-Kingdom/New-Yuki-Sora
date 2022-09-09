@@ -1,12 +1,15 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.application.discord.command.ActionNotImplementedException;
 import de.mindcollaps.yuki.application.discord.command.CommandAction;
 import de.mindcollaps.yuki.application.discord.command.CommandOption;
 import de.mindcollaps.yuki.application.discord.command.DiscCommand;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.json.simple.JSONObject;
@@ -20,6 +23,17 @@ public class DiscCmdAlexa extends DiscCommand {
         addOption(new CommandOption(OptionType.STRING, "Token", "The token provided from alexa"));
 
         addAction(new CommandAction() {
+
+            @Override
+            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                return false;
+            }
+
+            @Override
+            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                return false;
+            }
+
             @Override
             public boolean calledPrivate(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) {
                 return true;
@@ -32,9 +46,9 @@ public class DiscCmdAlexa extends DiscCommand {
                 long status = (long) res.get("status");
 
                 if (status == 200)
-                    TextUtil.sendSuccess("The token was correct. Please use the verify command with alexa again to complete the verification process", event.getChannel());
+                    TextUtil.sendSuccess("The token was correct. Please use the verify command with alexa again to complete the verification process", new TextUtil.ResponseInstance(event.getChannel()));
                 else
-                    TextUtil.sendError("The token was invalid!", event.getChannel());
+                    TextUtil.sendError("The token was invalid!", new TextUtil.ResponseInstance(event.getChannel()));
             }
         });
     }

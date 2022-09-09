@@ -71,4 +71,14 @@ public class SubCommand {
     public ArrayList<CommandOption> getOptions() {
         return options;
     }
+
+    @Override
+    public String toString() {
+        return "SubCommand{" +
+                "invoke='" + invoke + '\'' +
+                ", description='" + description + '\'' +
+                ", options=" + options +
+                ", action=" + action +
+                '}';
+    }
 }

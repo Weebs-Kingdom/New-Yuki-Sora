@@ -39,8 +39,8 @@ public class NetworkManager {
     private String req(String path, String json, String apiToken, String methode) {
         if (json == null)
             return null;
-        // if (YukiProperties.getApplicationSettings().fineDebug)
-        System.out.println("REQ : " + path + " Methode: " + methode + " req: " + json);
+        //if (YukiProperties.getApplicationSettings().fineDebug)
+            YukiLogger.log(new YukiLogInfo("REQ : " + path + " Methode: " + methode + " req: " + json).debug());
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) makeConnection(path);
@@ -122,6 +122,9 @@ public class NetworkManager {
         } catch (Exception e) {
 
         }
+
+       // if (YukiProperties.getApplicationSettings().fineDebug)
+            YukiLogger.log(new YukiLogInfo("RES : " + responseString).debug());
         return responseString;
     }
 
