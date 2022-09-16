@@ -583,7 +583,7 @@ public class DiscCommandHandler {
                 return;
             }
 
-            if(command.isCallableServer()){
+            if (command.isCallableServer()) {
                 try {
                     exe = action.calledServer(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
                 } catch (ActionNotImplementedException e) {
@@ -632,7 +632,7 @@ public class DiscCommandHandler {
                 return;
             }
 
-            if(command.isCallableSlash()){
+            if (command.isCallableSlash()) {
                 try {
                     exe = action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
                 } catch (ActionNotImplementedException e) {
@@ -683,7 +683,7 @@ public class DiscCommandHandler {
                 return;
             }
 
-            if(command.isCallableClient()){
+            if (command.isCallableClient()) {
                 try {
                     exe = action.calledPrivate(args, cmd.event, cmd.user, cmd.yukiSora);
                 } catch (ActionNotImplementedException e) {

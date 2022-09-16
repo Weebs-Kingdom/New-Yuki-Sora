@@ -24,20 +24,15 @@ public class DiscApplicationServer extends RouteData {
     private String[] defaultRoles = new String[]{};
 
     @RouteField
-    private String workChannelId;
+    private String twitchNotifyChannelId = "";
     @RouteField
-    private String shopChannelId;
-
+    private String vipRoleId = "";
     @RouteField
-    private String twitchNotifyChannelId;
+    private String primeRoleId = "";
     @RouteField
-    private String vipRoleId;
+    private String boosterRoleId = "";
     @RouteField
-    private String primeRoleId;
-    @RouteField
-    private String boosterRoleId;
-    @RouteField
-    private String boosterCategoryId;
+    private String boosterCategoryId = "";
 
     @RouteField
     private String certificationMessageId = "";
@@ -46,7 +41,7 @@ public class DiscApplicationServer extends RouteData {
     @RouteField
     private String defaultMemberRoleId = "";
     @RouteField
-    private String defaultTempGamerRoleId = "";
+    private String defaultTempMemberRoleId = "";
 
     @RouteField
     private String welcomeMessageChannelId = "";
@@ -54,16 +49,11 @@ public class DiscApplicationServer extends RouteData {
     @RouteField
     private String statisticsCategoryId = "";
 
-    @RouteField
-    private String[] autoChannels = new String[]{};
-    @RouteField
-    private String[] gamingChannels = new String[]{};
-
     public DiscApplicationServer() {
     }
 
     public void updateServerStats(YukiSora yukiSora) {
-        if(YukiUtil.isEmpty(serverId))
+        if (YukiUtil.isEmpty(serverId))
             return;
         Guild g = yukiSora.getDiscordApplication().getBotJDA().getGuildById(serverId);
         if (g == null)
@@ -97,22 +87,6 @@ public class DiscApplicationServer extends RouteData {
         vc2.getManager().setName("\uD83E\uDD16Version: " + YukiProperties.getApplicationSettings().mvnVersion).queue();
     }
 
-    public void addGamingChannel(String id) {
-        gamingChannels = YukiUtil.addToArray(gamingChannels, id);
-    }
-
-    public void removeGamingChannel(String id) {
-        gamingChannels = YukiUtil.removeFromArray(gamingChannels, id);
-    }
-
-    public void addAutoChannel(String id) {
-        autoChannels = YukiUtil.addToArray(autoChannels, id);
-    }
-
-    public void removeAutoChannel(String id) {
-        autoChannels = YukiUtil.removeFromArray(autoChannels, id);
-    }
-
     public String getServerName() {
         return serverName;
     }
@@ -135,22 +109,6 @@ public class DiscApplicationServer extends RouteData {
 
     public void setDefaultRoles(String[] defaultRoles) {
         this.defaultRoles = defaultRoles;
-    }
-
-    public String getWorkChannelId() {
-        return workChannelId;
-    }
-
-    public void setWorkChannelId(String workChannelId) {
-        this.workChannelId = workChannelId;
-    }
-
-    public String getShopChannelId() {
-        return shopChannelId;
-    }
-
-    public void setShopChannelId(String shopChannelId) {
-        this.shopChannelId = shopChannelId;
     }
 
     public String getTwitchNotifyChannelId() {
@@ -217,12 +175,12 @@ public class DiscApplicationServer extends RouteData {
         this.defaultMemberRoleId = defaultMemberRoleId;
     }
 
-    public String getDefaultTempGamerRoleId() {
-        return defaultTempGamerRoleId;
+    public String getDefaultTempMemberRoleId() {
+        return defaultTempMemberRoleId;
     }
 
-    public void setDefaultTempGamerRoleId(String defaultTempGamerRoleId) {
-        this.defaultTempGamerRoleId = defaultTempGamerRoleId;
+    public void setDefaultTempMemberRoleId(String defaultTempMemberRoleId) {
+        this.defaultTempMemberRoleId = defaultTempMemberRoleId;
     }
 
     public String getWelcomeMessageChannelId() {
@@ -239,21 +197,5 @@ public class DiscApplicationServer extends RouteData {
 
     public void setStatisticsCategoryId(String statisticsCategoryId) {
         this.statisticsCategoryId = statisticsCategoryId;
-    }
-
-    public String[] getAutoChannels() {
-        return autoChannels;
-    }
-
-    public void setAutoChannels(String[] autoChannels) {
-        this.autoChannels = autoChannels;
-    }
-
-    public String[] getGamingChannels() {
-        return gamingChannels;
-    }
-
-    public void setGamingChannels(String[] gamingChannels) {
-        this.gamingChannels = gamingChannels;
     }
 }

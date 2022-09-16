@@ -4,6 +4,7 @@ import de.mindcollaps.yuki.api.lib.route.RouteClass;
 import de.mindcollaps.yuki.api.lib.route.RouteData;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -45,6 +46,15 @@ public class DiscApplicationUser extends RouteData {
 
     @RouteField
     private String[] boosterChans = new String[]{};
+
+    @RouteField
+    private boolean isMember = false;
+
+    @RouteField
+    private boolean isTempMember = false;
+
+    @RouteField
+    private Date dateBecomeTempMember = Date.from(Instant.now());
 
     public DiscApplicationUser() {
     }
@@ -167,6 +177,30 @@ public class DiscApplicationUser extends RouteData {
 
     public void setBoosterChans(String[] boosterChans) {
         this.boosterChans = boosterChans;
+    }
+
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
+    }
+
+    public boolean isTempMember() {
+        return isTempMember;
+    }
+
+    public void setTempMember(boolean tempMember) {
+        isTempMember = tempMember;
+    }
+
+    public Date getDateBecomeTempMember() {
+        return dateBecomeTempMember;
+    }
+
+    public void setDateBecomeTempMember(Date dateBecomeTempMember) {
+        this.dateBecomeTempMember = dateBecomeTempMember;
     }
 
     @Override

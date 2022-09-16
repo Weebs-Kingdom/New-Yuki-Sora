@@ -14,7 +14,9 @@ import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -25,8 +27,8 @@ import java.util.HashMap;
 
 public class DiscCmdSetup extends DiscCommand {
 
-    private HashMap<String, ArrayList<Role>> rolesToAdd = new HashMap<>();
-    private HashMap<String, ArrayList<Role>> rolesToRemove = new HashMap<>();
+    private final HashMap<String, ArrayList<Role>> rolesToAdd = new HashMap<>();
+    private final HashMap<String, ArrayList<Role>> rolesToRemove = new HashMap<>();
 
     public DiscCmdSetup() {
         super("setup", "This command is used to setup the server and all of its features");
@@ -81,6 +83,29 @@ public class DiscCmdSetup extends DiscCommand {
                                             @Override
                                             public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
                                                 createWelcomeChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
+                                            }
+                                        }),
+                                new SubCommand("certification", "The channel where the members get verified")
+                                        .addOption(OptionType.CHANNEL, "channel", "The new certification channel")
+                                        .addAction(new CommandAction() {
+                                            @Override
+                                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                createCertificationChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
+                                            }
+
+                                            @Override
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                createCertificationChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         })));
 
@@ -324,12 +349,12 @@ public class DiscCmdSetup extends DiscCommand {
 
                                     @Override
                                     public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
-                                        renewCertificationMessage(server, yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
+                                        renewCertificationMessage(server, event.getGuild(), yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
                                     }
 
                                     @Override
                                     public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        renewCertificationMessage(server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
+                                        renewCertificationMessage(server, event.getGuild(), yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                     }
                                 }),
                         new SubCommand("statistics", "This updates the statistics category completely")
@@ -425,10 +450,37 @@ public class DiscCmdSetup extends DiscCommand {
         if (gc == null) {
             TextUtil.sendError("Seems like this channel does not exist :hushed:", res);
         } else {
+
             server.setWelcomeMessageChannelId(gc.getId());
             server.updateData(yukiSora);
 
-            TextUtil.sendSuccess("Changed the welcome channel. You may update the certification message now :relaxed:", res);
+            TextUtil.sendSuccess("Changed the welcome channel :relaxed:", res);
+        }
+    }
+
+    private void createCertificationChannel(GuildChannel gc, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
+        if (gc == null) {
+            TextUtil.sendError("Seems like this channel does not exist :hushed:", res);
+        } else {
+            if (!YukiUtil.isEmpty(server.getCertificationChannelId())) {
+                MessageChannel channel = gc.getGuild().getChannelById(MessageChannel.class, server.getCertificationChannelId());
+                if (channel != null) {
+                    if (!YukiUtil.isEmpty(server.getCertificationMessageId())) {
+                        Message m = null;
+                        try {
+                            m = channel.retrieveMessageById(server.getCertificationMessageId()).complete();
+                        } catch (Exception e) {
+                        }
+                        if (m != null)
+                            m.delete().queue();
+                    }
+                }
+            }
+
+            server.setCertificationChannelId(gc.getId());
+            server.updateData(yukiSora);
+
+            TextUtil.sendSuccess("Changed the certification channel, you may renew the certification message now :relaxed:", res);
         }
     }
 
@@ -539,11 +591,10 @@ public class DiscCmdSetup extends DiscCommand {
     private ArrayList<Role> getRoleListFromGuild(HashMap<String, ArrayList<Role>> map, Guild g) {
         ArrayList<Role> l = map.get(g.getId());
 
-        if (l == null){
+        if (l == null) {
             map.put(g.getId(), new ArrayList<>());
             return map.get(g.getId());
-        }
-        else
+        } else
             return l;
     }
 
@@ -567,7 +618,7 @@ public class DiscCmdSetup extends DiscCommand {
 
             builder.delete(builder.length() - 2, builder.length() - 1);
 
-            TextUtil.sendColoredText("List of default roles:\n" + builder.toString(), Color.BLUE, res);
+            TextUtil.sendColoredText("List of default roles:\n" + builder, Color.BLUE, res);
         }
     }
 
@@ -633,9 +684,9 @@ public class DiscCmdSetup extends DiscCommand {
 
     private void updateRoles(Guild g, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         if (getRoleListFromGuild(rolesToRemove, g).size() > 0)
-            DiscordUtil.removeRolesFromMembers(g, g.getMembers(), rolesToRemove.get(g.getId()));
+            DiscordUtil.removeRolesFromMembers(g, rolesToRemove.get(g.getId()), g.getMembers().toArray(new Member[0]));
         if (getRoleListFromGuild(rolesToAdd, g).size() > 0)
-            DiscordUtil.assignRolesToMembers(g, g.getMembers(), rolesToAdd.get(g.getId()));
+            DiscordUtil.assignRolesToMembers(g, rolesToAdd.get(g.getId()), g.getMembers().toArray(new Member[0]));
 
         getRoleListFromGuild(rolesToAdd, g).clear();
         getRoleListFromGuild(rolesToRemove, g).clear();
@@ -645,7 +696,7 @@ public class DiscCmdSetup extends DiscCommand {
 
     private void removeAutoChannel(GuildChannel channel, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance responseInstance) {
         AutoChannel autoChannel = new FindAutoChannelsByIds(channel.getGuild().getId(), channel.getId()).makeRequestSingle(yukiSora);
-        if(autoChannel == null){
+        if (autoChannel == null) {
             TextUtil.sendWarning("This channel was never a Auto Channel :person_shrugging:", responseInstance);
         } else {
             autoChannel.deleteData(yukiSora);
@@ -656,7 +707,7 @@ public class DiscCmdSetup extends DiscCommand {
     private void createAutoChannel(GuildChannel channel, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance responseInstance) {
         AutoChannel autoChannel = new AutoChannel(server.getDatabaseId(), channel.getId(), 0);
         try {
-            autoChannel.initBaseChannel(channel.getGuild(),yukiSora);
+            autoChannel.initBaseChannel(channel.getGuild(), yukiSora);
         } catch (Exception e) {
             TextUtil.sendError("Failed to initialize the Auto channel, are you sure, this is a Voice Channel?", responseInstance);
             YukiLogger.log(new YukiLogInfo("Failed to initialize Auto Channel!").trace(e));
@@ -666,12 +717,57 @@ public class DiscCmdSetup extends DiscCommand {
         TextUtil.sendSuccess("Created new Auto Channel :thumbsup:", responseInstance);
     }
 
-    private void renewCertificationMessage(DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance responseInstance) {
+    private void renewCertificationMessage(DiscApplicationServer server, Guild g, YukiSora yukiSora, TextUtil.ResponseInstance responseInstance) {
+        if (YukiUtil.isEmpty(server.getCertificationChannelId())) {
+            TextUtil.sendError("There is no certification message channel selected, try using the `setup channel certification` command.", responseInstance);
+            return;
+        }
+        MessageChannel channel = g.getChannelById(MessageChannel.class, server.getCertificationChannelId());
+        if (channel == null) {
+            TextUtil.sendError("Seems like this channel does not exist :hushed:", responseInstance);
+            return;
+        }
 
+        if (!YukiUtil.isEmpty(server.getCertificationMessageId())) {
+            Message m = null;
+            try {
+                m = channel.retrieveMessageById(server.getCertificationMessageId()).complete();
+            } catch (Exception e) {
+            }
+            if (m != null)
+                m.delete().queue();
+        }
+
+        MessageEmbed embed = new EmbedBuilder()
+                .setColor(Color.BLUE)
+                .setTitle("Member Certification")
+                .setDescription("By pressing ✅ or \uD83C\uDFAE **bellow this message** you accept\n• the :notebook_with_decorative_cover: **rules** :notebook_with_decorative_cover: of **" + g.getName() + "** and\n• the  **terms of service** of this bot **Yuki Sora**.\n\n\n")
+                .addField("Terms of Service", "https://weebskingdom.com/bot-terms-of-service/\n\n\n", false)
+                .addField("Pressing ✅", "Become a member of and enjoy all the features of this guild.", true)
+                .addField("Pressing ❌", "Remove all your data stored in **Yuki Sora** and remove your rights to use this server.", true)
+                .addField("Pressing \uD83C\uDFAE", "Become a temporary member and don't get annoyed by guild announcements, events  etc.", true)
+                .build();
+
+        Message message = channel.sendMessageEmbeds(embed).complete();
+
+        message.addReaction(Emoji.fromUnicode("✅")).complete();
+        message.addReaction(Emoji.fromUnicode("❌")).complete();
+        message.addReaction(Emoji.fromUnicode("\uD83C\uDFAE")).complete();
+
+        server.setCertificationMessageId(message.getId());
+        server.updateData(yukiSora);
+
+        TextUtil.sendSuccess("Renewed the certification message :fire:", responseInstance);
     }
 
     private void renewStatisticsCategory(DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance responseInstance) {
-
+        try {
+            server.updateServerStats(yukiSora);
+        } catch (Exception e) {
+            TextUtil.sendError("There was an error while renewing the statistics category!", responseInstance);
+            return;
+        }
+        TextUtil.sendSuccess("Renewed the statistics category :thumbsup:", responseInstance);
     }
 
     @Override

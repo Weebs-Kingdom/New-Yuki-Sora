@@ -7,7 +7,6 @@ import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.*;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @RouteClass("autochannel")
@@ -15,14 +14,14 @@ public class AutoChannel extends RouteData {
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)
-    private String server;
+    private String server = "";
 
     @RouteField
-    private String channelId;
+    private String channelId = "";
 
     //0 = auto, 1 = gaming
     @RouteField
-    private int autoChannelType;
+    private int autoChannelType = 0;
 
     private boolean initialized = false;
 
@@ -34,11 +33,11 @@ public class AutoChannel extends RouteData {
     public AutoChannel() {
     }
 
-    public AutoChannel(String channelId){
+    public AutoChannel(String channelId) {
         this.channelId = channelId;
     }
 
-    public AutoChannel(VoiceChannel voiceChannel){
+    public AutoChannel(VoiceChannel voiceChannel) {
         this.guild = voiceChannel.getGuild();
         this.voiceChannel = voiceChannel;
         this.channelId = voiceChannel.getId();
@@ -85,15 +84,15 @@ public class AutoChannel extends RouteData {
 
     @Nullable
     public AutoChannel createChildAutoChannel(Member m) {
-        if(!initialized)
+        if (!initialized)
             return null;
 
         String name = "";
-        if(autoChannelType == 0){
-                name = "Gaming Lounge";
+        if (autoChannelType == 0) {
+            name = "Gaming Lounge";
         } else {
             name = DiscordUtil.getGame(m);
-            if(name == null)
+            if (name == null)
                 name = "Gaming Lounge";
         }
 

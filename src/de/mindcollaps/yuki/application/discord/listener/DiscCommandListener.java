@@ -1,9 +1,10 @@
 package de.mindcollaps.yuki.application.discord.listener;
 
-import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandParser;
+import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +44,9 @@ public class DiscCommandListener extends ListenerAdapter {
         if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId()))
             return;
 
+        if (ResponseHandler.lookForResponse(event))
+            return;
+
         if (!event.getMessage().getContentRaw().startsWith(YukiProperties.getProperties(YukiProperties.dPDefaultCommandPrefix)))
             return;
 
@@ -49,6 +54,12 @@ public class DiscCommandListener extends ListenerAdapter {
             handlePrivateCommand(event);
         } else if (event.getChannelType() == ChannelType.TEXT) {
             handleGuildCommand(event);
+        }
+    }
+
+    @Override
+    public void onMessageReactionAdd(@Nonnull MessageReactionAddEvent event) {
+        if (ResponseHandler.lookForResponse(event)) {
         }
     }
 
@@ -76,6 +87,12 @@ public class DiscCommandListener extends ListenerAdapter {
         } else {
             DiscApplicationUser user = LibManager.retrieveUser(event.getAuthor(), yukiSora);
             DiscApplicationServer server = LibManager.retrieveServer(event.getGuild(), yukiSora);
+
+            if (user == null || server == null) {
+                TextUtil.sendError("There was an error communicating with the database, this issue has been logged and will be fixed ASAP :face_with_spiral_eyes:", new TextUtil.ResponseInstance(event.getChannel()));
+                YukiLogger.log(new YukiLogInfo("There has been a problem communicating with the database! This issues should be looked at very soon!").error());
+                return;
+            }
             try {
                 yukiSora.getDiscordApplication().getCommandHandler().handleServerCommand(DiscCommandParser.parseServerMessage(event.getMessage().getContentRaw(), event, server, user, yukiSora));
             } catch (Exception e) {
@@ -98,6 +115,12 @@ public class DiscCommandListener extends ListenerAdapter {
         } else {
             DiscApplicationUser user = LibManager.retrieveUser(event.getUser(), yukiSora);
             DiscApplicationServer server = LibManager.retrieveServer(event.getGuild(), yukiSora);
+
+            if (user == null || server == null) {
+                TextUtil.sendError("There was an error communicating with the database, this issue has been logged and will be fixed ASAP :face_with_spiral_eyes:", new TextUtil.ResponseInstance(event.getChannel()));
+                YukiLogger.log(new YukiLogInfo("There has been a problem communicating with the database! This issues should be looked at very soon!").error());
+                return;
+            }
             try {
                 yukiSora.getDiscordApplication().getCommandHandler().handleSlashCommand(DiscCommandParser.parseSlashMessage(event.getCommandString(), event, server, user, yukiSora));
             } catch (Exception e) {
@@ -109,7 +132,11 @@ public class DiscCommandListener extends ListenerAdapter {
 
     private void sendPrivateCommand(MessageReceivedEvent event) {
         DiscApplicationUser user = LibManager.retrieveUser(event.getAuthor(), yukiSora);
-
+        if (user == null) {
+            TextUtil.sendError("There was an error communicating with the database, this issue has been logged and will be fixed ASAP :face_with_spiral_eyes:", new TextUtil.ResponseInstance(event.getChannel()));
+            YukiLogger.log(new YukiLogInfo("There has been a problem communicating with the database! This issues should be looked at very soon!").error());
+            return;
+        }
         try {
             yukiSora.getDiscordApplication().getCommandHandler().handleClientCommand(DiscCommandParser.parseClientMessage(event.getMessage().getContentRaw(), event, user, yukiSora));
         } catch (Exception e) {

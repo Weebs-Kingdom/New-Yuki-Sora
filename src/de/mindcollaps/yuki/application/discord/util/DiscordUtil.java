@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.entities.Role;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DiscordUtil {
@@ -66,7 +65,18 @@ public class DiscordUtil {
         }
     }
 
-    public static void assignRolesToMembers(Guild g, List<Member> members, ArrayList<Role> roles) {
+    public static ArrayList<Role> getRolesFromGuild(Guild g, String... roles) {
+        ArrayList<Role> roleList = new ArrayList<>();
+        for (String role : roles) {
+            Role r = g.getRoleById(role);
+            if (r != null)
+                roleList.add(r);
+        }
+
+        return roleList;
+    }
+
+    public static void assignRolesToMembers(Guild g, List<Role> roles, Member... members) {
         for (Member member : members) {
             for (Role role : roles) {
                 try {
@@ -77,7 +87,7 @@ public class DiscordUtil {
         }
     }
 
-    public static void removeRolesFromMembers(Guild g, List<Member> members, ArrayList<Role> roles) {
+    public static void removeRolesFromMembers(Guild g, List<Role> roles, Member... members) {
         for (Member member : members) {
             for (Role role : roles) {
                 try {

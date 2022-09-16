@@ -1,14 +1,13 @@
 package de.mindcollaps.yuki.application.discord.core;
 
-import de.mindcollaps.yuki.api.YukiApi;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
-import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdAlexa;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdMusic;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdSetup;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandler;
 import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
+import de.mindcollaps.yuki.application.discord.listener.DiscCertificationMessageListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCommandListener;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
@@ -100,7 +99,7 @@ public class DiscordApplication {
 
                     try {
                         s.updateServerStats(yukiSora);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         YukiLogger.log(new YukiLogInfo("Failed to init server stats of " + g.getName() + "(" + g.getId() + ")", consMsgDef).trace(e));
                     }
 
@@ -128,6 +127,7 @@ public class DiscordApplication {
 
         listeners.add(autoChannelListener);
         listeners.add(new DiscCommandListener(yukiSora));
+        listeners.add(new DiscCertificationMessageListener(yukiSora));
         regListeners();
     }
 

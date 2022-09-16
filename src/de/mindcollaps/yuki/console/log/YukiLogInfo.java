@@ -19,13 +19,14 @@ public class YukiLogInfo {
     public YukiLogInfo(String message) {
         String origin = "";
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        origin = stackTraceElements[stackTraceElements.length -1].getClassName();
+        origin = stackTraceElements[stackTraceElements.length - 1].getClassName();
         int min = -2;
-        while (origin.equals("java.lang.Thread") ||origin.equals("java.util.TimerThread")){
+        while (!origin.startsWith("de.mindcollaps.yuki")) {
             origin = stackTraceElements[stackTraceElements.length + min].getClassName();
-            min --;
+            min--;
         }
-
+        //For hardcore debug
+        //this.message = message + "\nTrace:\n" + getTraceText(stackTraceElements);
         this.message = message;
         this.origin = origin;
         this.exception = null;
@@ -96,6 +97,15 @@ public class YukiLogInfo {
         //b.append("We found and error ;_;\n");
         b.append(exception);
         for (StackTraceElement traceElement : exception.getStackTrace())
+            b.append("\n\tat ").append(traceElement);
+
+        return b.toString();
+    }
+
+    private String getTraceText(StackTraceElement[] elements) {
+        StringBuilder b = new StringBuilder();
+
+        for (StackTraceElement traceElement : elements)
             b.append("\n\tat ").append(traceElement);
 
         return b.toString();
