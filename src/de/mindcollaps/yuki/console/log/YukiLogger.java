@@ -22,7 +22,7 @@ public class YukiLogger {
     }
 
     public static void log(YukiLogInfo info) {
-        if(info.getLevel() == Level.INFO){
+        if (info.getLevel() == Level.INFO) {
             logger.log(info.getLevel(), info);
         } else {
             debug.log(info.getLevel(), info);

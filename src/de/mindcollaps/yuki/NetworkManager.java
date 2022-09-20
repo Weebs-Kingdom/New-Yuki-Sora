@@ -40,7 +40,7 @@ public class NetworkManager {
         if (json == null)
             return null;
         //if (YukiProperties.getApplicationSettings().fineDebug)
-            YukiLogger.log(new YukiLogInfo("REQ : " + path + " Methode: " + methode + " req: " + json).debug());
+        YukiLogger.log(new YukiLogInfo("REQ : " + path + " Methode: " + methode + " req: " + json).debug());
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) makeConnection(path);
@@ -123,8 +123,8 @@ public class NetworkManager {
 
         }
 
-       // if (YukiProperties.getApplicationSettings().fineDebug)
-            YukiLogger.log(new YukiLogInfo("RES : " + responseString).debug());
+        // if (YukiProperties.getApplicationSettings().fineDebug)
+        YukiLogger.log(new YukiLogInfo("RES : " + responseString).debug());
         return responseString;
     }
 

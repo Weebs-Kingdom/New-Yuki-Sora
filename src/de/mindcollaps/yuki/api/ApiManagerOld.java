@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.entities.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.Collections;
+
 public class ApiManagerOld {
 
     private final String apiToken;
@@ -330,9 +332,7 @@ public class ApiManagerOld {
         req.put("id", id);
         req.put("twitch", channel);
         JSONArray srs = new JSONArray();
-        for (String server : servers) {
-            srs.add(server);
-        }
+        Collections.addAll(srs, servers);
         req.put("servers", srs);
         return FileUtils.convertStringToJson(yukiSora.getNetworkManager().post(api + "/addTwitchUser", req.toJSONString(), apiToken));
     }

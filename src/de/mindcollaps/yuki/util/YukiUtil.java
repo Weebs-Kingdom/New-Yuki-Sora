@@ -3,11 +3,11 @@ package de.mindcollaps.yuki.util;
 public class YukiUtil {
 
     public static String[] removeFromArray(String[] oldArray, String id) {
-        if(oldArray.length == 0)
+        if (oldArray.length == 0)
             return oldArray;
 
         String[] newArr = new String[oldArray.length - 1];
-        if(newArr.length == 0)
+        if (newArr.length == 0)
             return newArr;
 
         int skipIndex = -1;
@@ -31,19 +31,16 @@ public class YukiUtil {
 
     public static String[] addToArray(String[] oldArray, String id) {
         String[] newArr = new String[oldArray.length + 1];
-        for (int i = 0; i < oldArray.length; i++)
-            newArr[i] = oldArray[i];
+        System.arraycopy(oldArray, 0, newArr, 0, oldArray.length);
 
         newArr[oldArray.length] = id;
 
         return newArr;
     }
 
-    public static boolean isEmpty(String s){
-        if(s == null)
+    public static boolean isEmpty(String s) {
+        if (s == null)
             return true;
-        if(s.length() == 0)
-            return true;
-        return false;
+        return s.length() == 0;
     }
 }

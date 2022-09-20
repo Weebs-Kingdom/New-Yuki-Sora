@@ -50,15 +50,16 @@ public class DiscAutoChannelListener extends ListenerAdapter {
     }
 
     public void onGuildVoiceMove(@Nonnull GuildVoiceMoveEvent event) {
-        if(event.getChannelLeft().getMembers().size() == 0){
+        if (event.getChannelLeft().getMembers().size() == 0) {
             checkAcAndRemove(event.getChannelLeft());
         }
         if (checkBaseAcAndAdd(event.getGuild(), event.getGuild().getVoiceChannelById(event.getChannelJoined().getId()), event.getEntity()))
             return;
         checkActivities(event.getMember());
     }
+
     public void onGuildVoiceLeave(@Nonnull GuildVoiceLeaveEvent event) {
-        if(event.getChannelLeft().getMembers().size() == 0){
+        if (event.getChannelLeft().getMembers().size() == 0) {
             checkAcAndRemove(event.getChannelLeft());
         }
     }
@@ -80,7 +81,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
                     return false;
                 }
                 AutoChannel newAutoChannel = ac.createChildAutoChannel(entity);
-                if(newAutoChannel == null)
+                if (newAutoChannel == null)
                     return false;
 
                 activeAutoChannels.add(newAutoChannel);
@@ -90,7 +91,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
         return false;
     }
 
-    private void checkAcAndRemove(AudioChannel voiceChannel){
+    private void checkAcAndRemove(AudioChannel voiceChannel) {
         for (int i = 0; i < activeAutoChannels.size(); i++) {
             AutoChannel activeAutoChannel = activeAutoChannels.get(i);
             if (activeAutoChannel.getGuild().getId().equals(activeAutoChannel.getGuild().getId())) {
@@ -215,7 +216,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
                     vc.delete().queue();
                 } else {
                     VoiceChannel channel = g.getVoiceChannelById(s);
-                    if(channel == null)
+                    if (channel == null)
                         continue;
                     AutoChannel ac = new AutoChannel(channel).recreate(vc, 0);
                     activeAutoChannels.add(ac);

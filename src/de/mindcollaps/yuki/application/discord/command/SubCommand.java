@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.internal.utils.Checks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SubCommand {
 
@@ -30,13 +31,7 @@ public class SubCommand {
     public SubCommand addOption(CommandOption... options) {
         Checks.noneNull(options, "Option");
         Checks.check(options.length + this.options.size() <= 25, "Cannot have more than 25 options for a subcommand!");
-        for (CommandOption option : options) {
-            /*
-            Checks.check(option.getType() != OptionType.SUB_COMMAND, "Cannot add a subcommand to a subcommand!");
-            Checks.check(option.getType() != OptionType.SUB_COMMAND_GROUP, "Cannot add a subcommand group to a subcommand!");
-             */
-            this.options.add(option);
-        }
+        Collections.addAll(this.options, options);
         return this;
     }
 

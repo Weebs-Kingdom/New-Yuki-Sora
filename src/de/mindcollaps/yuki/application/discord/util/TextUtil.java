@@ -66,9 +66,9 @@ public class TextUtil {
     }
 
     public static class ResponseInstance {
+        boolean isChannel = true;
         private MessageChannel channel;
         private SlashCommandInteraction interaction;
-        boolean isChannel = true;
 
         public ResponseInstance(MessageChannel channel) {
             this.channel = channel;

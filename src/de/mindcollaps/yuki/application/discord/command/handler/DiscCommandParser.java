@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DiscCommandParser {
 
@@ -18,9 +19,7 @@ public class DiscCommandParser {
         String[] splitBeheaded = beheaded.split(" ");
         String invoke = splitBeheaded[0];
         ArrayList<String> split = new ArrayList<>();
-        for (String s : splitBeheaded) {
-            split.add(s);
-        }
+        Collections.addAll(split, splitBeheaded);
 
         String[] args = new String[split.size() - 1];
         split.subList(1, split.size()).toArray(args);
@@ -33,9 +32,7 @@ public class DiscCommandParser {
         String[] splitBeheaded = beheaded.split(" ");
         String invoke = splitBeheaded[0];
         ArrayList<String> split = new ArrayList<>();
-        for (String s : splitBeheaded) {
-            split.add(s);
-        }
+        Collections.addAll(split, splitBeheaded);
 
         String[] args = new String[split.size() - 1];
         split.subList(1, split.size()).toArray(args);
@@ -49,9 +46,7 @@ public class DiscCommandParser {
         String[] splitBeheaded = beheaded.split(" ");
         String invoke = splitBeheaded[0];
         ArrayList<String> split = new ArrayList<>();
-        for (String s : splitBeheaded) {
-            split.add(s);
-        }
+        Collections.addAll(split, splitBeheaded);
 
         String[] args = new String[split.size() - 1];
         split.subList(1, split.size()).toArray(args);

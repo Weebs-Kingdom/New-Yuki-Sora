@@ -86,17 +86,17 @@ public abstract class DiscCommand {
         return this;
     }
 
-    public DiscCommand noCallClient(){
+    public DiscCommand noCallClient() {
         this.isCallableClient = false;
         return this;
     }
 
-    public DiscCommand noCallServer(){
+    public DiscCommand noCallServer() {
         this.isCallableServer = false;
         return this;
     }
 
-    public DiscCommand noCallSlash(){
+    public DiscCommand noCallSlash() {
         this.isCallableSlash = false;
         return this;
     }

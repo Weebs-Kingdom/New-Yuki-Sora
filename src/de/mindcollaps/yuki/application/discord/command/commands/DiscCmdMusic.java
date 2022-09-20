@@ -93,6 +93,7 @@ public class DiscCmdMusic extends DiscCommand {
                         String s = (String) o;
                         if (s.equals(ss)) {
                             isFree = false;
+                            break;
                         }
                     }
                     if (isFree) {
