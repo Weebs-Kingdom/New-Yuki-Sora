@@ -95,7 +95,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>yuki.core.Main</mainClass>
+                                    <mainClass>de.mindcollaps.yuki.core.Main</mainClass>
                                 </transformer>
                             </transformers>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
