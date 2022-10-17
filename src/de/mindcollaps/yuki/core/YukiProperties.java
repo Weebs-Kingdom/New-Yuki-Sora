@@ -147,7 +147,7 @@ public class YukiProperties implements Serializable {
     }
 
     public static void saveBotProperties() {
-        System.out.println("Properties are: " + properties);
+        YukiLogger.log(new YukiLogInfo("Properties are: " + properties).debug());
         if (properties == null)
             return;
 

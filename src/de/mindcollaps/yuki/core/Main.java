@@ -17,7 +17,7 @@ public class Main {
             System.exit(-1);
         }
 
-        YukiLogger.log(new YukiLogInfo("Logger initialized"));
+        YukiLogger.log(new YukiLogInfo("Logger initialized").debug());
         YukiSora yukiSora = new YukiSora();
 
         YukiTerminal.setup(yukiSora);

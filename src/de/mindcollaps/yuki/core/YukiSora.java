@@ -11,6 +11,10 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
 import java.io.FileReader;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class YukiSora {
 
@@ -64,6 +68,7 @@ public class YukiSora {
         apiManagerOld = new ApiManagerOld(this);
 
         application = new DiscordApplication(this);
+        YukiLogger.log(new YukiLogInfo("Yuki Sora application successfully started at " + new Date()));
     }
 
     private void printBuildData() {
@@ -85,18 +90,18 @@ public class YukiSora {
             } catch (Exception e) {
                 YukiLogger.log(new YukiLogInfo("Can't find POM File!", "YukiSora").warning());
             }
-        System.out.println("\n-------------------------------------------");
-        System.out.println("Debug: " + applicationSettings.debug);
-        System.out.println("Network Debug: " + applicationSettings.fineDebug);
+        YukiLogger.log(new YukiLogInfo("-------------------------------------------").debug());
+        YukiLogger.log(new YukiLogInfo("Debug: " + applicationSettings.debug).debug());
+        YukiLogger.log(new YukiLogInfo("Network Debug: " + applicationSettings.fineDebug).debug());
         String oldVersion = applicationSettings.mvnVersion;
         applicationSettings.mvnArtifact = model.getArtifactId();
         applicationSettings.mvnGroup = model.getGroupId();
         applicationSettings.mvnVersion = model.getVersion();
-        System.out.println("<" + applicationSettings.mvnGroup + "> " + applicationSettings.mvnArtifact + ": " + applicationSettings.mvnVersion);
+        YukiLogger.log(new YukiLogInfo("<" + applicationSettings.mvnGroup + "> " + applicationSettings.mvnArtifact + ": " + applicationSettings.mvnVersion).debug());
         if (!applicationSettings.mvnVersion.equals(oldVersion)) {
-            System.out.println("Updated from: " + oldVersion + " to " + applicationSettings.mvnVersion);
+            YukiLogger.log(new YukiLogInfo("Updated from: " + oldVersion + " to " + applicationSettings.mvnVersion).debug());
         }
-        System.out.println("-------------------------------------------\n\n");
+        YukiLogger.log(new YukiLogInfo("-------------------------------------------\n\n").debug());
     }
 
     private void onShutdown() {

@@ -9,18 +9,18 @@ import de.mindcollaps.yuki.api.lib.route.RouteRequest;
 public class FindAutoChannelsByGuildId extends RouteRequest<AutoChannel> {
 
     @RouteField
-    private String guildId;
+    private String serverId;
 
     public FindAutoChannelsByGuildId(String guildId) {
         super(AutoChannel.class);
-        this.guildId = guildId;
+        this.serverId = guildId;
     }
 
-    public String getGuildId() {
-        return guildId;
+    public String getServerId() {
+        return serverId;
     }
 
-    public void setGuildId(String id) {
-        this.guildId = id;
+    public void setServerId(String id) {
+        this.serverId = id;
     }
 }

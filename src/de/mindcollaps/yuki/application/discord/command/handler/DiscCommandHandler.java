@@ -10,19 +10,20 @@ import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
+import net.dv8tion.jda.api.interactions.commands.*;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import org.apache.commons.lang.ArrayUtils;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class DiscCommandHandler {
 
-    private final String consMsgDef = "[Command Handler]";
+    private final String consMsgDef = "Command Handler";
 
     private final DiscordApplication application;
     public HashMap<String, DiscCommand> commands = new HashMap<>();
@@ -315,7 +316,8 @@ public class DiscCommandHandler {
             if (args.length - 1 >= i) {
                 OptionMapping mapping = event.getOption(option.getName());
                 if (mapping == null) {
-                    report.addError("Option **" + option.getName() + "** is empty!");
+                    if (!option.isOptional())
+                        report.addError("Option **" + option.getName() + "** is empty!");
                 } else {
                     testArgValidity(argument, report, option, mapping, yukiSora);
                 }
@@ -336,7 +338,7 @@ public class DiscCommandHandler {
             case SUB_COMMAND_GROUP:
                 break;
             case STRING:
-                argument.setString(optionMapping.toString());
+                argument.setString(optionMapping.getAsString());
                 break;
             case INTEGER:
                 try {
@@ -717,8 +719,8 @@ public class DiscCommandHandler {
     }
 
     public void registerCommands(YukiSora yukiSora) {
-        ArrayList<CommandData> publicCommands = new ArrayList<>();
-        ArrayList<CommandData> adminCommands = new ArrayList<>();
+        List<CommandData> publicCommands = new ArrayList<>();
+        List<CommandData> adminCommands = new ArrayList<>();
         for (String s : commandIvokes) {
             DiscCommand cmd = commands.get(s);
             if (!cmd.isCreateSlashCommand())
@@ -726,20 +728,21 @@ public class DiscCommandHandler {
 
             CommandData data = cmd.toCommandData();
             if (data != null) {
-                if (!cmd.adminOnlyCommand())
-                    publicCommands.add(data);
-                else
+                if (cmd.isAdminOnlyCommand())
                     adminCommands.add(data);
+                else
+                    publicCommands.add(data);
             }
         }
-        yukiSora.getDiscordApplication().getBotJDA().updateCommands().addCommands(publicCommands).queue();
 
-        for (Guild guild : yukiSora.getDiscordApplication().getBotJDA().getGuilds()) {
-            DiscApplicationServer server = new FindServerByGuildId(guild.getId()).makeRequestSingle(yukiSora);
-            for (CommandData adminCommand : adminCommands) {
-                adminCommand.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
-            }
+        for (CommandData adminCommand : adminCommands) {
+            adminCommand.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
         }
+
+        List<CommandData> joins = new ArrayList<>(adminCommands);
+        joins.addAll(publicCommands);
+
+        yukiSora.getDiscordApplication().getBotJDA().updateCommands().addCommands(joins).queue();
     }
 
     private class CommandHandlingReport {

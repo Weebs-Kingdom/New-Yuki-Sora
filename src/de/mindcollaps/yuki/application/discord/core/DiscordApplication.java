@@ -5,6 +5,7 @@ import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdAlexa;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdMusic;
 import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdSetup;
+import de.mindcollaps.yuki.application.discord.command.commands.DiscCmdVote;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandler;
 import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCertificationMessageListener;
@@ -118,6 +119,7 @@ public class DiscordApplication {
         commandHandler.createNewCommand(new DiscCmdAlexa());
         commandHandler.createNewCommand(new DiscCmdMusic());
         commandHandler.createNewCommand(new DiscCmdSetup());
+        commandHandler.createNewCommand(new DiscCmdVote());
 
         commandHandler.registerCommands(yukiSora);
     }

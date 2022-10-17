@@ -114,7 +114,7 @@ public class YukiLogInfo {
     @Override
     public String toString() {
         String stack = "";
-        if (level == Level.ERROR) {
+        if (level == Level.TRACE) {
             if (exception != null) {
                 stack = getExceptionText();
             } else {

@@ -28,14 +28,14 @@ public class SubCommand {
         return data;
     }
 
-    public SubCommand addOption(CommandOption... options) {
+    public SubCommand addOptions(CommandOption... options) {
         Checks.noneNull(options, "Option");
         Checks.check(options.length + this.options.size() <= 25, "Cannot have more than 25 options for a subcommand!");
         Collections.addAll(this.options, options);
         return this;
     }
 
-    public SubCommand addOption(OptionType optionType, String name, String description) {
+    public SubCommand addOptions(OptionType optionType, String name, String description) {
         Checks.noneNull(options, "Option");
         Checks.check(1 + this.options.size() <= 25, "Cannot have more than 25 options for a subcommand!");
         /*

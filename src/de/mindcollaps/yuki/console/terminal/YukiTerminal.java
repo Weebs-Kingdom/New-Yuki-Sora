@@ -51,7 +51,9 @@ public class YukiTerminal {
                 } catch (Exception ignored) {
                 }
                 try {
-                    System.out.println(YukiTerminalCommandHandler.handleCommand(line));
+                    String answer = YukiTerminalCommandHandler.handleCommand(line);
+                    System.out.println(answer);
+                    YukiLogger.log(new YukiLogInfo("Terminal command handler answered: " + answer).debug());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("An error occurred while executing the command!", "Console Command Handler").trace(e));
                 }

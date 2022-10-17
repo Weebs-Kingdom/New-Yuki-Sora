@@ -39,7 +39,7 @@ public class DiscCmdSetup extends DiscCommand {
                 new SubCommandGroup("channel", "With this sub command you can edit channels")
                         .addSubCommands(
                                 new SubCommand("twitch", "Create a twitch channel with this command")
-                                        .addOption(
+                                        .addOptions(
                                                 new CommandOption(OptionType.CHANNEL, "channel", "The new twitch channel"))
                                         .addAction(new CommandAction() {
                                             @Override
@@ -63,7 +63,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
                                         }),
                                 new SubCommand("welcome", "A channel where every member gets welcomed when it first joins")
-                                        .addOption(OptionType.CHANNEL, "channel", "The new welcome channel")
+                                        .addOptions(OptionType.CHANNEL, "channel", "The new welcome channel")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -86,7 +86,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
                                         }),
                                 new SubCommand("certification", "The channel where the members get verified")
-                                        .addOption(OptionType.CHANNEL, "channel", "The new certification channel")
+                                        .addOptions(OptionType.CHANNEL, "channel", "The new certification channel")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -113,7 +113,7 @@ public class DiscCmdSetup extends DiscCommand {
                 new SubCommandGroup("category", "With this sub command you can edit channels")
                         .addSubCommands(
                                 new SubCommand("statistics", "Create a statistics category")
-                                        .addOption(OptionType.STRING, "category", "The category where the statistics will be shown")
+                                        .addOptions(OptionType.STRING, "category", "The category where the statistics will be shown")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -136,7 +136,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
                                         }),
                                 new SubCommand("booster", "Create a booster category")
-                                        .addOption(OptionType.STRING, "category", "The category where the boosters can do what they like")
+                                        .addOptions(OptionType.STRING, "category", "The category where the boosters can do what they like")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -164,7 +164,7 @@ public class DiscCmdSetup extends DiscCommand {
                 new SubCommandGroup("boosterrole", "With this sub command you can changed the meaning of a role")
                         .addSubCommands(
                                 new SubCommand("set", "Crate a booster role")
-                                        .addOption(OptionType.ROLE, "role", "The role the boosters will get when boosting")
+                                        .addOptions(OptionType.ROLE, "role", "The role the boosters will get when boosting")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -192,7 +192,7 @@ public class DiscCmdSetup extends DiscCommand {
                 new SubCommandGroup("defaultrole", "With this sub command you can changed the meaning of a role")
                         .addSubCommands(
                                 new SubCommand("add", "Add or remove a default role")
-                                        .addOption(OptionType.ROLE, "role", "The role you want to add")
+                                        .addOptions(OptionType.ROLE, "role", "The role you want to add")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -215,7 +215,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
                                         }),
                                 new SubCommand("remove", "Remove a default role")
-                                        .addOption(OptionType.ROLE, "role", "The role you want to add")
+                                        .addOptions(OptionType.ROLE, "role", "The role you want to add")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -286,7 +286,7 @@ public class DiscCmdSetup extends DiscCommand {
         addSubcommands(
                 new SubCommandGroup("autochannel", "With this sub command you can edit autochannels").addSubCommands(
                         new SubCommand("create", "This creates a new auto channel from a existing channel")
-                                .addOption(OptionType.CHANNEL, "channel", "The new auto channel")
+                                .addOptions(OptionType.CHANNEL, "channel", "The new auto channel")
                                 .addAction(new CommandAction() {
                                     @Override
                                     public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -309,7 +309,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
                                 }),
                         new SubCommand("remove", "This removes a auto channel and turns it back into a normal channel")
-                                .addOption(OptionType.CHANNEL, "channel", "The auto channel")
+                                .addOptions(OptionType.CHANNEL, "channel", "The auto channel")
                                 .addAction(new CommandAction() {
                                     @Override
                                     public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -385,8 +385,8 @@ public class DiscCmdSetup extends DiscCommand {
                 new SubCommandGroup("twitchmember", "Change how the bot interacts with certain twitch streamers listed in the database")
                         .addSubCommands(
                                 new SubCommand("add", "Add a user to the twitch notification list")
-                                        .addOption(OptionType.USER, "member", "The member you want to add")
-                                        .addOption(OptionType.STRING, "twitch-channel", "The channel name of the member")
+                                        .addOptions(OptionType.USER, "member", "The member you want to add")
+                                        .addOptions(OptionType.STRING, "twitch-channel", "The channel name of the member")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
@@ -410,7 +410,7 @@ public class DiscCmdSetup extends DiscCommand {
                                         }),
 
                                 new SubCommand("remove", "Remove a user from the twitch notification list")
-                                        .addOption(OptionType.USER, "member", "The member you want to add")
+                                        .addOptions(OptionType.USER, "member", "The member you want to add")
                                         .addAction(new CommandAction() {
                                             @Override
                                             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {

@@ -10,12 +10,18 @@ public class CommandOption {
     private final String name;
     private final String description;
 
+    private boolean optional = false;
+
     public CommandOption(OptionType optionType, String name, String description) {
         this.optionType = optionType;
         this.name = name;
         this.description = description;
     }
 
+    public CommandOption optional(){
+        optional = true;
+        return this;
+    }
     public OptionData toOptionData() {
         return new OptionData(optionType, name, description);
     }
@@ -34,6 +40,10 @@ public class CommandOption {
 
     public SubcommandData toSubCommandData() {
         return new SubcommandData(name, description);
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 
     @Override

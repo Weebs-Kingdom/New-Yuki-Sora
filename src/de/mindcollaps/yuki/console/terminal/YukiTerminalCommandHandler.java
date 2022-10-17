@@ -1,10 +1,13 @@
 package de.mindcollaps.yuki.console.terminal;
 
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.console.terminal.commands.TerminalCommand;
 
 public class YukiTerminalCommandHandler {
 
     public static String handleCommand(String raw) {
+        YukiLogger.log(new YukiLogInfo("Terminal command handler handles command: " + raw).debug());
         if (raw.length() == 0)
             return "";
         String[] args = raw.split(" ");

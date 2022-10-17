@@ -126,12 +126,17 @@ public abstract class DiscCommand {
         return this;
     }
 
-    public boolean adminOnlyCommand() {
-        return adminOnlyCommand;
+    public DiscCommand adminOnlyCommand() {
+        this.adminOnlyCommand = true;
+        return this;
     }
 
     public void setAdminOnlyCommand() {
         this.adminOnlyCommand = true;
+    }
+
+    public boolean isAdminOnlyCommand() {
+        return adminOnlyCommand;
     }
 
     public void doNotCreateSlashCommand() {

@@ -1,5 +1,7 @@
 package de.mindcollaps.yuki.util;
 
+import java.lang.reflect.Array;
+
 public class YukiUtil {
 
     public static String[] removeFromArray(String[] oldArray, String id) {
@@ -34,6 +36,15 @@ public class YukiUtil {
         System.arraycopy(oldArray, 0, newArr, 0, oldArray.length);
 
         newArr[oldArray.length] = id;
+
+        return newArr;
+    }
+
+    public static <T> T[] addToArray(T[] oldArray, T add, Class<T> clazz) {
+        T[] newArr = (T[]) Array.newInstance(clazz, oldArray.length + 1);
+        System.arraycopy(oldArray, 0, newArr, 0, oldArray.length);
+
+        newArr[oldArray.length] = add;
 
         return newArr;
     }
