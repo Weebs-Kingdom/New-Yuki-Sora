@@ -16,9 +16,9 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 public class DiscApplicationServer extends RouteData {
 
     @RouteField
-    private String serverName = "";
+    private String guildName = "";
     @RouteField
-    private String serverId = "";
+    private String guildId = "";
 
     @RouteField
     private String[] defaultRoles = new String[]{};
@@ -53,9 +53,9 @@ public class DiscApplicationServer extends RouteData {
     }
 
     public void updateServerStats(YukiSora yukiSora) {
-        if (YukiUtil.isEmpty(serverId))
+        if (YukiUtil.isEmpty(guildId))
             return;
-        Guild g = yukiSora.getDiscordApplication().getBotJDA().getGuildById(serverId);
+        Guild g = yukiSora.getDiscordApplication().getBotJDA().getGuildById(guildId);
         if (g == null)
             return;
         if (YukiUtil.isEmpty(statisticsCategoryId))
@@ -87,20 +87,20 @@ public class DiscApplicationServer extends RouteData {
         vc2.getManager().setName("\uD83E\uDD16Version: " + YukiProperties.getApplicationSettings().mvnVersion).queue();
     }
 
-    public String getServerName() {
-        return serverName;
+    public String getGuildName() {
+        return guildName;
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
+    public void setGuildName(String guildName) {
+        this.guildName = guildName;
     }
 
-    public String getServerId() {
-        return serverId;
+    public String getGuildId() {
+        return guildId;
     }
 
-    public void setServerId(String serverId) {
-        this.serverId = serverId;
+    public void setGuildId(String guildId) {
+        this.guildId = guildId;
     }
 
     public String[] getDefaultRoles() {

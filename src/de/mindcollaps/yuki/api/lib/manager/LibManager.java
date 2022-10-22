@@ -20,8 +20,8 @@ public class LibManager {
         if (server == null) {
             YukiLogger.log(new YukiLogInfo("The guild " + g.getName() + " (" + g.getId() + ") was not found in the database! The guild was created by the lib manager.").warning());
             server = new DiscApplicationServer();
-            server.setServerId(g.getId());
-            server.setServerName(g.getName());
+            server.setGuildId(g.getId());
+            server.setGuildName(g.getName());
             server.postData(yukiSora);
 
             if (server.getDatabaseId() == null) {

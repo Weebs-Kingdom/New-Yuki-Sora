@@ -10,6 +10,7 @@ import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandle
 import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCertificationMessageListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCommandListener;
+import de.mindcollaps.yuki.application.discord.listener.DiscReactionListener;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
@@ -108,7 +109,7 @@ public class DiscordApplication {
                         autos = new ArrayList<>();
                     autoChannelListener.loadAutoChans(autos, g, s);
 
-                    YukiLogger.log(new YukiLogInfo(" " + s.getServerName() + " initialized", consMsgDef));
+                    YukiLogger.log(new YukiLogInfo(" " + s.getGuildName() + " initialized", consMsgDef));
                 }
             }
         };
@@ -130,6 +131,7 @@ public class DiscordApplication {
         listeners.add(autoChannelListener);
         listeners.add(new DiscCommandListener(yukiSora));
         listeners.add(new DiscCertificationMessageListener(yukiSora));
+        listeners.add(new DiscReactionListener(yukiSora));
         regListeners();
     }
 

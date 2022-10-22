@@ -635,24 +635,24 @@ public class DiscCmdSetup extends DiscCommand {
             con = new UserTwitchConnection();
             con.setUser(user.getUserID());
             con.setTwitchChannelId(twitchName);
-            con.setServers(new String[]{server.getServerId()});
+            con.setServers(new String[]{server.getGuildId()});
             con.postData(yukiSora);
 
             TextUtil.sendSuccess(us.getName() + " was added to the twitch database :relaxed:", res);
         } else {
             boolean found = false;
             for (String conServer : con.getServers()) {
-                if (conServer.equals(server.getServerId())) {
+                if (conServer.equals(server.getGuildId())) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                con.setServers(YukiUtil.addToArray(con.getServers(), server.getServerId()));
+                con.setServers(YukiUtil.addToArray(con.getServers(), server.getGuildId()));
                 con.updateData(yukiSora);
-                TextUtil.sendSuccess(server.getServerName() + " was added to the twitch record of " + us.getName() + " :relaxed:", res);
+                TextUtil.sendSuccess(server.getGuildName() + " was added to the twitch record of " + us.getName() + " :relaxed:", res);
             } else {
-                TextUtil.sendWarning(us.getName() + " is already registered in " + server.getServerName(), res);
+                TextUtil.sendWarning(us.getName() + " is already registered in " + server.getGuildName(), res);
             }
         }
     }
@@ -668,9 +668,9 @@ public class DiscCmdSetup extends DiscCommand {
         } else {
             boolean found = false;
             for (String conServer : con.getServers()) {
-                if (conServer.equals(server.getServerId())) {
+                if (conServer.equals(server.getGuildId())) {
                     found = true;
-                    con.setServers(YukiUtil.removeFromArray(con.getServers(), server.getServerId()));
+                    con.setServers(YukiUtil.removeFromArray(con.getServers(), server.getGuildId()));
                     con.updateData(yukiSora);
                     TextUtil.sendSuccess("Removed " + us.getName() + " from the twitch record of this server", res);
                     break;
