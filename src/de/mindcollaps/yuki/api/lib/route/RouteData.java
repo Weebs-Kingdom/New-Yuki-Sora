@@ -87,7 +87,7 @@ public abstract class RouteData extends Route {
             return;
 
         ApiResponse response = yukiSora.getRequestHandler().delete(getRoute() + "?id=" + databaseId, RouteParser.pack(this));
-        RouteParser.load(this, response.getData());
+        //RouteParser.load(this, response.getData());
     }
 
     public void postData(YukiSora yukiSora) {

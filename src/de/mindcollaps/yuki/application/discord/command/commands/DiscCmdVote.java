@@ -172,45 +172,91 @@ public class DiscCmdVote extends DiscCommand {
         );
 
         addSubcommands(
-                new SubCommand("delete", "Remove a vote")
-                        .addOptions(
-                                new CommandOption(OptionType.CHANNEL, "channel", "The channel the vote you want to delete is located in"),
-                                new CommandOption(OptionType.STRING, "id", "The index/title/id of the vote you want to delete")
-                        )
-                        .addAction(
-                                new CommandAction() {
-                                    @Override
-                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
-                                    }
+                new SubCommandGroup("delete", "Delete votes and elements")
+                        .addSubCommands(
+                                new SubCommand("vote", "Delete a vote")
+                                        .addOptions(
+                                                new CommandOption(OptionType.CHANNEL, "channel", "The channel the vote you want to delete is located in"),
+                                                new CommandOption(OptionType.STRING, "id", "The index/title/id of the vote you want to delete")
+                                        )
+                                        .addAction(
+                                                new CommandAction() {
+                                                    @Override
+                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                                    }
 
-                                    @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
-                                    }
+                                                    @Override
+                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
+                                                    }
 
-                                    @Override
-                                    public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        deleteVote(
-                                                args.getArg("channel").getGuildChannel(),
-                                                args.getArg("id").getString(),
-                                                server,
-                                                yukiSora,
-                                                new TextUtil.ResponseInstance(event.getChannel())
-                                        );
-                                    }
+                                                    @Override
+                                                    public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        deleteVote(
+                                                                args.getArg("channel").getGuildChannel(),
+                                                                args.getArg("id").getString(),
+                                                                server,
+                                                                yukiSora,
+                                                                new TextUtil.ResponseInstance(event.getChannel())
+                                                        );
+                                                    }
 
-                                    @Override
-                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        deleteVote(
-                                                args.getArg("channel").getGuildChannel(),
-                                                args.getArg("id").getString(),
-                                                server,
-                                                yukiSora,
-                                                new TextUtil.ResponseInstance(event.getInteraction())
-                                        );
-                                    }
-                                }
+                                                    @Override
+                                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        deleteVote(
+                                                                args.getArg("channel").getGuildChannel(),
+                                                                args.getArg("id").getString(),
+                                                                server,
+                                                                yukiSora,
+                                                                new TextUtil.ResponseInstance(event.getInteraction())
+                                                        );
+                                                    }
+                                                }
+                                        ),
+                                new SubCommand("element", "Delete a vote element from a vote")
+                                        .addOptions(
+                                                new CommandOption(OptionType.CHANNEL, "channel", "The channel the vote you want to delete is located in"),
+                                                new CommandOption(OptionType.STRING, "id", "The index/title/id of the vote you want to delete"),
+                                                new CommandOption(OptionType.NUMBER, "index", "The index of the vote element in the vote")
+                                        )
+                                        .addAction(
+                                                new CommandAction() {
+                                                    @Override
+                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                                    }
+
+                                                    @Override
+                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
+                                                    }
+
+                                                    @Override
+                                                    public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        deleteVoteElement(
+                                                                args.getArg("channel").getGuildChannel(),
+                                                                args.getArg("id").getString(),
+                                                                args.getArg("index").getInteger(),
+                                                                server,
+                                                                yukiSora,
+                                                                new TextUtil.ResponseInstance(event.getChannel())
+                                                        );
+                                                    }
+
+                                                    @Override
+                                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                        deleteVoteElement(
+                                                                args.getArg("channel").getGuildChannel(),
+                                                                args.getArg("id").getString(),
+                                                                args.getArg("index").getInteger(),
+                                                                server,
+                                                                yukiSora,
+                                                                new TextUtil.ResponseInstance(event.getInteraction())
+                                                        );
+                                                    }
+                                                }
+                                        )
                         )
         );
     }
@@ -299,21 +345,53 @@ public class DiscCmdVote extends DiscCommand {
         }
     }
 
-    private Vote checkVote(String emote, String index, GuildChannel channel, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
+    private void deleteVoteElement(GuildChannel channel, String id, int index, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
+        Vote vote = checkVote(id, channel, server, yukiSora, res);
+
+        if (vote != null) {
+            VoteElement[] voteElements = vote.loadVoteElements(yukiSora);
+            VoteElement selected  = null;
+
+            if(voteElements.length > index)
+                selected = voteElements[index];
+
+            if(selected != null){
+                selected.deleteData(yukiSora);
+                vote.removeVoteElement(selected);
+
+                for (int i = index; i < voteElements.length; i++) {
+                    VoteElement updatedElement = voteElements[i];
+                    updatedElement.setIndex(i -1);
+                    updatedElement.updateData(yukiSora);
+                }
+
+                vote.updateVote(channel);
+
+                TextChannel tc = (TextChannel) channel;
+                tc.clearReactionsById(vote.getMessageId(), Emoji.fromFormatted(selected.getEmote())).queue();
+
+                TextUtil.sendSuccess("The vote element was removed from the vote :ok_hand:", res);
+            } else {
+                TextUtil.sendError("The vote element you are looking for wasn't found!\nPlease note that the index starts at 0 instead of 1", res);
+            }
+        }
+    }
+
+    private Vote checkVote(String id, GuildChannel channel, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         Vote[] votes = new FindVotesByGuildChannel(server.getDatabaseId(), channel.getId()).makeRequest(yukiSora);
 
         Arrays.sort(votes, (o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
 
         Vote vote = null;
         try {
-            vote = votes[Integer.parseInt(index)];
+            vote = votes[Integer.parseInt(id)];
         } catch (Exception ignored) {
         }
 
         if (vote == null) {
             try {
                 for (Vote ownVote : votes) {
-                    if (ownVote.getVoteTitle().equalsIgnoreCase(index)) {
+                    if (ownVote.getVoteTitle().equalsIgnoreCase(id)) {
                         vote = ownVote;
                         break;
                     }
@@ -324,7 +402,7 @@ public class DiscCmdVote extends DiscCommand {
 
         if (vote == null) {
             for (Vote vote1 : votes) {
-                if (vote1.getMessageId().equals(index)) {
+                if (vote1.getMessageId().equals(id)) {
                     vote = vote1;
                     break;
                 }
@@ -340,7 +418,7 @@ public class DiscCmdVote extends DiscCommand {
     }
 
     private void addRoleToVote(Role role, GuildChannel channel, String index, String description, String emote, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
-        Vote vote = checkVote(emote, index, channel, server, yukiSora, res);
+        Vote vote = checkVote(index, channel, server, yukiSora, res);
 
         if (vote != null) {
             vote.setVoteType(1);
@@ -356,14 +434,14 @@ public class DiscCmdVote extends DiscCommand {
         }
     }
 
-    private boolean addEmoji(String emote, Guild guild, Vote vote, TextUtil.ResponseInstance res){
+    private boolean addEmoji(String emote, Guild guild, Vote vote, TextUtil.ResponseInstance res) {
         try {
             Emoji ourEmoji = null;
 
             EmojiUnion union = Emoji.fromFormatted(emote);
             TextChannel tc = guild.getTextChannelById(vote.getChannelId());
 
-            if(tc != null){
+            if (tc != null) {
                 tc.addReactionById(vote.getMessageId(), union).complete();
             }
         } catch (Exception e) {
@@ -374,7 +452,7 @@ public class DiscCmdVote extends DiscCommand {
     }
 
     private void addLineToVote(GuildChannel channel, String index, String description, String emote, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
-        Vote vote = checkVote(emote, index, channel, server, yukiSora, res);
+        Vote vote = checkVote(index, channel, server, yukiSora, res);
 
         if (vote != null) {
             vote.setVoteType(0);
@@ -391,7 +469,7 @@ public class DiscCmdVote extends DiscCommand {
     }
 
     private boolean addRoleVoteElementToVote(Vote vote, String emote, Role role, Guild guild, String description, YukiSora yukiSora, TextUtil.ResponseInstance res) {
-        if(!addEmoji(emote, guild, vote, res))
+        if (!addEmoji(emote, guild, vote, res))
             return false;
 
         VoteElement[] voteElements = vote.loadVoteElements(yukiSora);
@@ -414,7 +492,7 @@ public class DiscCmdVote extends DiscCommand {
     }
 
     private boolean addLineVoteElementToVote(Vote vote, String emote, Guild guild, String description, YukiSora yukiSora, TextUtil.ResponseInstance res) {
-        if(!addEmoji(emote, guild, vote, res))
+        if (!addEmoji(emote, guild, vote, res))
             return false;
 
         VoteElement[] voteElements = vote.loadVoteElements(yukiSora);

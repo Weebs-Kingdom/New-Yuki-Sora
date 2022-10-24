@@ -23,7 +23,7 @@ import java.util.List;
 
 public class DiscReactionListener extends ListenerAdapter {
 
-    private YukiSora yukiSora;
+    private final YukiSora yukiSora;
 
     public DiscReactionListener(YukiSora yukiSora) {
         this.yukiSora = yukiSora;
@@ -63,7 +63,7 @@ public class DiscReactionListener extends ListenerAdapter {
 
             for (VoteElement voteElement : element) {
                 if (voteElement.getEmote().equals(emoji.getFormatted())) {
-                    issueVoteElement(voteElement, v, (TextChannel) textChannel, server, member, discUser, count);
+                    issueVoteElement(voteElement, v, textChannel, server, member, discUser, count);
                     break;
                 }
             }

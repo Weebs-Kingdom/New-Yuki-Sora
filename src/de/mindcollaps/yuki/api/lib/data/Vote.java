@@ -13,6 +13,8 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 @RouteClass("vote")
 public class Vote extends RouteData {
@@ -131,7 +133,7 @@ public class Vote extends RouteData {
         FindVoteElementsByVoteId req = new FindVoteElementsByVoteId(this.getDatabaseId());
         voteElements = req.makeRequest(yukiSora);
 
-        Arrays.sort(voteElements, (o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
+        Arrays.sort(voteElements, Comparator.comparingInt(VoteElement::getIndex));
         return voteElements;
     }
 
@@ -146,6 +148,13 @@ public class Vote extends RouteData {
                 break;
             }
         }
+    }
+
+    public void removeVoteElement(VoteElement element){
+        List<VoteElement> newElements = new java.util.ArrayList<>(List.of(voteElements));
+        newElements.remove(element);
+
+        voteElements = newElements.toArray(new VoteElement[0]);
     }
 
     public VoteElement[] getVoteElements() {

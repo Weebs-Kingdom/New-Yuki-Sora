@@ -25,7 +25,7 @@ public class LibManager {
             server.postData(yukiSora);
 
             if (server.getDatabaseId() == null) {
-                YukiLogger.log(new YukiLogInfo("The guild " + g.getName() + " (" + g.getId() + ") could not be created by the lib manager.").warning());
+                YukiLogger.log(new YukiLogInfo("The guild " + g.getName() + " (" + g.getId() + ") could not be created by the lib manager.").error());
                 return null;
             }
         }
@@ -38,14 +38,14 @@ public class LibManager {
         FindUserById req = new FindUserById(user.getId());
         DiscApplicationUser discUser = req.makeRequestSingle(yukiSora);
         if (discUser == null) {
-            YukiLogger.log(new YukiLogInfo("The user " + user.getName() + " (" + user.getId() + ") was not found in the database! The user was created by the lib manager.").log());
+            YukiLogger.log(new YukiLogInfo("The user " + user.getName() + " (" + user.getId() + ") was not found in the database! The user was created by the lib manager.").warning());
             discUser = new DiscApplicationUser();
             discUser.setUserID(user.getId());
             discUser.setUsername(user.getName());
             discUser.postData(yukiSora);
 
             if (discUser.getDatabaseId() == null) {
-                YukiLogger.log(new YukiLogInfo("The user " + user.getName() + " (" + user.getId() + ") could not be created by the lib manager.").log());
+                YukiLogger.log(new YukiLogInfo("The user " + user.getName() + " (" + user.getId() + ") could not be created by the lib manager.").error());
                 return null;
             }
         }
