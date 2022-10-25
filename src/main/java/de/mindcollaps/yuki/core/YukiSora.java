@@ -69,6 +69,8 @@ public class YukiSora {
 
         application = new DiscordApplication(this);
         YukiLogger.log(new YukiLogInfo("Yuki Sora application successfully started at " + new Date()));
+
+        handleArgs(args);
     }
 
     private void handleArgs(String[] args){
