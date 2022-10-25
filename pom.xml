@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mindcollaps.yukisora</groupId>
-    <artifactId>Yuki-Sora</artifactId>
+    <artifactId>YukiSora</artifactId>
     <version>5.1.0_alpha</version>
 
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.17</maven.compiler.source>
+        <maven.compiler.target>1.17</maven.compiler.target>
     </properties>
     <repositories>
         <repository>
@@ -41,12 +41,12 @@
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>LATEST</version>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
-            <version>3.0</version>
+            <version>3.8.6</version>
         </dependency>
         <dependency>
             <groupId>com.github.twitch4j</groupId>
@@ -70,6 +70,7 @@
         </dependency>
     </dependencies>
 
+
     <build>
         <plugins>
             <plugin>
@@ -84,7 +85,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.4.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -98,6 +99,11 @@
                                     <mainClass>de.mindcollaps.yuki.core.Main</mainClass>
                                 </transformer>
                             </transformers>
+                            <artifactSet>
+                            <excludes>
+                                <exclude>junit:junit</exclude>
+                            </excludes>
+                            </artifactSet>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
