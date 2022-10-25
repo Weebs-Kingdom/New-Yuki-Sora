@@ -2,6 +2,7 @@ package de.mindcollaps.yuki.application.discord.util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -14,6 +15,12 @@ public class TextUtil {
         channel.sendMessage(txt).queue();
     }
 
+    public static void sendMessageEmbed(MessageEmbed msg, ResponseInstance res) {
+        if (res.isChannel)
+            res.getChannel().sendMessageEmbeds(msg).queue();
+        else
+            res.getInteraction().replyEmbeds(msg).queue();
+    }
     public static void sendColoredText(String txt, Color color, ResponseInstance res) {
         MessageEmbed me = new EmbedBuilder().setColor(color).setDescription(txt).build();
 
@@ -73,6 +80,16 @@ public class TextUtil {
         public ResponseInstance(MessageChannel channel) {
             this.channel = channel;
             this.isChannel = true;
+        }
+
+        public ResponseInstance(MessageReceivedEvent event){
+            this.channel = event.getChannel();
+            this.isChannel = true;
+        }
+
+        public ResponseInstance(SlashCommandInteractionEvent event){
+            this.interaction = event.getInteraction();
+            this.isChannel = false;
         }
 
         public ResponseInstance(SlashCommandInteraction interaction) {
