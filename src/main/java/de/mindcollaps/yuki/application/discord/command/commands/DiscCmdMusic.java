@@ -3,7 +3,9 @@ package de.mindcollaps.yuki.application.discord.command.commands;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.application.discord.command.CommandAction;
+import de.mindcollaps.yuki.application.discord.command.CommandOption;
 import de.mindcollaps.yuki.application.discord.command.DiscCommand;
+import de.mindcollaps.yuki.application.discord.command.SubCommand;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgument;
 import de.mindcollaps.yuki.core.YukiProperties;
@@ -15,6 +17,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
@@ -26,8 +29,7 @@ public class DiscCmdMusic extends DiscCommand {
 
     public DiscCmdMusic() {
         super("m", "A command to play music from one of the music bots");
-
-        addAction(new CommandAction() {
+        CommandAction action = new CommandAction() {
             @Override
             public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                 return true;
@@ -70,7 +72,51 @@ public class DiscCmdMusic extends DiscCommand {
                     return;
                 event.getHook().sendMessageEmbeds((disputeCommand(event.getGuild(), event.getMember(), yukiSora, args))).queue();
             }
-        });
+        };
+
+        addSubcommands(
+                new SubCommand("play", "Play your favorite songs")
+                        .addOptions(
+                                new CommandOption(OptionType.STRING, "YT search/YT link/Spotify link", "The link to your music")
+                        )
+                        .addAction(action)
+        );
+
+        addSubcommands(
+                new SubCommand("skip", "Skip a song")
+                        .addAction(action)
+        );
+
+        addSubcommands(
+                new SubCommand("stop", "Stop your song")
+                        .addAction(action)
+        );
+
+        addSubcommands(
+                new SubCommand("queue", "Show the queue")
+                        .addOptions(
+                                new CommandOption(OptionType.NUMBER, "Site", "Show a different page of the queue if the queue has multiple pages").optional()
+                        )
+                        .addAction(action)
+        );
+
+        addSubcommands(
+                new SubCommand("info", "Show the info of the current track")
+                        .addAction(action)
+        );
+
+        addSubcommands(
+                new SubCommand("shuffle", "Shuffle the queue")
+                        .addAction(action)
+        );
+
+        addSubcommands(
+                new SubCommand("add", "Add a song to the queue")
+                        .addOptions(
+                                new CommandOption(OptionType.STRING, "YT search/YT link/Spotify link", "The link to your music")
+                        )
+                        .addAction(action)
+        );
     }
 
     private MessageEmbed disputeCommand(Guild g, Member member, YukiSora yukiSora, DiscCommandArgs args) {
@@ -79,7 +125,7 @@ public class DiscCmdMusic extends DiscCommand {
                 return new EmbedBuilder().setDescription("You are not in a valid Voice Channel!").setColor(Color.RED).build();
         } else
             return new EmbedBuilder().setDescription("You are not in a valid Voice Channel!").setColor(Color.RED).build();
-        
+
         String[] slaves = YukiProperties.getMultipleProperties(YukiProperties.dPMusicSlaveArr);
         if (slaves.length >= 1) {
             String vcId = member.getVoiceState().getChannel().getId();
