@@ -70,14 +70,14 @@ public class DiscCmdMusic extends DiscCommand {
             public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                 if (event.getMember() == null)
                     return;
-                event.getHook().sendMessageEmbeds((disputeCommand(event.getGuild(), event.getMember(), yukiSora, args))).queue();
+                event.getInteraction().replyEmbeds((disputeCommand(event.getGuild(), event.getMember(), yukiSora, args))).queue();
             }
         };
 
         addSubcommands(
                 new SubCommand("play", "Play your favorite songs")
                         .addOptions(
-                                new CommandOption(OptionType.STRING, "YT search/YT link/Spotify link", "The link to your music")
+                                new CommandOption(OptionType.STRING, "link", "The link to your music")
                         )
                         .addAction(action)
         );
@@ -95,7 +95,7 @@ public class DiscCmdMusic extends DiscCommand {
         addSubcommands(
                 new SubCommand("queue", "Show the queue")
                         .addOptions(
-                                new CommandOption(OptionType.NUMBER, "Site", "Show a different page of the queue if the queue has multiple pages").optional()
+                                new CommandOption(OptionType.STRING, "site", "Show a different page of the queue if the queue has multiple pages").optional()
                         )
                         .addAction(action)
         );
@@ -113,7 +113,7 @@ public class DiscCmdMusic extends DiscCommand {
         addSubcommands(
                 new SubCommand("add", "Add a song to the queue")
                         .addOptions(
-                                new CommandOption(OptionType.STRING, "YT search/YT link/Spotify link", "The link to your music")
+                                new CommandOption(OptionType.STRING, "link", "The link to your music")
                         )
                         .addAction(action)
         );
@@ -206,8 +206,8 @@ public class DiscCmdMusic extends DiscCommand {
 
     private String argsToString(DiscCommandArgs args) {
         StringBuilder s = new StringBuilder();
-        for (DiscCommandArgument arg : args.getArray()) {
-            s.append(arg.getString()).append(" ");
+        for (String arg : args.getNativeArgs()) {
+            s.append(arg).append(" ");
         }
         return s.toString();
     }

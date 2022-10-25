@@ -31,7 +31,11 @@ public class DiscCommandArgs {
         return array.get(i);
     }
 
-    public ArrayList<DiscCommandArgument> getArray() {
+    public ArrayList<DiscCommandArgument> getAsArray() {
         return new ArrayList<>(array);
+    }
+
+    public String[] getNativeArgs() {
+        return nativeArgs;
     }
 }
