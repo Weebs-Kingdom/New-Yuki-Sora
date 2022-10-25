@@ -480,7 +480,7 @@ public class DiscCmdSetup extends DiscCommand {
             server.setCertificationChannelId(gc.getId());
             server.updateData(yukiSora);
 
-            TextUtil.sendSuccess("Changed the certification channel, you may renew the certification message now :relaxed:", res);
+            TextUtil.sendSuccess("Changed the certification channel, you may renew the certification message now by using the `renew` command :relaxed:", res);
         }
     }
 

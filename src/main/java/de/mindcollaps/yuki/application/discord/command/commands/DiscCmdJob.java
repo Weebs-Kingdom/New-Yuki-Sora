@@ -102,6 +102,10 @@ public class DiscCmdJob extends DiscCommand {
 
     private void work(DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res){
         JSONObject workRes = yukiSora.getApiManagerOld().work(user.getUserID());
+        if(workRes == null){
+            TextUtil.sendError("Seems like you can't work right now. Try to select a job if you don't have yet!", res);
+            return;
+        }
         //TODO: BITTE mach das schön....
         if (((Long) workRes.get("status")) == 200) {
             TextUtil.sendMessageEmbed(

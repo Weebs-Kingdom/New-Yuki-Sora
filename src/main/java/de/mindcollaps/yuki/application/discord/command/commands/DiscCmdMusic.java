@@ -74,11 +74,12 @@ public class DiscCmdMusic extends DiscCommand {
     }
 
     private MessageEmbed disputeCommand(Guild g, Member member, YukiSora yukiSora, DiscCommandArgs args) {
-        if (member.getVoiceState() != null)
-            if (member.getVoiceState().getChannel() == null) {
+        if (member.getVoiceState() != null) {
+            if (member.getVoiceState().getChannel() == null)
                 return new EmbedBuilder().setDescription("You are not in a valid Voice Channel!").setColor(Color.RED).build();
-            } else
-                return new EmbedBuilder().setDescription("You are not in a valid Voice Channel!").setColor(Color.RED).build();
+        } else
+            return new EmbedBuilder().setDescription("You are not in a valid Voice Channel!").setColor(Color.RED).build();
+        
         String[] slaves = YukiProperties.getMultipleProperties(YukiProperties.dPMusicSlaveArr);
         if (slaves.length >= 1) {
             String vcId = member.getVoiceState().getChannel().getId();
