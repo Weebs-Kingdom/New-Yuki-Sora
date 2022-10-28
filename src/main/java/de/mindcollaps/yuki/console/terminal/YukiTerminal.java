@@ -2,9 +2,7 @@ package de.mindcollaps.yuki.console.terminal;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
-import de.mindcollaps.yuki.console.terminal.commands.TCList;
-import de.mindcollaps.yuki.console.terminal.commands.TCStart;
-import de.mindcollaps.yuki.console.terminal.commands.TerminalCommand;
+import de.mindcollaps.yuki.console.terminal.commands.*;
 import de.mindcollaps.yuki.core.YukiSora;
 
 import java.util.Scanner;
@@ -26,7 +24,10 @@ public class YukiTerminal {
     private static void setupCommands(YukiSora yukiSora) {
         terminalCommands = new TerminalCommand[]{
                 new TCList(),
-                new TCStart(yukiSora)
+                new TCStart(yukiSora),
+                new TCLoadProperties(),
+                new TCSaveAll(),
+                new TCDebug()
         };
     }
 

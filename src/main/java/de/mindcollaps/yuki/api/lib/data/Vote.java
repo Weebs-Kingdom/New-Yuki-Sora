@@ -8,7 +8,10 @@ import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 import java.awt.*;
@@ -44,9 +47,9 @@ public class Vote extends RouteData {
 
     private VoteElement[] voteElements = new VoteElement[]{};
 
-    public void deleteVote(GuildChannel channel){
+    public void deleteVote(GuildChannel channel) {
         TextChannel tc = null;
-        if(channel.getType() == ChannelType.TEXT)
+        if (channel.getType() == ChannelType.TEXT)
             tc = (TextChannel) channel;
         else
             return;
@@ -141,16 +144,16 @@ public class Vote extends RouteData {
         voteElements = YukiUtil.addToArray(voteElements, element, VoteElement.class);
     }
 
-    public void updateVoteElement(VoteElement element){
+    public void updateVoteElement(VoteElement element) {
         for (int i = 0; i < voteElements.length; i++) {
-            if(voteElements[i].getDatabaseId().equals(element.getDatabaseId())){
+            if (voteElements[i].getDatabaseId().equals(element.getDatabaseId())) {
                 voteElements[i] = element;
                 break;
             }
         }
     }
 
-    public void removeVoteElement(VoteElement element){
+    public void removeVoteElement(VoteElement element) {
         List<VoteElement> newElements = new java.util.ArrayList<>(List.of(voteElements));
         newElements.remove(element);
 

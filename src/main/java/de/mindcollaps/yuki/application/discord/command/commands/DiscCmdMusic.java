@@ -7,7 +7,6 @@ import de.mindcollaps.yuki.application.discord.command.CommandOption;
 import de.mindcollaps.yuki.application.discord.command.DiscCommand;
 import de.mindcollaps.yuki.application.discord.command.SubCommand;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
-import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgument;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.FileUtils;

@@ -22,7 +22,7 @@ public class DiscCommandArgs {
 
     public DiscCommandArgument getArg(String name) {
         name = name.toLowerCase();
-        if(!args.containsKey(name))
+        if (!args.containsKey(name))
             return null;
         return args.get(name);
     }

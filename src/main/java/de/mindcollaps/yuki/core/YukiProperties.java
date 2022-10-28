@@ -56,7 +56,6 @@ public class YukiProperties implements Serializable {
     public String mvnGroup = "";
     public String mvnArtifact = "";
     //Engine stuff
-    public boolean debug = false;
     public boolean fineDebug = false;
     public boolean showTime = true;
     public String api;

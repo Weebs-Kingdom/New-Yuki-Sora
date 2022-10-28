@@ -1,17 +1,17 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
-import de.mindcollaps.yuki.api.ApiManagerOld;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
-import de.mindcollaps.yuki.api.lib.data.UserJob;
-import de.mindcollaps.yuki.application.discord.command.*;
+import de.mindcollaps.yuki.application.discord.command.ActionNotImplementedException;
+import de.mindcollaps.yuki.application.discord.command.CommandAction;
+import de.mindcollaps.yuki.application.discord.command.DiscCommand;
+import de.mindcollaps.yuki.application.discord.command.SubCommand;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
 import de.mindcollaps.yuki.application.discord.response.Response;
 import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
@@ -28,7 +28,7 @@ public class DiscCmdJob extends DiscCommand {
         super("job", "With this command you can manage your job");
 
         addSubcommands(
-                new SubCommand("work","Take a job to work in")
+                new SubCommand("work", "Take a job to work in")
                         .addAction(
                                 new CommandAction() {
                                     @Override
@@ -100,9 +100,9 @@ public class DiscCmdJob extends DiscCommand {
         );
     }
 
-    private void work(DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res){
+    private void work(DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         JSONObject workRes = yukiSora.getApiManagerOld().work(user.getUserID());
-        if(workRes == null){
+        if (workRes == null) {
             TextUtil.sendError("Seems like you can't work right now. Try to select a job if you don't have yet!", res);
             return;
         }
@@ -120,7 +120,7 @@ public class DiscCmdJob extends DiscCommand {
         }
     }
 
-    private void takeJob(TextChannel tc, User user, YukiSora yukiSora, TextUtil.ResponseInstance res){
+    private void takeJob(TextChannel tc, User user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         JSONObject jbs = yukiSora.getApiManagerOld().getJobs();
         JSONArray jbss = (JSONArray) jbs.get("data");
         String jbS = "Select one of the following jobs\n\n";

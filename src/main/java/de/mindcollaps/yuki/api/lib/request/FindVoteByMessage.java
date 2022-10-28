@@ -1,11 +1,9 @@
 package de.mindcollaps.yuki.api.lib.request;
 
-import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.Vote;
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.api.lib.route.RouteRequest;
-import net.dv8tion.jda.api.entities.Message;
 
 @RouteClass("findVoteByMessage")
 public class FindVoteByMessage extends RouteRequest<Vote> {

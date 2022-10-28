@@ -6,7 +6,7 @@
 
     <groupId>mindcollaps.yukisora</groupId>
     <artifactId>YukiSora</artifactId>
-    <version>5.1.0_alpha</version>
+    <version>5.1.0_alpha_002</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -100,9 +100,9 @@
                                 </transformer>
                             </transformers>
                             <artifactSet>
-                            <excludes>
-                                <exclude>junit:junit</exclude>
-                            </excludes>
+                                <excludes>
+                                    <exclude>junit:junit</exclude>
+                                </excludes>
                             </artifactSet>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>

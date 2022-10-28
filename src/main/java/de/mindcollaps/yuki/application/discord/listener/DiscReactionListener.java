@@ -6,13 +6,14 @@ import de.mindcollaps.yuki.api.lib.data.Vote;
 import de.mindcollaps.yuki.api.lib.data.VoteElement;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.api.lib.request.FindVoteByMessage;
-import de.mindcollaps.yuki.api.lib.request.FindVoteElementsByVoteId;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
-import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -72,7 +73,7 @@ public class DiscReactionListener extends ListenerAdapter {
 
     private void issueVoteElement(VoteElement element, Vote vote, TextChannel guildChannel, DiscApplicationServer server, Member member, DiscApplicationUser user, int count) {
         switch (vote.getVoteType()) {
-            case 0: {
+            case 0 -> {
                 element.setVotes(element.getVotes() + count);
                 element.updateData(yukiSora);
 
@@ -81,8 +82,7 @@ public class DiscReactionListener extends ListenerAdapter {
                 vote.updateVote(guildChannel);
                 break;
             }
-
-            case 1: {
+            case 1 -> {
                 Role r = null;
                 try {
                     r = guildChannel.getGuild().getRoleById(element.getRoleId());
@@ -125,6 +125,7 @@ public class DiscReactionListener extends ListenerAdapter {
                             ).error()
                     );
                 }
+                break;
             }
         }
     }

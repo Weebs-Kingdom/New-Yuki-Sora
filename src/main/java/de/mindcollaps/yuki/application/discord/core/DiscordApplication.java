@@ -119,6 +119,8 @@ public class DiscordApplication {
         commandHandler.createNewCommand(new DiscCmdSetup());
         commandHandler.createNewCommand(new DiscCmdVote());
         commandHandler.createNewCommand(new DiscCmdJob());
+        commandHandler.createNewCommand(new DiscCmdInfo());
+        commandHandler.createNewCommand(new DiscCmdWallet());
 
         commandHandler.registerCommands(yukiSora);
     }

@@ -1,6 +1,5 @@
 package de.mindcollaps.yuki.api.lib.request;
 
-import de.mindcollaps.yuki.api.lib.data.Vote;
 import de.mindcollaps.yuki.api.lib.data.VoteElement;
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
 import de.mindcollaps.yuki.api.lib.route.RouteField;

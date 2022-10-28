@@ -1,7 +1,5 @@
 package de.mindcollaps.yuki.application.discord.command.handler;
 
-import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
-import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
 import de.mindcollaps.yuki.application.discord.command.*;
 import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
@@ -10,16 +8,16 @@ import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.*;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import org.apache.commons.lang.ArrayUtils;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class DiscCommandHandler {
 

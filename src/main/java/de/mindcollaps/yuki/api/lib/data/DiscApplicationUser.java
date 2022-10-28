@@ -56,7 +56,16 @@ public class DiscApplicationUser extends RouteData {
     @RouteField
     private Date dateBecomeTempMember = Date.from(Instant.now());
 
-    public DiscApplicationUser() {
+    public void addCoins(int amount) {
+        this.coins += amount;
+    }
+
+    public boolean removeCoins(int amount) {
+        if (this.coins - amount >= 0)
+            this.coins -= amount;
+        else
+            return false;
+        return true;
     }
 
     public String[] getServers() {

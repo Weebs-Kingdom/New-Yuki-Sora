@@ -12,16 +12,14 @@ import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.entities.emoji.*;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.internal.entities.emoji.CustomEmojiImpl;
-import okio.GzipSink;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.List;
 
 public class DiscCmdVote extends DiscCommand {
     public DiscCmdVote() {
@@ -281,7 +279,7 @@ public class DiscCmdVote extends DiscCommand {
         //Arrays.sort(votes, (o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
 
         Vote vote = new Vote();
-        vote.setVoteType(0);
+        vote.setVoteType(-1);
         vote.setServer(server.getDatabaseId());
         vote.setChannelId(channel.getId());
         vote.setVoteColor("#" + Integer.toHexString(messageColor.getRGB()).substring(2));
@@ -350,18 +348,18 @@ public class DiscCmdVote extends DiscCommand {
 
         if (vote != null) {
             VoteElement[] voteElements = vote.loadVoteElements(yukiSora);
-            VoteElement selected  = null;
+            VoteElement selected = null;
 
-            if(voteElements.length > index)
+            if (voteElements.length > index)
                 selected = voteElements[index];
 
-            if(selected != null){
+            if (selected != null) {
                 selected.deleteData(yukiSora);
                 vote.removeVoteElement(selected);
 
                 for (int i = index; i < voteElements.length; i++) {
                     VoteElement updatedElement = voteElements[i];
-                    updatedElement.setIndex(i -1);
+                    updatedElement.setIndex(i - 1);
                     updatedElement.updateData(yukiSora);
                 }
 
@@ -421,7 +419,15 @@ public class DiscCmdVote extends DiscCommand {
         Vote vote = checkVote(index, channel, server, yukiSora, res);
 
         if (vote != null) {
-            vote.setVoteType(1);
+            if (vote.getVoteType() != -1) {
+                if (vote.getVoteType() != 1) {
+                    TextUtil.sendError("You can't add a role to this kind of vote :hushed:", res);
+                    return;
+                }
+            } else {
+                vote.setVoteType(1);
+                vote.updateData(yukiSora);
+            }
             if (!addRoleVoteElementToVote(vote, emote, role, channel.getGuild(), description, yukiSora, res))
                 return;
 
@@ -455,7 +461,17 @@ public class DiscCmdVote extends DiscCommand {
         Vote vote = checkVote(index, channel, server, yukiSora, res);
 
         if (vote != null) {
-            vote.setVoteType(0);
+            if (vote.getVoteType() != -1) {
+                if (vote.getVoteType() != 0) {
+                    TextUtil.sendError("You can't add a line to this kind of vote :hushed:", res);
+                    return;
+                }
+            } else {
+                vote.setVoteType(0);
+                vote.updateData(yukiSora);
+            }
+
+
             if (!addLineVoteElementToVote(vote, emote, channel.getGuild(), description, yukiSora, res))
                 return;
 

@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.awt.*;
 import java.util.List;
@@ -21,6 +22,7 @@ public class TextUtil {
         else
             res.getInteraction().replyEmbeds(msg).queue();
     }
+
     public static void sendColoredText(String txt, Color color, ResponseInstance res) {
         MessageEmbed me = new EmbedBuilder().setColor(color).setDescription(txt).build();
 
@@ -72,6 +74,13 @@ public class TextUtil {
         }
     }
 
+    public static void sendFiles(ResponseInstance res, FileUpload... uploads) {
+        if (res.isChannel)
+            res.getChannel().sendFiles(uploads).queue();
+        else
+            res.getInteraction().replyFiles(uploads).queue();
+    }
+
     public static class ResponseInstance {
         boolean isChannel = true;
         private MessageChannel channel;
@@ -82,12 +91,12 @@ public class TextUtil {
             this.isChannel = true;
         }
 
-        public ResponseInstance(MessageReceivedEvent event){
+        public ResponseInstance(MessageReceivedEvent event) {
             this.channel = event.getChannel();
             this.isChannel = true;
         }
 
-        public ResponseInstance(SlashCommandInteractionEvent event){
+        public ResponseInstance(SlashCommandInteractionEvent event) {
             this.interaction = event.getInteraction();
             this.isChannel = false;
         }

@@ -18,10 +18,11 @@ public class CommandOption {
         this.description = description;
     }
 
-    public CommandOption optional(){
+    public CommandOption optional() {
         optional = true;
         return this;
     }
+
     public OptionData toOptionData() {
         return new OptionData(optionType, name, description);
     }

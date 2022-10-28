@@ -11,9 +11,6 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
 import java.io.FileReader;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.Date;
 
 public class YukiSora {
@@ -73,14 +70,19 @@ public class YukiSora {
         handleArgs(args);
     }
 
-    private void handleArgs(String[] args){
-        if(args.length > 0)
-            switch (args[0].toLowerCase()){
-                case "start":
+    private void handleArgs(String[] args) {
+        for (String arg : args) {
+            switch (arg.toLowerCase()) {
+                case "start" -> {
                     YukiLogger.log(new YukiLogInfo("Starting Discord Application because of start parameter -->"));
                     application.boot();
-                    break;
+                }
+                case "debug" -> {
+                    YukiLogger.log(new YukiLogInfo("Fine Debug activated, cmd and network will be printed into the debug log!"));
+                    YukiProperties.getApplicationSettings().fineDebug = true;
+                }
             }
+        }
     }
 
     private void printBuildData() {
@@ -103,8 +105,7 @@ public class YukiSora {
                 YukiLogger.log(new YukiLogInfo("Can't find POM File!", "YukiSora").warning());
             }
         YukiLogger.log(new YukiLogInfo("-------------------------------------------").debug());
-        YukiLogger.log(new YukiLogInfo("Debug: " + applicationSettings.debug).debug());
-        YukiLogger.log(new YukiLogInfo("Network Debug: " + applicationSettings.fineDebug).debug());
+        YukiLogger.log(new YukiLogInfo("Fine Debug: " + applicationSettings.fineDebug).debug());
         String oldVersion = applicationSettings.mvnVersion;
         applicationSettings.mvnArtifact = model.getArtifactId();
         applicationSettings.mvnGroup = model.getGroupId();

@@ -1,8 +1,8 @@
 # Welcome to the Yuki-Sora suit!
 
-Yuki-Sora is a Discordbot with a lot of features. Here you can see all the stuff you need to know about each module.
+Yuki-Sora is a Discord Bot with a lot of features. Here you can see all the stuff you need to know about each module.
 
-# Other Yuki Reposetorys
+# Other Yuki Repository
 
 * [Database](https://github.com/Weebs-Kingdom/Yuki-Sora-Database)
 * [Homepage](https://github.com/Weebs-Kingdom/weebskingdom.com)
