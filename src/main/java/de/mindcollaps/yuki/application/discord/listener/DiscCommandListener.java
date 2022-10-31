@@ -93,13 +93,14 @@ public class DiscCommandListener extends ListenerAdapter {
                 YukiLogger.log(new YukiLogInfo("There has been a problem communicating with the database! This issues should be looked at very soon!").error());
                 return;
             }
+            String log = "---CMD---\nCMD_ORIGIN: guild_message, CMD: " + event.getMessage().getContentRaw();
             if (YukiProperties.getApplicationSettings().fineDebug)
-                YukiLogger.log(new YukiLogInfo("---CMD---\nCMD_ORIGIN: guild_message, CMD: " + event.getMessage().getContentRaw()));
+                YukiLogger.log(new YukiLogInfo(log));
             try {
                 yukiSora.getDiscordApplication().getCommandHandler().handleServerCommand(DiscCommandParser.parseServerMessage(event.getMessage().getContentRaw(), event, server, user, yukiSora));
             } catch (Exception e) {
                 TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), new TextUtil.ResponseInstance(event.getChannel()));
-                YukiLogger.log(new YukiLogInfo("Sending client command failed!", "DiscCommandListener").trace(e));
+                YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log, "DiscCommandListener").trace(e));
             }
             if (YukiProperties.getApplicationSettings().fineDebug)
                 YukiLogger.log(new YukiLogInfo("--CMD-END--\n"));
@@ -126,13 +127,14 @@ public class DiscCommandListener extends ListenerAdapter {
                 return;
             }
 
+            String log = "---CMD---\nCMD_ORIGIN: slash, CMD: " + event.getCommandString();
             if (YukiProperties.getApplicationSettings().fineDebug)
-                YukiLogger.log(new YukiLogInfo("---CMD---\nCMD_ORIGIN: slash, CMD: " + event.getCommandString()));
+                YukiLogger.log(new YukiLogInfo(log));
             try {
                 yukiSora.getDiscordApplication().getCommandHandler().handleSlashCommand(DiscCommandParser.parseSlashMessage(event.getCommandString(), event, server, user, yukiSora));
             } catch (Exception e) {
                 TextUtil.sendError("Fatal command error on command: " + event.getCommandString(), new TextUtil.ResponseInstance(event.getChannel()));
-                YukiLogger.log(new YukiLogInfo("Sending client command failed!", "DiscCommandListener").trace(e));
+                YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log, "DiscCommandListener").trace(e));
             }
             if (YukiProperties.getApplicationSettings().fineDebug)
                 YukiLogger.log(new YukiLogInfo("--CMD-END--\n"));
@@ -147,13 +149,14 @@ public class DiscCommandListener extends ListenerAdapter {
             return;
         }
 
+        String log = "---CMD---\nCMD_ORIGIN: private, CMD: " + event.getMessage().getContentRaw();
         if (YukiProperties.getApplicationSettings().fineDebug)
-            YukiLogger.log(new YukiLogInfo("---CMD---\nCMD_ORIGIN: private, CMD: " + event.getMessage().getContentRaw()));
+            YukiLogger.log(new YukiLogInfo(log));
         try {
             yukiSora.getDiscordApplication().getCommandHandler().handleClientCommand(DiscCommandParser.parseClientMessage(event.getMessage().getContentRaw(), event, user, yukiSora));
         } catch (Exception e) {
             TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), new TextUtil.ResponseInstance(event.getChannel()));
-            YukiLogger.log(new YukiLogInfo("Sending client command failed!\n", "DiscCommandListener").trace(e));
+            YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log, "DiscCommandListener").trace(e));
         }
         if (YukiProperties.getApplicationSettings().fineDebug)
             YukiLogger.log(new YukiLogInfo("--CMD-END--\n"));

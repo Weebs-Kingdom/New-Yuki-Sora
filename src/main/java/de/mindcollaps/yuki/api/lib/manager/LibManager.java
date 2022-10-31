@@ -35,20 +35,33 @@ public class LibManager {
 
     @Nullable
     public static DiscApplicationUser retrieveUser(User user, YukiSora yukiSora) {
-        FindUserById req = new FindUserById(user.getId());
+        return retrieveUser(user.getId(), user.getName(), yukiSora);
+    }
+
+    @Nullable
+    public static DiscApplicationUser retrieveUser(String userId, String userName, YukiSora yukiSora) {
+        FindUserById req = new FindUserById(userId);
         DiscApplicationUser discUser = req.makeRequestSingle(yukiSora);
         if (discUser == null) {
-            YukiLogger.log(new YukiLogInfo("The user " + user.getName() + " (" + user.getId() + ") was not found in the database! The user was created by the lib manager.").warning());
+            YukiLogger.log(new YukiLogInfo("The user " + userName + " (" + userId + ") was not found in the database! The user was created by the lib manager.").warning());
             discUser = new DiscApplicationUser();
-            discUser.setUserID(user.getId());
-            discUser.setUsername(user.getName());
+            discUser.setUserID(userId);
+            discUser.setUsername(userName);
             discUser.postData(yukiSora);
 
             if (discUser.getDatabaseId() == null) {
-                YukiLogger.log(new YukiLogInfo("The user " + user.getName() + " (" + user.getId() + ") could not be created by the lib manager.").error());
+                YukiLogger.log(new YukiLogInfo("The user " + userName + " (" + userId + ") could not be created by the lib manager.").error());
                 return null;
             }
         }
+
+        return discUser;
+    }
+
+    @Nullable
+    public static DiscApplicationUser findUser(String userId, YukiSora yukiSora) {
+        FindUserById req = new FindUserById(userId);
+        DiscApplicationUser discUser = req.makeRequestSingle(yukiSora);
 
         return discUser;
     }

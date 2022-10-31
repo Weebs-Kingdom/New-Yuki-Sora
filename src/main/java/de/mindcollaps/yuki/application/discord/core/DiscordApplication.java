@@ -8,6 +8,7 @@ import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCertificationMessageListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCommandListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscReactionListener;
+import de.mindcollaps.yuki.application.twitch.TwitchApplicationEngine;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
@@ -37,6 +38,8 @@ public class DiscordApplication {
     private DiscAutoChannelListener autoChannelListener;
     private JDABuilder builder;
     private JDA botJDA;
+
+    private TwitchApplicationEngine twitchApplication;
 
     public DiscordApplication(YukiSora yukiSora) {
         this.yukiSora = yukiSora;
@@ -69,6 +72,9 @@ public class DiscordApplication {
             isRunning = false;
             return;
         }
+
+        twitchApplication = new TwitchApplicationEngine(yukiSora);
+        twitchApplication.boot();
 
         initCommands();
         initListeners();

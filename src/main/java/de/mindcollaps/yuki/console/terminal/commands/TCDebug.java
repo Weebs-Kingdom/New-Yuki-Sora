@@ -2,11 +2,11 @@ package de.mindcollaps.yuki.console.terminal.commands;
 
 import de.mindcollaps.yuki.core.YukiProperties;
 
-public class TCDebug implements TerminalCommand{
+public class TCDebug implements TerminalCommand {
     @Override
     public String onExecute(String[] args) {
-        if(args.length > 0){
-            switch (args[0].toLowerCase()){
+        if (args.length > 0) {
+            switch (args[0].toLowerCase()) {
                 case "true" -> {
                     YukiProperties.getApplicationSettings().fineDebug = true;
                     return "Changed property fineDebug to true";

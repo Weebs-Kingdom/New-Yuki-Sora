@@ -2,7 +2,7 @@ package de.mindcollaps.yuki.console.terminal.commands;
 
 import de.mindcollaps.yuki.core.YukiProperties;
 
-public class TCLoadProperties implements TerminalCommand{
+public class TCLoadProperties implements TerminalCommand {
     @Override
     public String onExecute(String[] args) {
         YukiProperties.loadBotProperties();

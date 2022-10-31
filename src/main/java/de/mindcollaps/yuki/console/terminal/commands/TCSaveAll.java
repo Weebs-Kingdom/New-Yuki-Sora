@@ -2,7 +2,7 @@ package de.mindcollaps.yuki.console.terminal.commands;
 
 import de.mindcollaps.yuki.core.YukiProperties;
 
-public class TCSaveAll implements TerminalCommand{
+public class TCSaveAll implements TerminalCommand {
     @Override
     public String onExecute(String[] args) {
         YukiProperties.saveBotProperties();
