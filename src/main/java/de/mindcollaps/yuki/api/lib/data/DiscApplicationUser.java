@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @RouteClass("disc-user")
 public class DiscApplicationUser extends RouteData {
 

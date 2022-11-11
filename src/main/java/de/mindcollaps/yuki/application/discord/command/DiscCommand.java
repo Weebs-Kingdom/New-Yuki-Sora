@@ -34,6 +34,7 @@ public abstract class DiscCommand {
         subCommandGroups = new ArrayList<>();
     }
 
+    @SuppressWarnings("SameReturnValue")
     public abstract String getHelp();
 
     public CommandData toCommandData() {
@@ -49,6 +50,7 @@ public abstract class DiscCommand {
         return data;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public DiscCommand addSubcommands(SubCommand... commands) {
         Checks.noneNull(commands, "Subcommands");
         if (commands.length == 0)
@@ -62,6 +64,7 @@ public abstract class DiscCommand {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public DiscCommand addSubcommands(SubCommandGroup... commands) {
         Checks.noneNull(commands, "Subcommands");
         if (commands.length == 0)
@@ -75,6 +78,7 @@ public abstract class DiscCommand {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public DiscCommand addOption(CommandOption... options) {
         Checks.noneNull(options, "Option");
         Checks.check(options.length + this.options.size() <= 25, "Cannot have more than 25 options for a subcommand!");
@@ -86,6 +90,7 @@ public abstract class DiscCommand {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public DiscCommand noCallClient() {
         this.isCallableClient = false;
         return this;
@@ -121,11 +126,13 @@ public abstract class DiscCommand {
         return subCommands;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public DiscCommand addAction(CommandAction action) {
         this.action = action;
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public DiscCommand adminOnlyCommand() {
         this.adminOnlyCommand = true;
         return this;

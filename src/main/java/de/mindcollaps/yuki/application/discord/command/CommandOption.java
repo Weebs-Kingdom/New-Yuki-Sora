@@ -39,6 +39,7 @@ public class CommandOption {
         return optionType;
     }
 
+    @SuppressWarnings("unused")
     public SubcommandData toSubCommandData() {
         return new SubcommandData(name, description);
     }

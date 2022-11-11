@@ -46,14 +46,14 @@ public class YukiTerminal {
             Scanner scanner = new Scanner(System.in);
             String line = "";
             YukiLogger.log(new YukiLogInfo("Console Command Handler initialized!", "Console Command Handler").debug());
-            for (; ; ) {
+            while (true) {
                 try {
                     line = scanner.nextLine();
                 } catch (Exception ignored) {
                 }
                 try {
                     String answer = YukiTerminalCommandHandler.handleCommand(line);
-                    System.out.println(answer);
+                    YukiLogger.log(new YukiLogInfo(answer, "Command Response"));
                     YukiLogger.log(new YukiLogInfo("Terminal command handler answered: " + answer).debug());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("An error occurred while executing the command!", "Console Command Handler").trace(e));

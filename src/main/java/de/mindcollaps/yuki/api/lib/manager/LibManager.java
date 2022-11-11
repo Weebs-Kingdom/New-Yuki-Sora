@@ -18,7 +18,7 @@ public class LibManager {
         FindServerByGuildId req = new FindServerByGuildId(g.getId());
         DiscApplicationServer server = req.makeRequestSingle(yukiSora);
         if (server == null) {
-            YukiLogger.log(new YukiLogInfo("The guild " + g.getName() + " (" + g.getId() + ") was not found in the database! The guild was created by the lib manager.").warning());
+            YukiLogger.log(new YukiLogInfo("The guild " + g.getName() + " (" + g.getId() + ") was not found in the database! The guild was created by the lib manager.").debug());
             server = new DiscApplicationServer();
             server.setGuildId(g.getId());
             server.setGuildName(g.getName());
@@ -43,7 +43,7 @@ public class LibManager {
         FindUserById req = new FindUserById(userId);
         DiscApplicationUser discUser = req.makeRequestSingle(yukiSora);
         if (discUser == null) {
-            YukiLogger.log(new YukiLogInfo("The user " + userName + " (" + userId + ") was not found in the database! The user was created by the lib manager.").warning());
+            YukiLogger.log(new YukiLogInfo("The user " + userName + " (" + userId + ") was not found in the database! The user was created by the lib manager.").debug());
             discUser = new DiscApplicationUser();
             discUser.setUserID(userId);
             discUser.setUsername(userName);
@@ -61,8 +61,7 @@ public class LibManager {
     @Nullable
     public static DiscApplicationUser findUser(String userId, YukiSora yukiSora) {
         FindUserById req = new FindUserById(userId);
-        DiscApplicationUser discUser = req.makeRequestSingle(yukiSora);
 
-        return discUser;
+        return req.makeRequestSingle(yukiSora);
     }
 }

@@ -3,6 +3,7 @@ package de.mindcollaps.yuki.api;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+@SuppressWarnings("unused")
 public class ApiResponse {
 
     private JSONObject data;

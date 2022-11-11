@@ -59,6 +59,7 @@ public class YukiLogInfo {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public YukiLogInfo log() {
         YukiLogger.log(this);
         return this;

@@ -1,15 +1,12 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
-import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
-import de.mindcollaps.yuki.application.discord.command.ActionNotImplementedException;
 import de.mindcollaps.yuki.application.discord.command.CommandAction;
 import de.mindcollaps.yuki.application.discord.command.CommandOption;
 import de.mindcollaps.yuki.application.discord.command.DiscCommand;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.json.simple.JSONObject;
@@ -19,26 +16,12 @@ public class DiscCmdAlexa extends DiscCommand {
     public DiscCmdAlexa() {
         super("alexa", "Alexa integration command");
         doNotCreateSlashCommand();
+        noCallServer();
+        noCallSlash();
 
         addOption(new CommandOption(OptionType.STRING, "Token", "The token provided from alexa"));
 
         addAction(new CommandAction() {
-
-            @Override
-            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                return false;
-            }
-
-            @Override
-            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                return false;
-            }
-
-            @Override
-            public boolean calledPrivate(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) {
-                return true;
-            }
-
             @Override
             public void actionPrivate(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) {
                 JSONObject res = yukiSora.getApiManagerOld().verifyAlexa(args.getArg(0).getString(), event.getAuthor().getId());

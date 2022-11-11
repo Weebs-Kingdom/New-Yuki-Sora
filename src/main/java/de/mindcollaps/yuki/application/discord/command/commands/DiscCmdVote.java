@@ -11,7 +11,11 @@ import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -42,12 +46,12 @@ public class DiscCmdVote extends DiscCommand {
                                         .addAction(
                                                 new CommandAction() {
                                                     @Override
-                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
                                                     }
 
                                                     @Override
-                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                                     }
 
@@ -86,12 +90,12 @@ public class DiscCmdVote extends DiscCommand {
                                         .addAction(
                                                 new CommandAction() {
                                                     @Override
-                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
                                                     }
 
                                                     @Override
-                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                                     }
 
@@ -135,12 +139,12 @@ public class DiscCmdVote extends DiscCommand {
                         .addAction(
                                 new CommandAction() {
                                     @Override
-                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
                                     }
 
                                     @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                     }
 
@@ -180,12 +184,12 @@ public class DiscCmdVote extends DiscCommand {
                                         .addAction(
                                                 new CommandAction() {
                                                     @Override
-                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
                                                     }
 
                                                     @Override
-                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                                     }
 
@@ -221,12 +225,12 @@ public class DiscCmdVote extends DiscCommand {
                                         .addAction(
                                                 new CommandAction() {
                                                     @Override
-                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
                                                     }
 
                                                     @Override
-                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                                     }
 

@@ -16,6 +16,9 @@ import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -48,7 +51,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -58,7 +61,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 createTwitchChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
@@ -71,7 +74,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -81,7 +84,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 createWelcomeChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
@@ -94,7 +97,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -104,7 +107,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 createCertificationChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         })));
@@ -121,7 +124,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -131,7 +134,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 createStatisticsCategory(args.getArg("category").getString(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
@@ -144,7 +147,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -154,7 +157,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 createBoosterCategory(args.getArg("category").getString(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         })
@@ -172,7 +175,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -182,7 +185,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 setBoosterRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         })
@@ -200,7 +203,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -210,7 +213,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 addDefaultRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
@@ -223,7 +226,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -233,7 +236,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 removeDefaultRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
@@ -245,7 +248,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -255,29 +258,29 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 listDefaultRoles(event.getGuild(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
                                 new SubCommand("update", "Updates the default roles of each player")
                                         .addAction(new CommandAction() {
                                             @Override
-                                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
                                             @Override
-                                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 updateRoles(event.getGuild(), server, yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 updateRoles(event.getGuild(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         })
@@ -294,7 +297,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                     }
 
@@ -304,7 +307,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         createAutoChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                     }
                                 }),
@@ -317,7 +320,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                     }
 
@@ -327,7 +330,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         removeAutoChannel(args.getArg("channel").getGuildChannel(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                     }
                                 })
@@ -343,7 +346,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                     }
 
@@ -353,7 +356,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         renewCertificationMessage(server, event.getGuild(), yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                     }
                                 }),
@@ -365,7 +368,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                     }
 
@@ -375,7 +378,7 @@ public class DiscCmdSetup extends DiscCommand {
                                     }
 
                                     @Override
-                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                    public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                         renewStatisticsCategory(server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                     }
                                 })
@@ -394,7 +397,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -404,7 +407,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 twitchMemberAdd(args.getArg("member").getUser(), args.getArg("twitch channel").getString(), server, user, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         }),
@@ -418,7 +421,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
                                             }
 
@@ -428,7 +431,7 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
 
                                             @Override
-                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 twitchMemberRemove(args.getArg("member").getUser(), server, user, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
                                         })

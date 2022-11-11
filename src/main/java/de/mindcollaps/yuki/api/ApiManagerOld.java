@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import java.util.Collections;
 
+@SuppressWarnings("unused")
 public class ApiManagerOld {
 
     private final String apiToken;

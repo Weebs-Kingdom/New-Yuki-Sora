@@ -9,12 +9,18 @@ import java.io.*;
 
 public class FileUtils {
 
+    public static final String home = System.getProperty("user.dir") + "/yuki";
     private static final String module = "File Utils";
     private static final JSONParser parser = new JSONParser();
-    public static String home = System.getProperty("user.dir") + "/yuki";
 
+    @SuppressWarnings("SameReturnValue")
     public static String getHome() {
         return home;
+    }
+
+    public static boolean deleteFile(String file) {
+        File f = new File(file);
+        return f.delete();
     }
 
     public static Object loadObject(String path) throws Exception {

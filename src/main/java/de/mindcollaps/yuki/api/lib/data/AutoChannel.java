@@ -6,9 +6,14 @@ import de.mindcollaps.yuki.api.lib.route.RouteData;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.core.YukiSora;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.PermissionOverride;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 @RouteClass("autochannel")
 public class AutoChannel extends RouteData {
 
@@ -60,15 +65,19 @@ public class AutoChannel extends RouteData {
         return this;
     }
 
-    public void init(Guild g, YukiSora yukiSora) throws Exception {
+    public void init(Guild g, YukiSora yukiSora) {
         this.guild = g;
         voiceChannel = guild.getVoiceChannelById(channelId);
+        if (voiceChannel == null)
+            return;
         initialized = true;
     }
 
-    public void initBaseChannel(Guild g, YukiSora yukiSora) throws Exception {
+    public void initBaseChannel(Guild g, YukiSora yukiSora) {
         this.guild = g;
         voiceChannel = guild.getVoiceChannelById(channelId);
+        if (voiceChannel == null)
+            return;
         voiceChannel.getManager().setName(":heavy_plus_sign: Create Channel").queue();
         voiceChannel.getManager().setUserLimit(1).queue();
         initialized = true;
@@ -186,5 +195,9 @@ public class AutoChannel extends RouteData {
 
     public void setGuild(Guild guild) {
         this.guild = guild;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 }

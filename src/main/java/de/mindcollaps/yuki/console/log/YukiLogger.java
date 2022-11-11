@@ -4,8 +4,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-
 
 public class YukiLogger {
 
@@ -13,7 +11,7 @@ public class YukiLogger {
     public static Logger debug;
     private static boolean setupDone = false;
 
-    public static void setup() throws IOException {
+    public static void setup() {
         if (setupDone)
             return;
         setupDone = true;

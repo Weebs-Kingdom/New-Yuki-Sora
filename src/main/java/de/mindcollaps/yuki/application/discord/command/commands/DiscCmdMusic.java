@@ -30,18 +30,8 @@ public class DiscCmdMusic extends DiscCommand {
         super("m", "A command to play music from one of the music bots");
         CommandAction action = new CommandAction() {
             @Override
-            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
-                return true;
-            }
-
-            @Override
             public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                 event.getChannel().sendMessageEmbeds(disputeCommand(event.getGuild(), event.getMember(), yukiSora, args)).queue();
-            }
-
-            @Override
-            public boolean calledPrivate(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) {
-                return true;
             }
 
             @Override
@@ -58,11 +48,6 @@ public class DiscCmdMusic extends DiscCommand {
                 }
                 if (g != null)
                     event.getChannel().sendMessageEmbeds(disputeCommand(g, m, yukiSora, args)).queue();
-            }
-
-            @Override
-            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
-                return true;
             }
 
             @Override

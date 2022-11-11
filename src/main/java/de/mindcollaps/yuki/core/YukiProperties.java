@@ -93,6 +93,7 @@ public class YukiProperties implements Serializable {
         return props;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static YukiProperties loadApplicationSettings() {
         applicationSettings = null;
         try {
@@ -108,6 +109,7 @@ public class YukiProperties implements Serializable {
         return applicationSettings;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static Properties loadBotProperties() {
         properties = new Properties();
         FileUtils.createFileRootAndFile(new File(yukiPropertiesPath));

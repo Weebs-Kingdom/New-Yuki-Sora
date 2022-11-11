@@ -6,7 +6,7 @@
 
     <groupId>mindcollaps.yukisora</groupId>
     <artifactId>YukiSora</artifactId>
-    <version>5.1.0_alpha_003</version>
+    <version>5.1.0_alpha_004</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.18</version>
+            <version>5.0.0-alpha.22</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.18.0</version>
+            <version>2.19.0</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -51,22 +51,22 @@
         <dependency>
             <groupId>com.github.twitch4j</groupId>
             <artifactId>twitch4j</artifactId>
-            <version>1.11.0</version>
+            <version>1.12.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
+            <version>2.14.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.13.3</version>
+            <version>2.14.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.13.3</version>
+            <version>2.14.0</version>
         </dependency>
     </dependencies>
 

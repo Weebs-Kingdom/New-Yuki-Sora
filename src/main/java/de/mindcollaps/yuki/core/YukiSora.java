@@ -28,7 +28,7 @@ public class YukiSora {
     }
 
     public void boot(String[] args) {
-        System.out.println("▄██   ▄   ███    █▄     ▄█   ▄█▄  ▄█  \n" +
+        YukiLogger.log(new YukiLogInfo("\n▄██   ▄   ███    █▄     ▄█   ▄█▄  ▄█  \n" +
                 "███   ██▄ ███    ███   ███ ▄███▀ ███  \n" +
                 "███▄▄▄███ ███    ███   ███▐██▀   ███▌ \n" +
                 "▀▀▀▀▀▀███ ███    ███  ▄█████▀    ███▌ \n" +
@@ -36,8 +36,8 @@ public class YukiSora {
                 "███   ███ ███    ███   ███▐██▄   ███  \n" +
                 "███   ███ ███    ███   ███ ▀███▄ ███  \n" +
                 " ▀█████▀  ████████▀    ███   ▀█▀ █▀   \n" +
-                "                       ▀              \n");
-        System.out.println("   ▄████████  ▄██████▄     ▄████████    ▄████████ \n" +
+                "                       ▀              \n"));
+        YukiLogger.log(new YukiLogInfo("\n   ▄████████  ▄██████▄     ▄████████    ▄████████ \n" +
                 "  ███    ███ ███    ███   ███    ███   ███    ███ \n" +
                 "  ███    █▀  ███    ███   ███    ███   ███    ███ \n" +
                 "  ███        ███    ███  ▄███▄▄▄▄██▀   ███    ███ \n" +
@@ -45,8 +45,8 @@ public class YukiSora {
                 "         ███ ███    ███ ▀███████████   ███    ███ \n" +
                 "   ▄█    ███ ███    ███   ███    ███   ███    ███ \n" +
                 " ▄████████▀   ▀██████▀    ███    ███   ███    █▀  \n" +
-                "                          ███    ███              ");
-        System.out.println("\nDesigned by: Noah Elijah Till\nand the weebskingdom team\n-------------------------------------------------------------------------\n\n");
+                "                          ███    ███              "));
+        YukiLogger.log(new YukiLogInfo("\nDesigned by: Noah Elijah Till\nand the weebskingdom team\n-------------------------------------------------------------------------\n\n"));
 
         YukiProperties.loadApplicationSettings();
         YukiProperties.loadBotProperties();

@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -66,17 +66,17 @@ public class TwitchApplicationEngine {
             String userName = (String) us.get("twitchChannelId");
             if (user == null || userName == null) {
                 YukiLogger.log(
-                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Probably not configured correctly", "Twitch").error()
+                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Probably not configured correctly", "Twitch").debug()
                 );
                 continue;
             }
             YukiLogger.log(
-                    new YukiLogInfo("Enabling twitch listener for " + userName + "!", "Twitch")
+                    new YukiLogInfo("Enabling twitch listener for " + userName + "!", "Twitch").debug()
             );
             User twitchUser = twitchClient.getClientHelper().enableStreamEventListener(userName);
             if (twitchUser == null) {
                 YukiLogger.log(
-                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Couldn't load twitch user from twitch", "Twitch").error()
+                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Couldn't load twitch user from twitch", "Twitch").debug()
                 );
                 continue;
             }

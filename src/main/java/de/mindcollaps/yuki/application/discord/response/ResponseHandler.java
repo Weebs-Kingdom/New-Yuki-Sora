@@ -49,10 +49,9 @@ public class ResponseHandler {
     }
 
     public static boolean lookForResponse(MessageReceivedEvent update) {
-        final ArrayList<Response> r = responses;
         Response re = null;
         try {
-            for (Response res : r) {
+            for (Response res : responses) {
                 if (update.getAuthor().getId().equals(res.discUserId)) {
                     if (update.getChannel().getId().equals(res.discChannelId)) {
                         re = res;
@@ -79,10 +78,9 @@ public class ResponseHandler {
     }
 
     public static boolean lookForPrivateResponse(MessageReceivedEvent update) {
-        final ArrayList<Response> r = responses;
         Response re = null;
         try {
-            for (Response res : r) {
+            for (Response res : responses) {
                 if (update.getAuthor().getId().equals(res.discUserId)) {
                     if (update.getChannel().getId().equals(res.discChannelId)) {
                         re = res;
@@ -108,10 +106,9 @@ public class ResponseHandler {
     }
 
     public static boolean lookForResponse(MessageReactionAddEvent update) {
-        final ArrayList<Response> r = responses;
         Response re = null;
         try {
-            for (Response res : r) {
+            for (Response res : responses) {
                 if (update.getMember().getId().equals(res.discUserId)) {
                     if (update.getChannel().getId().equals(res.discChannelId)) {
                         re = res;
@@ -137,10 +134,9 @@ public class ResponseHandler {
     }
 
     public static boolean lookForPrivateResponse(MessageReactionAddEvent update) {
-        final ArrayList<Response> r = responses;
         Response re = null;
         try {
-            for (Response res : r) {
+            for (Response res : responses) {
                 if (update.getUser().getId().equals(res.discUserId)) {
                     if (update.getChannel().getId().equals(res.discChannelId)) {
                         re = res;

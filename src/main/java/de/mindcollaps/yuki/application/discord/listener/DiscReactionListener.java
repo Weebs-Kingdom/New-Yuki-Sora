@@ -13,13 +13,13 @@ import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class DiscReactionListener extends ListenerAdapter {
@@ -31,7 +31,7 @@ public class DiscReactionListener extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageReactionAdd(@Nonnull MessageReactionAddEvent event) {
+    public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         if (event.getMember().getUser().isBot())
             return;
 
@@ -39,7 +39,7 @@ public class DiscReactionListener extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageReactionRemove(@Nonnull MessageReactionRemoveEvent event) {
+    public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
         if (event.getMember().getUser().isBot())
             return;
 

@@ -6,7 +6,12 @@ import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -21,11 +26,10 @@ import java.util.List;
 
 public class DiscCommandHandler {
 
+    public final HashMap<String, DiscCommand> commands = new HashMap<>();
+    public final ArrayList<String> commandIvokes = new ArrayList<>();
     private final String consMsgDef = "Command Handler";
-
     private final DiscordApplication application;
-    public HashMap<String, DiscCommand> commands = new HashMap<>();
-    public ArrayList<String> commandIvokes = new ArrayList<>();
 
     public DiscCommandHandler(DiscordApplication application) {
         this.application = application;
@@ -42,7 +46,7 @@ public class DiscCommandHandler {
         SubCommand subCommand = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, 0, report);
 
         if (subCommand == null) {
-            subCommand = checkSubCommandGroups(command.getSubCommandGroups().toArray(new SubCommandGroup[0]), args, 0, report);
+            subCommand = checkSubCommandGroups(command.getSubCommandGroups().toArray(new SubCommandGroup[0]), args, report);
             if (subCommand == null)
                 return null;
         }
@@ -63,12 +67,12 @@ public class DiscCommandHandler {
         return null;
     }
 
-    private SubCommand checkSubCommandGroups(SubCommandGroup[] commands, String[] args, int checkI, CommandHandlingReport report) {
-        if (args.length - 1 >= checkI)
+    private SubCommand checkSubCommandGroups(SubCommandGroup[] commands, String[] args, CommandHandlingReport report) {
+        if (args.length - 1 >= 0)
             for (SubCommandGroup command : commands) {
-                if (command.getInvoke().equalsIgnoreCase(args[checkI])) {
+                if (command.getInvoke().equalsIgnoreCase(args[0])) {
                     report.setFoundGroup(command);
-                    SubCommand command1 = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, checkI + 1, report);
+                    SubCommand command1 = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, 0 + 1, report);
                     if (command1 != null)
                         return command1;
                 }
@@ -586,8 +590,6 @@ public class DiscCommandHandler {
             if (command.isCallableServer()) {
                 try {
                     exe = action.calledServer(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
-                } catch (ActionNotImplementedException e) {
-                    printErrorMessage(getReportErrorMessage(report, command), cmd.event.getChannel());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
                 }
@@ -635,8 +637,6 @@ public class DiscCommandHandler {
             if (command.isCallableSlash()) {
                 try {
                     exe = action.calledSlash(args, cmd.event, cmd.server, cmd.user, cmd.yukiSora);
-                } catch (ActionNotImplementedException e) {
-                    printErrorMessage("This command has not been implemented as slash command yet. We are working on it :tools:", cmd.event.getInteraction());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("Handle server command had an error while checking if the command can be called!", consMsgDef).trace(e));
                 }
@@ -686,8 +686,6 @@ public class DiscCommandHandler {
             if (command.isCallableClient()) {
                 try {
                     exe = action.calledPrivate(args, cmd.event, cmd.user, cmd.yukiSora);
-                } catch (ActionNotImplementedException e) {
-                    printErrorMessage("This command has not been implemented as private command yet. We are working on it :tools:", cmd.event.getChannel());
                 } catch (Exception e) {
                     YukiLogger.log(new YukiLogInfo("Handle client command had an error while checking if the command can be called!", consMsgDef).trace(e));
                 }
@@ -708,11 +706,11 @@ public class DiscCommandHandler {
 
     public void createNewCommand(DiscCommand cmd) {
         if (commandIvokes.contains(cmd.getInvoke().toLowerCase())) {
-            YukiLogger.log(new YukiLogInfo("Command " + cmd.getInvoke().toLowerCase() + " already exist!").debug());
+            YukiLogger.log(new YukiLogInfo(" - !!!Command " + cmd.getInvoke().toLowerCase() + " already exist!").error());
         } else {
             commands.put(cmd.getInvoke().toLowerCase(), cmd);
             commandIvokes.add(cmd.getInvoke().toLowerCase());
-            YukiLogger.log(new YukiLogInfo("Command " + cmd.getInvoke().toLowerCase() + " added!").debug());
+            YukiLogger.log(new YukiLogInfo(" - Command " + cmd.getInvoke().toLowerCase() + " added!").debug());
         }
     }
 

@@ -12,8 +12,8 @@ import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -31,21 +31,6 @@ public class DiscCmdJob extends DiscCommand {
                 new SubCommand("work", "Take a job to work in")
                         .addAction(
                                 new CommandAction() {
-                                    @Override
-                                    public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        return true;
-                                    }
-
-                                    @Override
-                                    public boolean calledPrivate(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        return true;
-                                    }
-
-                                    @Override
-                                    public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                        return true;
-                                    }
-
                                     @Override
                                     public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
                                         work(user, yukiSora, new TextUtil.ResponseInstance(event));
@@ -67,21 +52,6 @@ public class DiscCmdJob extends DiscCommand {
         addSubcommands(
                 new SubCommand("take", "Take a job to work at")
                         .addAction(new CommandAction() {
-                            @Override
-                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                return true;
-                            }
-
-                            @Override
-                            public boolean calledPrivate(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                return true;
-                            }
-
-                            @Override
-                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
-                                return true;
-                            }
-
                             @Override
                             public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws ActionNotImplementedException {
                                 takeJob((TextChannel) event.getChannel(), event.getAuthor(), yukiSora, new TextUtil.ResponseInstance(event));
