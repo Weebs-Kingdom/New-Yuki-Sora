@@ -89,6 +89,7 @@ public class AutoChannel extends RouteData {
 
     public void rename(String name) {
         voiceChannel.getManager().setName(name + " [AC]").queue();
+        wasRenamed = true;
     }
 
     @Nullable
@@ -109,6 +110,7 @@ public class AutoChannel extends RouteData {
 
         AutoChannel newAutoChannel = new AutoChannel(channel);
         newAutoChannel.setCreatedBy(m);
+        newAutoChannel.setServer(server);
         return newAutoChannel;
     }
 

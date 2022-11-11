@@ -1,6 +1,7 @@
 package de.mindcollaps.yuki.api.lib.route;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,6 +13,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 
+@YukiLogModule(name = "Route Parser")
 public class RouteParser {
 
     public static JSONObject pack(Object obj) {

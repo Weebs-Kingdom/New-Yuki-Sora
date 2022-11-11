@@ -1,9 +1,11 @@
 package de.mindcollaps.yuki.console.terminal;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.console.terminal.commands.TerminalCommand;
 
+@YukiLogModule(name = "Terminal Command Handler")
 public class YukiTerminalCommandHandler {
 
     public static String handleCommand(String raw) {

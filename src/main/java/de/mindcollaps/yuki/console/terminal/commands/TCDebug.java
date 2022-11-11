@@ -5,8 +5,8 @@ import de.mindcollaps.yuki.core.YukiProperties;
 public class TCDebug implements TerminalCommand {
     @Override
     public String onExecute(String[] args) {
-        if (args.length > 0) {
-            switch (args[0].toLowerCase()) {
+        if (args.length > 1) {
+            switch (args[1].toLowerCase()) {
                 case "true" -> {
                     YukiProperties.getApplicationSettings().fineDebug = true;
                     return "Changed property fineDebug to true";

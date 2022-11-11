@@ -2,7 +2,7 @@ package de.mindcollaps.yuki.application.discord.command.handler;
 
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
-import de.mindcollaps.yuki.core.YukiProperties;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -11,11 +11,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
+@YukiLogModule(name = "Disc Command Parser")
 public class DiscCommandParser {
 
     public static ServerCommandContainer parseServerMessage(String raw, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
 
-        String beheaded = raw.replaceFirst(YukiProperties.getProperties(YukiProperties.dPDefaultCommandPrefix), "");
+        String beheaded = raw.substring(1);
         String[] splitBeheaded = beheaded.split(" ");
         String invoke = splitBeheaded[0];
         ArrayList<String> split = new ArrayList<>();
@@ -28,7 +29,7 @@ public class DiscCommandParser {
     }
 
     public static SlashCommandContainer parseSlashMessage(String raw, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
-        String beheaded = raw.replaceFirst("/", "");
+        String beheaded = raw.substring(1);
         String[] splitBeheaded = beheaded.split(" ");
         String invoke = splitBeheaded[0];
         ArrayList<String> split = new ArrayList<>();
@@ -42,7 +43,7 @@ public class DiscCommandParser {
 
     public static ClientCommandContainer parseClientMessage(String raw, MessageReceivedEvent event, DiscApplicationUser user, YukiSora yukiSora) {
 
-        String beheaded = raw.replaceFirst(YukiProperties.getProperties(YukiProperties.dPDefaultCommandPrefix), "");
+        String beheaded = raw.substring(1);
         String[] splitBeheaded = beheaded.split(" ");
         String invoke = splitBeheaded[0];
         ArrayList<String> split = new ArrayList<>();

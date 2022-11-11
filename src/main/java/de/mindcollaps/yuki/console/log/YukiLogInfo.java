@@ -2,6 +2,7 @@ package de.mindcollaps.yuki.console.log;
 
 import org.apache.logging.log4j.Level;
 
+@YukiLogModule(name = "Yuki Log Info")
 public class YukiLogInfo {
 
     private String message;
@@ -9,28 +10,60 @@ public class YukiLogInfo {
     private Exception exception;
     private Level level;
 
-    public YukiLogInfo(String message, String module) {
-        this.message = message;
-        this.origin = module;
-        this.exception = null;
-        this.level = Level.INFO;
-    }
-
     public YukiLogInfo(String message) {
-        String origin = "";
+        String origin = null;
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+
         origin = stackTraceElements[stackTraceElements.length - 1].getClassName();
+
         int min = -2;
-        while (!origin.startsWith("de.mindcollaps.yuki")) {
+        while (!origin.startsWith("de.mindcollaps.yuki") ||
+                origin.startsWith("de.mindcollaps.yuki.console.terminal")) {
+            if (stackTraceElements.length + min < 0 || min <= -20) {
+                origin = stackTraceElements[stackTraceElements.length - 1].getClassName();
+                break;
+            }
+
             origin = stackTraceElements[stackTraceElements.length + min].getClassName();
+
             min--;
         }
+
+        YukiLogModule annotation = null;
+        Class clazz = getClassByName(origin);
+
+        if (clazz != null)
+            annotation = checkClassAnnotation(clazz);
+
+        if (annotation != null) {
+            String newOrigin = annotation.name();
+            if (newOrigin != null)
+                origin = newOrigin;
+        }
+
+
         //For hardcore debug
         //this.message = message + "\nTrace:\n" + getTraceText(stackTraceElements);
         this.message = message;
         this.origin = origin;
         this.exception = null;
         this.level = Level.INFO;
+    }
+
+    private Class getClassByName(String name) {
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private YukiLogModule checkClassAnnotation(Class clazz) {
+        if (clazz.isAnnotationPresent(YukiLogModule.class)) {
+            return (YukiLogModule) clazz.getAnnotation(YukiLogModule.class);
+        }
+        return null;
     }
 
     public YukiLogInfo level(Level level) {

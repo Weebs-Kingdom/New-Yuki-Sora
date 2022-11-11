@@ -1,6 +1,7 @@
 package de.mindcollaps.yuki.application.discord.response;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@YukiLogModule(name = "Disc Response Handler")
 public class ResponseHandler {
     private static final ArrayList<Response> responses = new ArrayList<>();
 

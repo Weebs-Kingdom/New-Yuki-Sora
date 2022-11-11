@@ -1,9 +1,11 @@
 package de.mindcollaps.yuki.api;
 
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 @SuppressWarnings("unused")
+@YukiLogModule(name = "Api Response")
 public class ApiResponse {
 
     private JSONObject data;

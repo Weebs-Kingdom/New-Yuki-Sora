@@ -6,6 +6,7 @@ import de.mindcollaps.yuki.api.ApiRequestHandler;
 import de.mindcollaps.yuki.api.YukiApi;
 import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -13,10 +14,8 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import java.io.FileReader;
 import java.util.Date;
 
+@YukiLogModule(name = "Yuki Sora")
 public class YukiSora {
-
-    private final String consMsgDef = "[Yuki Sora]";
-
     private final YukiApi yukiApi;
     private NetworkManager networkManager;
     private ApiRequestHandler requestHandler;
@@ -102,7 +101,7 @@ public class YukiSora {
             try {
                 model = reader.read(new FileReader(System.getProperty("user.dir") + "/pom.xml"));
             } catch (Exception e) {
-                YukiLogger.log(new YukiLogInfo("Can't find POM File!", "YukiSora").warning());
+                YukiLogger.log(new YukiLogInfo("Can't find POM File!").warning());
             }
         YukiLogger.log(new YukiLogInfo("-------------------------------------------").debug());
         YukiLogger.log(new YukiLogInfo("Fine Debug: " + applicationSettings.fineDebug).debug());

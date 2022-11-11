@@ -5,6 +5,7 @@ import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.application.discord.util.MessageUtil;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
+@YukiLogModule(name = "Disc Listener - Certification Listener")
 public class DiscCertificationMessageListener extends ListenerAdapter {
 
     private final YukiSora yukiSora;

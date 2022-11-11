@@ -1,6 +1,7 @@
 package de.mindcollaps.yuki.core;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.util.FileUtils;
 
@@ -8,10 +9,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
+@YukiLogModule(name = "Yuki Properties")
 public class YukiProperties implements Serializable {
 
     //Default properties keys
     public static final String dPDefaultCommandPrefix = "disc-application-prefix";
+    public static final String dPSpecialCommandPrefix = "disc-application-special-prefix";
     public static final String dPPomFileLocation = "bot-pomfile-location";
     public static final String dPApiPort = "botapi-port";
     public static final String dPApiUrl = "botapi-url";
@@ -23,7 +26,6 @@ public class YukiProperties implements Serializable {
     public static final String dPTwitchToken = "twitch-token";
     public static final String dPClientId = "twitch-client-id";
     public static final String dPDiscordToken = "disc-application-token";
-    private static final String consMsgDef = "[YukiProperties]";
     private static final String yukiPropertiesPath = FileUtils.home + "/yuki.properties";
     private static final String yukiApplicationSettingsPath = FileUtils.home + "/application.dat";
     private static final String[][] defaultProperties = new String[][]{
@@ -44,7 +46,8 @@ public class YukiProperties implements Serializable {
 
             new String[]{dPDbApiUrlOld, "http://127.0.0.1:5004/api/yuki"},
 
-            new String[]{dPPomFileLocation, "null"}
+            new String[]{dPPomFileLocation, "null"},
+            new String[]{dPSpecialCommandPrefix, "!"}
     };
 
     private static Properties properties;
@@ -122,7 +125,7 @@ public class YukiProperties implements Serializable {
         if (properties == null) {
             properties = getDefaultProperties();
             YukiLogger.log(new YukiLogInfo("Couldn't find a properties file - using default parameters").warning());
-            YukiLogger.log(new YukiLogInfo("Created default properties file: " + properties.toString(), consMsgDef).debug());
+            YukiLogger.log(new YukiLogInfo("Created default properties file: " + properties.toString()).debug());
             saveBotProperties();
         } else {
             Properties defaultProperties = getDefaultProperties();
@@ -155,7 +158,7 @@ public class YukiProperties implements Serializable {
         try {
             properties.store(new FileOutputStream(yukiPropertiesPath), "");
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("An error occurred while saving the bot properties!", consMsgDef).trace(e));
+            YukiLogger.log(new YukiLogInfo("An error occurred while saving the bot properties!").trace(e));
         }
     }
 
@@ -166,7 +169,7 @@ public class YukiProperties implements Serializable {
         try {
             FileUtils.saveObject(yukiApplicationSettingsPath, applicationSettings);
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("An error occurred while saving the application settings!", consMsgDef).trace(e));
+            YukiLogger.log(new YukiLogInfo("An error occurred while saving the application settings!").trace(e));
         }
     }
 

@@ -5,6 +5,7 @@ import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.request.FindAutoChannelsByGuildId;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 @SuppressWarnings("unused")
+@YukiLogModule(name = "Disc Listener - Auto Channel")
 public class DiscAutoChannelListener extends ListenerAdapter {
 
     public static final ArrayList<AutoChannel> activeAutoChannels = new ArrayList<>();
@@ -216,7 +218,7 @@ public class DiscAutoChannelListener extends ListenerAdapter {
         return ids;
     }
 
-    public ArrayList<AutoChannel> getAutoChanList() {
+    public ArrayList<AutoChannel> getActiveAutoChannels() {
         return activeAutoChannels;
     }
 

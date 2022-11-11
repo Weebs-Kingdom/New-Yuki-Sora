@@ -1,5 +1,6 @@
 package de.mindcollaps.yuki.api;
 
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.FileUtils;
@@ -10,7 +11,9 @@ import org.json.simple.JSONObject;
 
 import java.util.Collections;
 
+
 @SuppressWarnings("unused")
+@YukiLogModule(name = "API Manager - Old")
 public class ApiManagerOld {
 
     private final String apiToken;

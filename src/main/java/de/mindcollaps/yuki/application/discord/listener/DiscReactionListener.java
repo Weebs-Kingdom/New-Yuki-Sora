@@ -8,6 +8,7 @@ import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.api.lib.request.FindVoteByMessage;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@YukiLogModule(name = "Disc Listener - Reaction Listener")
 public class DiscReactionListener extends ListenerAdapter {
 
     private final YukiSora yukiSora;

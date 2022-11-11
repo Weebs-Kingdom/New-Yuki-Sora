@@ -7,6 +7,7 @@ import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandParser
 import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+@YukiLogModule(name = "Disc Listener - Command Listener")
 public class DiscCommandListener extends ListenerAdapter {
 
     private final YukiSora yukiSora;
@@ -45,7 +47,8 @@ public class DiscCommandListener extends ListenerAdapter {
         if (ResponseHandler.lookForResponse(event))
             return;
 
-        if (!event.getMessage().getContentRaw().startsWith(YukiProperties.getProperties(YukiProperties.dPDefaultCommandPrefix)))
+        if (!event.getMessage().getContentRaw().startsWith(YukiProperties.getProperties(YukiProperties.dPDefaultCommandPrefix)) &&
+                !event.getMessage().getContentRaw().startsWith(YukiProperties.getProperties(YukiProperties.dPSpecialCommandPrefix)))
             return;
 
         if (event.getChannelType() == ChannelType.PRIVATE) {
@@ -98,7 +101,7 @@ public class DiscCommandListener extends ListenerAdapter {
                 yukiSora.getDiscordApplication().getCommandHandler().handleServerCommand(DiscCommandParser.parseServerMessage(event.getMessage().getContentRaw(), event, server, user, yukiSora));
             } catch (Exception e) {
                 TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), new TextUtil.ResponseInstance(event.getChannel()));
-                YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log, "DiscCommandListener").trace(e));
+                YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log).trace(e));
             }
             if (YukiProperties.getApplicationSettings().fineDebug)
                 YukiLogger.log(new YukiLogInfo("--CMD-END--\n"));
@@ -132,7 +135,7 @@ public class DiscCommandListener extends ListenerAdapter {
                 yukiSora.getDiscordApplication().getCommandHandler().handleSlashCommand(DiscCommandParser.parseSlashMessage(event.getCommandString(), event, server, user, yukiSora));
             } catch (Exception e) {
                 TextUtil.sendError("Fatal command error on command: " + event.getCommandString(), new TextUtil.ResponseInstance(event.getChannel()));
-                YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log, "DiscCommandListener").trace(e));
+                YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log).trace(e));
             }
             if (YukiProperties.getApplicationSettings().fineDebug)
                 YukiLogger.log(new YukiLogInfo("--CMD-END--\n"));
@@ -154,7 +157,7 @@ public class DiscCommandListener extends ListenerAdapter {
             yukiSora.getDiscordApplication().getCommandHandler().handleClientCommand(DiscCommandParser.parseClientMessage(event.getMessage().getContentRaw(), event, user, yukiSora));
         } catch (Exception e) {
             TextUtil.sendError("Fatal command error on command: " + event.getMessage().getContentRaw(), new TextUtil.ResponseInstance(event.getChannel()));
-            YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log, "DiscCommandListener").trace(e));
+            YukiLogger.log(new YukiLogInfo("Sending client command failed!\n" + log).trace(e));
         }
         if (YukiProperties.getApplicationSettings().fineDebug)
             YukiLogger.log(new YukiLogInfo("--CMD-END--\n"));

@@ -1,10 +1,12 @@
 package de.mindcollaps.yuki.api;
 
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.FileUtils;
 import org.json.simple.JSONObject;
 
+@YukiLogModule(name = "API Request Handler")
 public class ApiRequestHandler {
 
     private final YukiSora yukiSora;

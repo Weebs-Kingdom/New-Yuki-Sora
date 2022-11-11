@@ -5,12 +5,14 @@ import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.application.discord.command.commands.*;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandler;
+import de.mindcollaps.yuki.application.discord.command.special.SCmdRename;
 import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCertificationMessageListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCommandListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscReactionListener;
 import de.mindcollaps.yuki.application.twitch.TwitchApplicationEngine;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
@@ -28,9 +30,8 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@YukiLogModule(name = "Discord Application")
 public class DiscordApplication {
-
-    private final String consMsgDef = "[Discord application]";
 
     private final YukiSora yukiSora;
     private final ArrayList<ListenerAdapter> listeners;
@@ -55,10 +56,10 @@ public class DiscordApplication {
 
         String discToken = YukiProperties.getProperties(YukiProperties.dPDiscordToken);
         if (discToken == null) {
-            YukiLogger.log(new YukiLogInfo("!!!BOT START FAILURE - token invalid", consMsgDef).error());
+            YukiLogger.log(new YukiLogInfo("!!!BOT START FAILURE - token invalid").error());
             return;
         }
-        YukiLogger.log(new YukiLogInfo("!Bot start initialized!", consMsgDef));
+        YukiLogger.log(new YukiLogInfo("!Bot start initialized!"));
         isRunning = true;
 
         builder = JDABuilder.create(discToken, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES);
@@ -69,7 +70,7 @@ public class DiscordApplication {
         try {
             botJDA = builder.build();
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("!Logging in the bot failed! - token could be invalid!", consMsgDef).error());
+            YukiLogger.log(new YukiLogInfo("!Logging in the bot failed! - token could be invalid!").error());
             isRunning = false;
             return;
         }
@@ -90,11 +91,11 @@ public class DiscordApplication {
     }
 
     private void saveAutochans() {
-        YukiLogger.log(new YukiLogInfo("Saving autochans...", consMsgDef).debug());
+        YukiLogger.log(new YukiLogInfo("Saving autochans...").debug());
 
         HashMap<String, ArrayList<String>> data = new HashMap<>();
 
-        for (AutoChannel autoChannel : autoChannelListener.getAutoChanList()) {
+        for (AutoChannel autoChannel : autoChannelListener.getActiveAutoChannels()) {
             if (autoChannel.getVoiceChannel() == null)
                 continue;
             if (!data.containsKey(autoChannel.getServer()))
@@ -105,7 +106,7 @@ public class DiscordApplication {
         try {
             FileUtils.saveObject(FileUtils.home + "/autochans.dat", data);
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("!Failed to save autochans", consMsgDef).trace(e));
+            YukiLogger.log(new YukiLogInfo("!Failed to save autochans").trace(e));
         }
     }
 
@@ -123,7 +124,7 @@ public class DiscordApplication {
                 if (autos != null)
                     FileUtils.deleteFile(FileUtils.home + "/autochans.dat");
 
-                YukiLogger.log(new YukiLogInfo("Initializing guilds", consMsgDef));
+                YukiLogger.log(new YukiLogInfo("Initializing guilds..."));
                 for (Guild g : botJDA.getGuilds()) {
                     DiscApplicationServer s = LibManager.retrieveServer(g, yukiSora);
                     if (s == null)
@@ -132,7 +133,7 @@ public class DiscordApplication {
                     try {
                         s.updateServerStats(yukiSora);
                     } catch (Exception e) {
-                        YukiLogger.log(new YukiLogInfo("Failed to init server stats of " + g.getName() + "(" + g.getId() + ")", consMsgDef).trace(e));
+                        YukiLogger.log(new YukiLogInfo("Failed to init server stats of " + g.getName() + "(" + g.getId() + ")").trace(e));
                     }
 
                     if (autos != null) {
@@ -141,24 +142,29 @@ public class DiscordApplication {
                             autoChannelListener.loadAutoChans(gAutoChans, g, s, yukiSora);
                     }
 
-                    YukiLogger.log(new YukiLogInfo(" - " + s.getGuildName() + " initialized", consMsgDef));
+                    YukiLogger.log(new YukiLogInfo(" - " + s.getGuildName() + " initialized"));
                 }
+
+                YukiLogger.log(new YukiLogInfo("Done initializing guilds"));
             }
         };
         t.schedule(tt, 10 * 10 * 10 * 10);
     }
 
     private void initCommands() {
-        YukiLogger.log(new YukiLogInfo("Initializing commands", consMsgDef).debug());
+        YukiLogger.log(new YukiLogInfo("Initializing commands...").debug());
         commandHandler.createNewCommand(new DiscCmdAlexa());
         commandHandler.createNewCommand(new DiscCmdMusic());
         commandHandler.createNewCommand(new DiscCmdSetup());
         commandHandler.createNewCommand(new DiscCmdVote());
         commandHandler.createNewCommand(new DiscCmdJob());
         commandHandler.createNewCommand(new DiscCmdInfo());
-        commandHandler.createNewCommand(new DiscCmdWallet());
+
+        commandHandler.createNewCommand(new SCmdRename());
 
         commandHandler.registerCommands(yukiSora);
+
+        YukiLogger.log(new YukiLogInfo("Done initializing commands").debug());
     }
 
     private void initListeners() {
@@ -184,5 +190,9 @@ public class DiscordApplication {
 
     public DiscCommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    public DiscAutoChannelListener getAutoChannelListener() {
+        return autoChannelListener;
     }
 }

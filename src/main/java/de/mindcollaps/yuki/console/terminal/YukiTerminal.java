@@ -1,12 +1,10 @@
 package de.mindcollaps.yuki.console.terminal;
 
-import de.mindcollaps.yuki.console.log.YukiLogInfo;
-import de.mindcollaps.yuki.console.log.YukiLogger;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.terminal.commands.*;
 import de.mindcollaps.yuki.core.YukiSora;
 
-import java.util.Scanner;
-
+@YukiLogModule(name = "Terminal")
 public class YukiTerminal {
 
     private static final boolean setupDone = false;
@@ -32,33 +30,10 @@ public class YukiTerminal {
     }
 
     private static void setupListener() {
-        new Thread(new ConsoleCommandHandler()).start();
+        new Thread(new YukiTerminalCommandHandlerThread()).start();
     }
 
     public static TerminalCommand[] getTerminalCommands() {
         return terminalCommands;
-    }
-
-    private static class ConsoleCommandHandler implements Runnable {
-
-        @Override
-        public void run() {
-            Scanner scanner = new Scanner(System.in);
-            String line = "";
-            YukiLogger.log(new YukiLogInfo("Console Command Handler initialized!", "Console Command Handler").debug());
-            while (true) {
-                try {
-                    line = scanner.nextLine();
-                } catch (Exception ignored) {
-                }
-                try {
-                    String answer = YukiTerminalCommandHandler.handleCommand(line);
-                    YukiLogger.log(new YukiLogInfo(answer, "Command Response"));
-                    YukiLogger.log(new YukiLogInfo("Terminal command handler answered: " + answer).debug());
-                } catch (Exception e) {
-                    YukiLogger.log(new YukiLogInfo("An error occurred while executing the command!", "Console Command Handler").trace(e));
-                }
-            }
-        }
     }
 }

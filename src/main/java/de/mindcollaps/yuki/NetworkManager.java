@@ -1,6 +1,7 @@
 package de.mindcollaps.yuki;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
@@ -15,6 +16,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+@YukiLogModule(name = "Network Manager")
 public class NetworkManager {
 
     private final YukiSora yukiSora;
@@ -44,7 +46,7 @@ public class NetworkManager {
         try {
             connection = (HttpURLConnection) makeConnection(path);
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("Failed to establish connection\n" + log, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("Failed to establish connection\n" + log).trace(e));
             return null;
         }
         connection.setConnectTimeout(10000);
@@ -62,7 +64,7 @@ public class NetworkManager {
             } else
                 connection.setRequestMethod(methode);
         } catch (ProtocolException e) {
-            YukiLogger.log(new YukiLogInfo("Failed to establish connection\n" + log, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("Failed to establish connection\n" + log).trace(e));
             return null;
         }
         connection.setDoInput(true);
@@ -74,10 +76,10 @@ public class NetworkManager {
             os.flush();
             os.close();
         } catch (ConnectException e) {
-            YukiLogger.log(new YukiLogInfo("Requested server is not available | Timeout\n" + log, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("Requested server is not available | Timeout\n" + log).trace(e));
             return null;
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("Error in sending data!\n" + log, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("Error in sending data!\n" + log).trace(e));
             return null;
         }
 
@@ -94,7 +96,7 @@ public class NetworkManager {
             }
             return readResponse(log, c);
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("Error get method!\n" + log, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("Error get method!\n" + log).trace(e));
             return null;
         }
     }
@@ -105,11 +107,11 @@ public class NetworkManager {
         try {
             br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
         } catch (ConnectException e) {
-            YukiLogger.log(new YukiLogInfo("[Network Manager] Requested server is not available | Timeout\n" + requestLog, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("[Network Manager] Requested server is not available | Timeout\n" + requestLog).trace(e));
         } catch (FileNotFoundException e) {
-            YukiLogger.log(new YukiLogInfo("A request responded with 404\n" + requestLog, "[Network Manager]").debug());
+            YukiLogger.log(new YukiLogInfo("A request responded with 404\n" + requestLog).debug());
         } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("Error in response reading!\n" + requestLog, "[Network Manager]").trace(e));
+            YukiLogger.log(new YukiLogInfo("Error in response reading!\n" + requestLog).trace(e));
         }
 
         try {

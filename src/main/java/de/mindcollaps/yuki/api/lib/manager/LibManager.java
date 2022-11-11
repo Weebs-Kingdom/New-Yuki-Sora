@@ -5,12 +5,14 @@ import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
 import de.mindcollaps.yuki.api.lib.request.FindUserById;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.Nullable;
 
+@YukiLogModule(name = "Lib Manager")
 public class LibManager {
 
     @Nullable

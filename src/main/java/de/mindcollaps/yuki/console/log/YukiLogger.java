@@ -4,7 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+@YukiLogModule(name = "Yuki Logger")
 public class YukiLogger {
 
     public static Logger logger;

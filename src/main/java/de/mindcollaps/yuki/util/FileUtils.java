@@ -1,16 +1,17 @@
 package de.mindcollaps.yuki.util;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
 
+@YukiLogModule(name = "File Utils")
 public class FileUtils {
 
     public static final String home = System.getProperty("user.dir") + "/yuki";
-    private static final String module = "File Utils";
     private static final JSONParser parser = new JSONParser();
 
     @SuppressWarnings("SameReturnValue")
@@ -103,7 +104,7 @@ public class FileUtils {
             try {
                 dir.mkdirs();
             } catch (Exception e) {
-                new YukiLogInfo("Can't create file dirs", module).trace(e).log();
+                new YukiLogInfo("Can't create file dirs").trace(e).log();
             }
         }
         createFiles(file);
@@ -114,7 +115,7 @@ public class FileUtils {
             try {
                 file.createNewFile();
             } catch (Exception e) {
-                new YukiLogInfo("Can't create file dirs", module).trace(e).log();
+                new YukiLogInfo("Can't create file dirs").trace(e).log();
             }
         }
     }

@@ -10,6 +10,7 @@ import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
+@YukiLogModule(name = "Twitch Engine")
 public class TwitchApplicationEngine {
 
     private final YukiSora yukiSora;
@@ -66,17 +68,17 @@ public class TwitchApplicationEngine {
             String userName = (String) us.get("twitchChannelId");
             if (user == null || userName == null) {
                 YukiLogger.log(
-                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Probably not configured correctly", "Twitch").debug()
+                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Probably not configured correctly").debug()
                 );
                 continue;
             }
             YukiLogger.log(
-                    new YukiLogInfo("Enabling twitch listener for " + userName + "!", "Twitch").debug()
+                    new YukiLogInfo("Enabling twitch listener for " + userName + "!").debug()
             );
             User twitchUser = twitchClient.getClientHelper().enableStreamEventListener(userName);
             if (twitchUser == null) {
                 YukiLogger.log(
-                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Couldn't load twitch user from twitch", "Twitch").debug()
+                        new YukiLogInfo("!Twitch listener not enabled for " + userName + "! Couldn't load twitch user from twitch").debug()
                 );
                 continue;
             }
@@ -96,7 +98,7 @@ public class TwitchApplicationEngine {
                 users.remove(i);
                 if (twitchClient.getClientHelper().disableStreamEventListenerForId(twUser.getId()))
                     YukiLogger.log(
-                            new YukiLogInfo("It seems like the twitch listener couldn't deactivate the twitch listener for " + user.getUsername(), "Twitch").error()
+                            new YukiLogInfo("It seems like the twitch listener couldn't deactivate the twitch listener for " + user.getUsername()).error()
                     );
                 break;
             }
