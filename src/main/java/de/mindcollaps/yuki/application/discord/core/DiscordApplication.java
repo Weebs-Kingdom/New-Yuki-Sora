@@ -154,11 +154,12 @@ public class DiscordApplication {
     private void initCommands() {
         YukiLogger.log(new YukiLogInfo("Initializing commands...").debug());
         commandHandler.createNewCommand(new DiscCmdAlexa());
+        commandHandler.createNewCommand(new DiscCmdInfo());
+        commandHandler.createNewCommand(new DiscCmdJob());
         commandHandler.createNewCommand(new DiscCmdMusic());
         commandHandler.createNewCommand(new DiscCmdSetup());
         commandHandler.createNewCommand(new DiscCmdVote());
-        commandHandler.createNewCommand(new DiscCmdJob());
-        commandHandler.createNewCommand(new DiscCmdInfo());
+        commandHandler.createNewCommand(new DiscCmdWallet());
 
         commandHandler.createNewCommand(new SCmdRename());
 
