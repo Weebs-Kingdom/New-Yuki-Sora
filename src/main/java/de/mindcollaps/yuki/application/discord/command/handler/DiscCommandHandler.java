@@ -198,12 +198,14 @@ public class DiscCommandHandler {
             helpBuild(builder, subCommand);
         }
 
-        if (command.getOptions().size() > 0) {
-            for (CommandOption option : command.getOptions()) {
-                builder.append("... ");
-                builder.append(buildOptionHelp(option)).append(" ");
-            }
-        }
+        /**
+         if (command.getOptions().size() > 0) {
+         for (CommandOption option : command.getOptions()) {
+         builder.append("... ");
+         builder.append(buildOptionHelp(option)).append(" ");
+         }
+         }
+         **/
 
         builder.deleteCharAt(builder.length() - 1);
 

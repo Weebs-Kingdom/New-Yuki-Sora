@@ -436,6 +436,62 @@ public class DiscCmdSetup extends DiscCommand {
                                             }
                                         })
                         ));
+
+        addSubcommands(
+                new SubCommandGroup("viprole", "With this sub command you can changed the meaning of a role")
+                        .addSubCommands(
+                                new SubCommand("set", "Crate a VIP role")
+                                        .addOptions(OptionType.ROLE, "role", "The VIP role")
+                                        .addAction(new CommandAction() {
+                                            @Override
+                                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                setVipRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
+                                            }
+
+                                            @Override
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                setVipRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
+                                            }
+                                        })
+                        ));
+
+        addSubcommands(
+                new SubCommandGroup("primerole", "With this sub command you can changed the meaning of a role")
+                        .addSubCommands(
+                                new SubCommand("set", "Crate a prime role")
+                                        .addOptions(OptionType.ROLE, "role", "The prime role")
+                                        .addAction(new CommandAction() {
+                                            @Override
+                                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getInteraction()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                setPrimeRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
+                                            }
+
+                                            @Override
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                setPrimeRole(args.getArg("role").getRole(), server, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
+                                            }
+                                        })
+                        ));
     }
 
     private void createTwitchChannel(GuildChannel gc, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
@@ -534,6 +590,20 @@ public class DiscCmdSetup extends DiscCommand {
             server.updateData(yukiSora);
             TextUtil.sendSuccess("Okay our dear boosters have a role which value there donation UwU", res);
         }
+    }
+
+    private void setVipRole(Role role, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
+        server.setVipRoleId(role.getId());
+        server.updateData(yukiSora);
+
+        TextUtil.sendSuccess("New VIP Role set up! I can't wait to see the new VIP's :sunglasses:", res);
+    }
+
+    private void setPrimeRole(Role role, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {
+        server.setPrimeRoleId(role.getId());
+        server.updateData(yukiSora);
+
+        TextUtil.sendSuccess("New prime role is set up! I can't wait to see the first grouped prime users on the side X3", res);
     }
 
     private void addDefaultRole(Role role, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance res) {

@@ -2,15 +2,48 @@ package de.mindcollaps.yuki.api.lib.route;
 
 import de.mindcollaps.yuki.api.ApiResponse;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+@YukiLogModule(name = "Route Data")
 public abstract class RouteData extends Route {
 
     private String databaseId;
+
+    public <T extends RouteData> T[] fetchAll(Class<T> clazz, YukiSora yukiSora){
+        ApiResponse response = yukiSora.getRequestHandler().get(getRoute());
+        if(response.getStatus() == 200){
+            JSONArray datas = response.getArray();
+
+            List<T> list = new ArrayList<>();
+            for (Object data : datas) {
+                JSONObject jsDataObj = (JSONObject) data;
+                T newObj = null;
+                try {
+                    newObj = clazz.getConstructor().newInstance();
+                } catch (Exception e) {
+                    YukiLogger.log(new YukiLogInfo("There was an error creating a new instance of " + clazz.getName()).trace(e));
+                 continue;
+                }
+
+                RouteParser.load(newObj, jsDataObj);
+                list.add(newObj);
+            }
+            return list.toArray((T[]) Array.newInstance(clazz, list.size()));
+        } else {
+            return (T[]) Array.newInstance(clazz, 0);
+        }
+    }
 
     public void fetchData(String databaseId, YukiSora yukiSora) {
         this.databaseId = databaseId;

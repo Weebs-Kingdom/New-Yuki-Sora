@@ -81,9 +81,13 @@ public class DiscordApplication {
         initCommands();
         initListeners();
         initServers();
+
+        yukiSora.getYukiTaskManager().startUpdateThread();
+
+        YukiLogger.log(new YukiLogInfo("Discord Application started successfully!"));
     }
 
-    public void onShutdown() {
+    public void shutdown() {
         if (botJDA != null)
             botJDA.shutdownNow();
 

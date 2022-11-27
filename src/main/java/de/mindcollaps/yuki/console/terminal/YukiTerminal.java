@@ -25,7 +25,8 @@ public class YukiTerminal {
                 new TCStart(yukiSora),
                 new TCLoadProperties(),
                 new TCSaveAll(),
-                new TCDebug()
+                new TCDebug(),
+                new TCStop(yukiSora)
         };
     }
 

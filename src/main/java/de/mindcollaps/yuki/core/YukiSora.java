@@ -3,7 +3,7 @@ package de.mindcollaps.yuki.core;
 import de.mindcollaps.yuki.NetworkManager;
 import de.mindcollaps.yuki.api.ApiManagerOld;
 import de.mindcollaps.yuki.api.ApiRequestHandler;
-import de.mindcollaps.yuki.api.YukiApi;
+import de.mindcollaps.yuki.application.task.YukiTaskManager;
 import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
@@ -16,14 +16,14 @@ import java.util.Date;
 
 @YukiLogModule(name = "Yuki Sora")
 public class YukiSora {
-    private final YukiApi yukiApi;
+    private final YukiTaskManager yukiTaskManager;
     private NetworkManager networkManager;
     private ApiRequestHandler requestHandler;
     private ApiManagerOld apiManagerOld;
     private DiscordApplication application;
 
     public YukiSora() {
-        yukiApi = new YukiApi();
+        yukiTaskManager = new YukiTaskManager(this);
     }
 
     public void boot(String[] args) {
@@ -120,11 +120,15 @@ public class YukiSora {
         YukiProperties.saveApplicationSettings();
 
         if (application != null)
-            application.onShutdown();
+            application.shutdown();
     }
 
-    public YukiApi getYukiApi() {
-        return yukiApi;
+    public void shutdown(){
+        onShutdown();
+    }
+
+    public YukiTaskManager getYukiTaskManager() {
+        return yukiTaskManager;
     }
 
     public NetworkManager getNetworkManager() {

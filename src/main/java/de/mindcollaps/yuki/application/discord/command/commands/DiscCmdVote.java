@@ -133,9 +133,10 @@ public class DiscCmdVote extends DiscCommand {
                 new SubCommand("create", "Create your vote")
                         .addOptions(
                                 new CommandOption(OptionType.CHANNEL, "channel", "The channel where you want to put your vote"),
-                                new CommandOption(OptionType.STRING, "title", "The title of your vote"),
-                                new CommandOption(OptionType.STRING, "color", "Hex color of the vote (leave empty for default)").optional()
+                                new CommandOption(OptionType.STRING, "title", "The title of your vote")
                         )
+                        .addOptions(
+                                new CommandOption(OptionType.STRING, "color", "Hex color of the vote (leave empty for default)").optional())
                         .addAction(
                                 new CommandAction() {
                                     @Override

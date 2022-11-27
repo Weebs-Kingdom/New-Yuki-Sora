@@ -1,17 +1,67 @@
 package de.mindcollaps.yuki.application.discord.util;
 
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.*;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiscordUtil {
+
+    public static void giveRoleToMemberOnAllGuilds(User user, YukiSora yukiSora, String role){
+        if(role.equalsIgnoreCase("prime"))
+        for (Guild guild : yukiSora.getDiscordApplication().getBotJDA().getGuilds()) {
+            DiscApplicationServer server = LibManager.retrieveServer(guild, yukiSora);
+            if(server == null)
+                continue;
+
+            if(user == null)
+                continue;
+
+            Member member = guild.getMember(user);
+
+            if(member == null)
+                continue;
+
+            if(server.getPrimeRoleId() == null)
+                continue;
+            if(server.getPrimeRoleId().length() < 1)
+                continue;
+
+            Role primeRole = guild.getRoleById(server.getPrimeRoleId());
+            if(primeRole != null)
+            assignRolesToMembers(guild, List.of(primeRole), member);
+        }
+
+        if(role.equalsIgnoreCase("vip"))
+            for (Guild guild : yukiSora.getDiscordApplication().getBotJDA().getGuilds()) {
+                DiscApplicationServer server = LibManager.retrieveServer(guild, yukiSora);
+                if(server == null)
+                    continue;
+
+                if(user == null)
+                    continue;
+
+                Member member = guild.getMember(user);
+
+                if(member == null)
+                    continue;
+
+                if(server.getVipRoleId() == null)
+                    continue;
+                if(server.getVipRoleId().length() < 1)
+                    continue;
+
+                Role vipRole = guild.getRoleById(server.getVipRoleId());
+                if(vipRole != null)
+                assignRolesToMembers(guild, List.of(vipRole), member);
+            }
+    }
 
     public static boolean userHasGuildAdminPermission(Member member, Guild guild, TextUtil.ResponseInstance res, YukiSora engine) {
         boolean hasPermission = false;

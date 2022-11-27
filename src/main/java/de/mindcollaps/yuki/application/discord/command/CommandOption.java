@@ -24,7 +24,7 @@ public class CommandOption {
     }
 
     public OptionData toOptionData() {
-        return new OptionData(optionType, name, description);
+        return new OptionData(optionType, name, description).setRequired(!optional);
     }
 
     public String getName() {
