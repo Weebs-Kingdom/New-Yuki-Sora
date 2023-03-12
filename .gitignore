@@ -20,8 +20,8 @@
 *.rar
 
 hs_err_pid*
-yuki/
-target/
-.idea/
-.github/
+/yuki/
+/target/
+/.idea/
+/.github/
 *.iml
