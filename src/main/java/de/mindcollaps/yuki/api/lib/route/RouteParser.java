@@ -30,7 +30,7 @@ public class RouteParser {
                 Object data = null;
                 try {
                     for (Method declaredMethod : obj.getClass().getDeclaredMethods()) {
-                        if (declaredMethod.getName().equalsIgnoreCase("get" + fieldName) || declaredMethod.getName().equalsIgnoreCase(fieldName)) {
+                        if (declaredMethod.getName().equalsIgnoreCase("get" + fieldName) || declaredMethod.getName().equalsIgnoreCase(fieldName) ||declaredMethod.getName().equalsIgnoreCase("is" + fieldName)) {
                             data = declaredMethod.invoke(obj, null);
                             break;
                         }
