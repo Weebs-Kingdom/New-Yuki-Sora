@@ -1,57 +1,47 @@
-# Welcome to the Yuki-Sora suit!
+# Yuki-Sora Discord Bot
 
-Yuki-Sora is a Discord Bot with a lot of features. Here you can see all the stuff you need to know about each module.
+Welcome to the Yuki-Sora Discord Bot, a project created to connect people through Discord. This is the 3rd rewrite and a heart project for me. Here you can find all the information you need to know about Yuki-Sora.
 
-# Other Yuki Repository
+## Modules
 
-* [Database](https://github.com/Weebs-Kingdom/Yuki-Sora-Database)
-* [Homepage](https://github.com/Weebs-Kingdom/weebskingdom.com)
-* [Music Slave](https://github.com/Weebs-Kingdom/Yuki-Sora-MusicSlave)
-* [Lazy Team](https://github.com/MindCollaps/Lazy-Team)
+- 💻 **Database:** [GitHub Repository](https://github.com/Weebs-Kingdom/Yuki-Sora-Database)
+- 🏠 **Homepage:** [GitHub Repository](https://github.com/Weebs-Kingdom/weebskingdom.com)
+- 🎵 **Music Slave:** [GitHub Repository](https://github.com/Weebs-Kingdom/Yuki-Sora-MusicSlave)
+- 🛋️ **Lazy Team:** [GitHub Repository](https://github.com/MindCollaps/Lazy-Team)
 
-# Yuki-Sora Wiki
+## Wiki
+Currently under maintenance
 
-* [Monsters](https://github.com/NeoMC2/Yuki-Sora/wiki/Monsters)
-* [Items](https://github.com/NeoMC2/Yuki-Sora/wiki/Item)
-* [Dungeon](https://github.com/MindCollaps/Yuki-Sora/wiki/Dungeon)
-* [Commands](https://github.com/NeoMC2/Yuki-Sora/wiki/Commands)
-* [Gif list](https://github.com/NeoMC2/Yuki-Sora/wiki/Gifs)
+- 🦹 **Monsters:** [GitHub Wiki](https://github.com/NeoMC2/Yuki-Sora/wiki/Monsters)
+- 🎁 **Items:** [GitHub Wiki](https://github.com/NeoMC2/Yuki-Sora/wiki/Item)
+- 🏰 **Dungeon:** [GitHub Wiki](https://github.com/MindCollaps/Yuki-Sora/wiki/Dungeon)
+- ⌨️ **Commands:** [GitHub Wiki](https://github.com/NeoMC2/Yuki-Sora/wiki/Commands)
+- 🎬 **Gif list:** [GitHub Wiki](https://github.com/NeoMC2/Yuki-Sora/wiki/Gifs)
 
-***
+## Credits
 
-# Credits
+### Main Developer
 
-## Main Developer
+- 🧑‍💻 [Noah Till (MindCollaps)](https://github.com/mindcollaps)
 
-### [Noah Till (MindCollaps)](https://github.com/mindcollaps)
+### Developer support
 
-## Developer support
+- 🙋 **Hanna (scnrjse)**
+  - Gif list, Language-Support, enhancements
 
-### Hanna (scnrjse)
+- 🐲 **Dragon**
+  - Gif list, Monsters, enhancements
 
-Gif list, Language-Support, enhancements
+- 🙎 **Nameless**
+  - Illustration and Design
 
-### Dragon
+- 👩‍💻 **Kaito**
+  - Language-Support
 
-Gif list, Monsters, enhancements
+- 🧝‍♀️ **Karoline Fließ (Grand Goddess)**
+  - Monsters
 
-### Nameless
+## Dependencies
 
-Illustration
-
-### Kaito
-
-Language-Support
-
-### Edward Wolf (Pastelicious)
-
-Monsters
-
-### Karoline Fließ (Grand Goddess)
-
-Monsters
-
-## Used packages
-
-* [DV8FromTheWorld / JDA](https://github.com/DV8FromTheWorld/JDA)
-* [fangyidong / json-simple](https://github.com/fangyidong/json-simple)
+- [DV8FromTheWorld/JDA](https://github.com/DV8FromTheWorld/JDA)
+- [Log4J](https://mvnrepository.com/artifact/log4j/log4j)
