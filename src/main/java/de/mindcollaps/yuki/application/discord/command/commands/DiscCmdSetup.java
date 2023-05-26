@@ -706,7 +706,7 @@ public class DiscCmdSetup extends DiscCommand {
         UserTwitchConnection con = new FindTwitchUserConByUser(user.getUserID()).makeRequestSingle(yukiSora);
         if (con == null) {
             con = new UserTwitchConnection();
-            con.setUser(user.getUserID());
+            con.setUser(user.getDatabaseId());
             con.setTwitchChannelId(twitchName);
             con.setServers(new String[]{server.getGuildId()});
             con.postData(yukiSora);
