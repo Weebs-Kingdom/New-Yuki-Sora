@@ -1,6 +1,7 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
 import de.mindcollaps.yuki.api.lib.request.FindAutoChannelsByIds;
+import de.mindcollaps.yuki.api.lib.request.FindUserById;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
@@ -698,15 +699,23 @@ public class DiscCmdSetup extends DiscCommand {
     private void twitchMemberAdd(User us, String twitchName, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         if (us == null) {
             TextUtil.sendError("That member can't be found!", res);
+            return;
         }
         if (twitchName == null) {
             TextUtil.sendError("That twitch channel is not legit!", res);
+            return;
+        }
+
+        DiscApplicationUser twitchUser = new FindUserById(us.getId()).makeRequestSingle(yukiSora);
+        if(twitchUser == null){
+            TextUtil.sendError("That member can't be found! Make sure, they were active on this server!", res);
+            return;
         }
 
         UserTwitchConnection con = new FindTwitchUserConByUser(user.getUserID()).makeRequestSingle(yukiSora);
         if (con == null) {
             con = new UserTwitchConnection();
-            con.setUser(user.getDatabaseId());
+            con.setUser(twitchUser.getDatabaseId());
             con.setTwitchChannelId(twitchName);
             con.setServers(new String[]{server.getGuildId()});
             con.postData(yukiSora);
