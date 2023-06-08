@@ -6,7 +6,7 @@
 
     <groupId>mindcollaps.yukisora</groupId>
     <artifactId>YukiSora</artifactId>
-    <version>5.1.0_alpha_008</version>
+    <version>5.1.1_alpha</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.22</version>
+            <version>5.0.0-beta.9</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>

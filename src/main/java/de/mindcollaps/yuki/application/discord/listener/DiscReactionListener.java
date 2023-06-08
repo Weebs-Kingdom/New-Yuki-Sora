@@ -2,15 +2,15 @@ package de.mindcollaps.yuki.application.discord.listener;
 
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.data.Vote;
 import de.mindcollaps.yuki.api.lib.data.VoteElement;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
+import de.mindcollaps.yuki.api.lib.request.FindVoteByMessage;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
-import de.mindcollaps.yuki.api.lib.data.Vote;
-import de.mindcollaps.yuki.api.lib.request.FindVoteByMessage;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -34,6 +34,9 @@ public class DiscReactionListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+        //if member = null, than its a private channel
+        if (event.getMember() == null)
+            return;
         if (event.getMember().getUser().isBot())
             return;
 
@@ -42,6 +45,9 @@ public class DiscReactionListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+        //if member = null, than its a private channel
+        if (event.getMember() == null)
+            return;
         if (event.getMember().getUser().isBot())
             return;
 

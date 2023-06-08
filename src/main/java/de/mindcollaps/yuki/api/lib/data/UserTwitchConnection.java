@@ -1,16 +1,13 @@
 package de.mindcollaps.yuki.api.lib.data;
 
-import de.mindcollaps.yuki.api.lib.route.ForeignData;
-import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
-import de.mindcollaps.yuki.api.lib.route.RouteField;
+import de.mindcollaps.yuki.api.lib.route.*;
 
 @RouteClass("user-twitch-con")
 public class UserTwitchConnection extends RouteData {
 
     @RouteField
     @ForeignData(DiscApplicationUser.class)
-    private String user = "";
+    private DatabaseId user = new DatabaseId();
 
     @RouteField
     private String twitchChannelId = "";
@@ -21,11 +18,11 @@ public class UserTwitchConnection extends RouteData {
     public UserTwitchConnection() {
     }
 
-    public String getUser() {
+    public DatabaseId getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(DatabaseId user) {
         this.user = user;
     }
 

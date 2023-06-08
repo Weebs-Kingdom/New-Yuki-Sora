@@ -1,11 +1,11 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
-import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.request.FindUserById;
 import de.mindcollaps.yuki.application.discord.command.*;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
+import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;

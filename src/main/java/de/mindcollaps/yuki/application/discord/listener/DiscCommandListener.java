@@ -4,11 +4,11 @@ import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandParser;
+import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
-import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.Permission;
@@ -60,8 +60,7 @@ public class DiscCommandListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-        if (ResponseHandler.lookForResponse(event)) {
-        }
+        ResponseHandler.lookForResponse(event);
     }
 
     private void handlePrivateCommand(MessageReceivedEvent event) {

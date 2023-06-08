@@ -1,19 +1,19 @@
 package de.mindcollaps.yuki.application.discord.core;
 
-import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandler;
-import de.mindcollaps.yuki.application.discord.command.special.SCmdRename;
-import de.mindcollaps.yuki.console.log.YukiLogInfo;
-import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.api.lib.data.AutoChannel;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
 import de.mindcollaps.yuki.application.discord.command.commands.*;
+import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandHandler;
+import de.mindcollaps.yuki.application.discord.command.special.SCmdRename;
 import de.mindcollaps.yuki.application.discord.listener.DiscAutoChannelListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCertificationMessageListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscCommandListener;
 import de.mindcollaps.yuki.application.discord.listener.DiscReactionListener;
 import de.mindcollaps.yuki.application.twitch.TwitchApplicationEngine;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.FileUtils;
@@ -62,7 +62,7 @@ public class DiscordApplication {
         YukiLogger.log(new YukiLogInfo("!Bot start initialized!"));
         isRunning = true;
 
-        builder = JDABuilder.create(discToken, GatewayIntent.SCHEDULED_EVENTS, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES);
+        builder = JDABuilder.create(discToken, GatewayIntent.DIRECT_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.SCHEDULED_EVENTS, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_EMOJIS_AND_STICKERS, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_INVITES);
         builder.setAutoReconnect(true);
         builder.setStatus(OnlineStatus.ONLINE);
         builder.enableCache(CacheFlag.CLIENT_STATUS, CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.STICKER);
@@ -106,7 +106,7 @@ public class DiscordApplication {
             if (autoChannel.getVoiceChannel() == null)
                 continue;
             if (!data.containsKey(autoChannel.getServer()))
-                data.put(autoChannel.getServer(), new ArrayList<>());
+                data.put(autoChannel.getServer().getDatabaseId(), new ArrayList<>());
 
             data.get(autoChannel.getServer()).add(autoChannel.getVoiceChannel().getId());
         }

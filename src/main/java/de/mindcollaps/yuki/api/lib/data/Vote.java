@@ -1,10 +1,7 @@
 package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.request.FindVoteElementsByVoteId;
-import de.mindcollaps.yuki.api.lib.route.ForeignData;
-import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
-import de.mindcollaps.yuki.api.lib.route.RouteField;
+import de.mindcollaps.yuki.api.lib.route.*;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -24,7 +21,7 @@ public class Vote extends RouteData {
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)
-    private String server = "";
+    private DatabaseId server = new DatabaseId();
 
     @RouteField
     private String channelId = "";
@@ -108,7 +105,7 @@ public class Vote extends RouteData {
                         Emoji emoji = Emoji.fromFormatted(voteElement.getEmote());
                         content += emoji.getFormatted() + " " + voteElement.getDescription() + "\n";
                     }
-                    content = content.substring(0, content.length() - 2);
+                    content = content.substring(0, content.length() - 1);
                 }
 
         if (content.length() == 0)
@@ -164,11 +161,11 @@ public class Vote extends RouteData {
         return voteElements;
     }
 
-    public String getServer() {
+    public DatabaseId getServer() {
         return server;
     }
 
-    public void setServer(String server) {
+    public void setServer(DatabaseId server) {
         this.server = server;
     }
 

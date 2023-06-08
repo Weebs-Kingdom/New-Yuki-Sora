@@ -39,6 +39,7 @@ public class ResponseHandler {
                         Instant now = new Date().toInstant();
                         now.minus(10, ChronoUnit.MINUTES);
                         if (now.isAfter(r.creationTime.toInstant())) {
+                            YukiLogger.log(new YukiLogInfo("Response handler removed an response because it was too old!").debug());
                             responses.iterator().remove();
                         }
                     }
@@ -56,38 +57,15 @@ public class ResponseHandler {
             for (Response res : responses) {
                 if (update.getAuthor().getId().equals(res.discUserId)) {
                     if (update.getChannel().getId().equals(res.discChannelId)) {
+                        try {
+                            if (!update.getGuild().getId().equals(res.discGuildId))
+                                continue;
+                        } catch (Exception ignored) {
+                        }
                         re = res;
 
                         responses.remove(res);
-                        res.onGuildMessage(update);
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("The response handler caught an error while performing an response action!").trace(e));
-
-            if (re != null) {
-                try {
-                    re.onError(e);
-                } catch (Exception ee) {
-                    YukiLogger.log(new YukiLogInfo("The response handler caught an error while performing the onError() action").trace(e));
-                }
-            }
-            return false;
-        }
-        return false;
-    }
-
-    public static boolean lookForPrivateResponse(MessageReceivedEvent update) {
-        Response re = null;
-        try {
-            for (Response res : responses) {
-                if (update.getAuthor().getId().equals(res.discUserId)) {
-                    if (update.getChannel().getId().equals(res.discChannelId)) {
-                        re = res;
-                        responses.remove(res);
-                        res.onPrivateMessage(update);
+                        res.onMessage(update);
                         return true;
                     }
                 }
@@ -111,40 +89,19 @@ public class ResponseHandler {
         Response re = null;
         try {
             for (Response res : responses) {
-                if (update.getMember().getId().equals(res.discUserId)) {
+                if (update.getUserId().equals(res.discUserId)) {
                     if (update.getChannel().getId().equals(res.discChannelId)) {
-                        re = res;
-                        responses.remove(res);
-                        res.onGuildEmote(update);
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            YukiLogger.log(new YukiLogInfo("The response handler caught an error while performing an response action!").trace(e));
-
-            if (re != null) {
-                try {
-                    re.onError(e);
-                } catch (Exception ee) {
-                    YukiLogger.log(new YukiLogInfo("The response handler caught an error while performing the onError() action").trace(e));
-                }
-            }
-            return false;
-        }
-        return false;
-    }
-
-    public static boolean lookForPrivateResponse(MessageReactionAddEvent update) {
-        Response re = null;
-        try {
-            for (Response res : responses) {
-                if (update.getUser().getId().equals(res.discUserId)) {
-                    if (update.getChannel().getId().equals(res.discChannelId)) {
-                        re = res;
-                        responses.remove(res);
-                        res.onPrivateEmote(update);
-                        return true;
+                        if (update.getMessageId().equals(res.discMessageId)) {
+                            try {
+                                if (!update.getGuild().getId().equals(res.discGuildId))
+                                    continue;
+                            } catch (Exception ignored) {
+                            }
+                            re = res;
+                            responses.remove(res);
+                            res.onEmote(update);
+                            return true;
+                        }
                     }
                 }
             }

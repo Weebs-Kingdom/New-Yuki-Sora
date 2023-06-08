@@ -1,8 +1,8 @@
 package de.mindcollaps.yuki.api.lib.route;
 
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
-import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -30,12 +30,16 @@ public class RouteParser {
                 Object data = null;
                 try {
                     for (Method declaredMethod : obj.getClass().getDeclaredMethods()) {
-                        if (declaredMethod.getName().equalsIgnoreCase("get" + fieldName) || declaredMethod.getName().equalsIgnoreCase(fieldName) ||declaredMethod.getName().equalsIgnoreCase("is" + fieldName)) {
+                        if (declaredMethod.getName().equalsIgnoreCase("get" + fieldName) || declaredMethod.getName().equalsIgnoreCase(fieldName) || declaredMethod.getName().equalsIgnoreCase("is" + fieldName)) {
                             data = declaredMethod.invoke(obj, null);
                             break;
                         }
                     }
                 } catch (Exception e) {
+                }
+
+                if (data instanceof DatabaseId dat) {
+                    data = dat.getDatabaseId();
                 }
 
                 if (data instanceof String[] dat) {
@@ -72,7 +76,7 @@ public class RouteParser {
             if (databaseId == null)
                 throw new Exception("DatabaseID is null");
 
-            obj.getClass().getSuperclass().getDeclaredMethod("setDatabaseId", String.class).invoke(obj, databaseId);
+            obj.getClass().getSuperclass().getDeclaredMethod("setDatabaseId", DatabaseId.class).invoke(obj, new DatabaseId(databaseId));
         } catch (Exception e) {
             YukiLogger.log(new YukiLogInfo("Couldn't load database ID (_id) into object!").trace(e));
         }
@@ -93,6 +97,12 @@ public class RouteParser {
 
                 if (data == null)
                     continue;
+
+                if (field.getAnnotation(ForeignData.class) != null) {
+                    if (data instanceof String dat) {
+                        data = new DatabaseId(dat);
+                    }
+                }
 
                 if (data instanceof JSONArray array) {
                     data = array.toArray(new String[array.size()]);

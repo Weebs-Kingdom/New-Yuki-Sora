@@ -1,9 +1,10 @@
 package de.mindcollaps.yuki.api.lib.request;
 
+import de.mindcollaps.yuki.api.lib.data.Vote;
+import de.mindcollaps.yuki.api.lib.route.DatabaseId;
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.api.lib.route.RouteRequest;
-import de.mindcollaps.yuki.api.lib.data.Vote;
 
 @RouteClass("findVoteByMessage")
 public class FindVoteByMessage extends RouteRequest<Vote> {
@@ -17,9 +18,9 @@ public class FindVoteByMessage extends RouteRequest<Vote> {
     @RouteField
     private String messageId;
 
-    public FindVoteByMessage(String serverId, String channelId, String messageId) {
+    public FindVoteByMessage(DatabaseId serverId, String channelId, String messageId) {
         super(Vote.class);
-        this.serverId = serverId;
+        this.serverId = serverId.getDatabaseId();
         this.channelId = channelId;
         this.messageId = messageId;
     }

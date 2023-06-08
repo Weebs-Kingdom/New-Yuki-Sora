@@ -21,7 +21,7 @@ public class YukiTaskManager {
 
     boolean threadRunning = false;
     private Timer timer;
-    private YukiSora yukiSora;
+    private final YukiSora yukiSora;
 
     public YukiTaskManager(YukiSora yukiSora) {
         this.yukiSora = yukiSora;
@@ -56,14 +56,13 @@ public class YukiTaskManager {
         String isnt = (String) object.get("task");
         JSONArray array = (JSONArray) object.get("data");
 
-        switch (isnt.toLowerCase()) {
-            case "giverole":
-                try {
-                    return constructTask(array, TaskGiveRole.class);
-                } catch (Exception e) {
-                    YukiLogger.log(new YukiLogInfo("The Task parser couldn't load the data").trace(e));
-                    return null;
-                }
+        if (isnt.toLowerCase().equals("giverole")) {
+            try {
+                return constructTask(array, TaskGiveRole.class);
+            } catch (Exception e) {
+                YukiLogger.log(new YukiLogInfo("The Task parser couldn't load the data").trace(e));
+                return null;
+            }
         }
 
         YukiLogger.log(new YukiLogInfo("The Task parser didn't found a matching instruction!").trace(null));
@@ -80,7 +79,7 @@ public class YukiTaskManager {
                 if (arrayData.containsKey(declaredField.getName())) {
                     for (Method declaredMethod : clazz.getDeclaredMethods()) {
                         if (declaredMethod.getName().equalsIgnoreCase("set" + declaredField.getName())) {
-                            declaredMethod.invoke(task, (String) arrayData.get(declaredField.getName()));
+                            declaredMethod.invoke(task, arrayData.get(declaredField.getName()));
                         }
                     }
                 }

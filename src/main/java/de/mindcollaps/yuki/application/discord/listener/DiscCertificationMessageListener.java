@@ -2,7 +2,12 @@ package de.mindcollaps.yuki.application.discord.listener;
 
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.data.ServerUser;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
+import de.mindcollaps.yuki.api.lib.request.FindServerUsersByUser;
+import de.mindcollaps.yuki.api.lib.request.FindUserById;
+import de.mindcollaps.yuki.application.discord.response.Response;
+import de.mindcollaps.yuki.application.discord.response.ResponseHandler;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.application.discord.util.MessageUtil;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
@@ -11,6 +16,7 @@ import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -29,6 +35,9 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        //if member = null, than its a private channel
+        if (event.getMember() == null)
+            return;
         if (event.getMember().getUser().isBot())
             return;
 
@@ -46,7 +55,7 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
 
                 //X-Emoji
                 case "❌":
-                    informRemoveCertification(event.getMember(), server);
+                    informRemoveCertification(event.getMember(), server, yukiSora);
                     removeOtherReactions(event.getMember(), "", event.getChannel(), event.getMessageId());
                     break;
 
@@ -80,25 +89,86 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
         DiscApplicationUser user = LibManager.retrieveUser(member.getUser(), yukiSora);
         if (user == null)
             return;
+        ServerUser serverUser = LibManager.retrieveServerUser(server, user, yukiSora);
+        if(serverUser == null)
+            return;
 
         addMemberRolesToMember(server, member, false);
 
-        user.setTempMember(false);
-        user.setMember(true);
-        user.updateData(yukiSora);
-
+        serverUser.setTempMember(false);
+        serverUser.setMember(true);
+        serverUser.setDateBecomeMember(new Date());
+        serverUser.updateData(yukiSora);
     }
 
-    private void informRemoveCertification(Member member, DiscApplicationServer server) {
-        //TODO: Make this actually inform the user about data deletion and wait for conformation
-        DiscApplicationUser user = LibManager.retrieveUser(member.getUser(), yukiSora);
+    private void informRemoveCertification(Member member, DiscApplicationServer server, YukiSora yukiSora) {
+        DiscApplicationUser user = new FindUserById(member.getId()).makeRequestSingle(yukiSora);
         if (user == null)
             return;
+        Message msg = member.getUser().openPrivateChannel().complete().sendMessageEmbeds(
+                new EmbedBuilder()
+                        .setDescription("You have requested a data deletion. We ask you to confirm this action by pressing the ✅-Emoji.\n\n" +
+                                "However, if your user account is a member of another server of the **Weebs Kingdom Network**, your account will just loose its certification and data for this guild **, " + server.getGuildName() + "**\" +\n" +
+                                "\nIf you want to request a data deletion of all your data stored at the YukiSora-Suit, please visit our website https://weebskingdom.com/privacy\n\n\n")
+                        .addField("Pressing ✅", "This will delete all your data from our database, that is stored and linked to this guild **" + server.getGuildName() + "**.", true)
+                        .addField("What will be lost 🚮", "All your data we stored about you, including" +
+                                "\n- monsters" +
+                                "\n- money" +
+                                "\n- preferences" +
+                                "\n- items and more" +
+                                "\nWill be lost unless you are a member of another **Weebs Kingdom Network** guild!", true)
 
-        user.setTempMember(false);
-        user.setMember(false);
+
+                        .setColor(Color.RED)
+                        .setTitle("Data deletion")
+                        .build()
+        ).complete();
+
+        msg.addReaction(Emoji.fromUnicode("✅")).complete();
+
+        Response r = new Response() {
+            @Override
+            public void onEmote(MessageReactionAddEvent respondingEvent) {
+                if (respondingEvent.getEmoji().equals(Emoji.fromUnicode("✅"))) {
+                    deleteUserData(respondingEvent, member, user, server, msg);
+                } else {
+                    respondingEvent.getChannel().sendMessageEmbeds(new EmbedBuilder()
+                            .setColor(Color.YELLOW)
+                            .setDescription("You have not confirmed the data deletion. Your data will not be deleted :smiling_face_with_3_hearts:")
+                            .build()).queue();
+                }
+            }
+        };
+        r.discUserId = member.getUser().getId();
+        r.discMessageId = msg.getId();
+        r.discChannelId = msg.getChannel().getId();
+
+        ResponseHandler.makeResponse(r);
+    }
+
+    private void deleteUserData(MessageReactionAddEvent event, Member member, DiscApplicationUser user, DiscApplicationServer server, Message previousMessage) {
+        ServerUser serverUser = LibManager.retrieveServerUser(server, user, yukiSora);
+        if (serverUser == null)
+            return;
+
+        serverUser.deleteData(yukiSora);
 
         removeRolesFromMember(server, member);
+
+        ServerUser[] serverUsers = new FindServerUsersByUser(user.getDatabaseId()).makeRequest(yukiSora);
+        if (serverUsers.length == 0) {
+            user.deleteData(yukiSora);
+            event.getChannel().sendMessageEmbeds(new EmbedBuilder()
+                    .setColor(Color.RED)
+                    .setDescription("As you were not previously registered on another server, all the data stored in the **Yuki-Sora-Suit** has been erased.")
+                    .build()).queue();
+        } else {
+            event.getChannel().sendMessageEmbeds(new EmbedBuilder()
+                    .setColor(Color.RED)
+                    .setDescription("Since you are registered on another server, your data stored in the Yuki-Sora-Suit has not been completely deleted. However, please note that your data for " + server.getGuildName() + " has been erased.")
+                    .build()).queue();
+        }
+        previousMessage.delete().queue();
     }
 
     private void addTempMemberCertification(Member member, DiscApplicationServer server) {
@@ -106,17 +176,21 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
         if (user == null)
             return;
 
-        addMemberRolesToMember(server, member, true);
-        issueWelcomeMessageForMember(user, server, member);
+        ServerUser serverUser = LibManager.retrieveServerUser(server, user, yukiSora);
+        if (serverUser == null)
+            return;
 
-        user.setTempMember(true);
-        user.setMember(false);
-        user.setDateBecomeTempMember(new Date());
-        user.updateData(yukiSora);
+        addMemberRolesToMember(server, member, true);
+        issueWelcomeMessageForMember(user, serverUser, server, member);
+
+        serverUser.setTempMember(true);
+        serverUser.setMember(false);
+        serverUser.setDateBecomeTempMember(new Date());
+        serverUser.updateData(yukiSora);
     }
 
-    private void issueWelcomeMessageForMember(DiscApplicationUser user, DiscApplicationServer server, Member member) {
-        if (user.isSaidHello())
+    private void issueWelcomeMessageForMember(DiscApplicationUser user, ServerUser serverUser, DiscApplicationServer server, Member member) {
+        if (serverUser.isSaidHello())
             return;
         if (server.getWelcomeMessageChannelId() == null)
             return;
@@ -126,13 +200,13 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
             return;
 
         MessageEmbed embed = new EmbedBuilder().
-                setAuthor("Welcome " + member.getEffectiveName(), null, member.getEffectiveAvatarUrl())
+                setAuthor("A new member just joined! " + member.getEffectiveName(), null, member.getEffectiveAvatarUrl())
                 .setColor(Color.CYAN)
-                .setDescription("A new member just joined!\n"
-                        + MessageUtil.getWelcomeMessage(member.getEffectiveName()))
+                .setDescription(MessageUtil.getWelcomeMessage(member.getEffectiveName()))
                 .build();
 
-        user.setSaidHello(true);
+        //Don't need to update, because it will be updated in the rest of the issued function
+        serverUser.setSaidHello(true);
 
         welcomeChannel.sendMessageEmbeds(embed).complete();
     }

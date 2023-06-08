@@ -1,11 +1,11 @@
 package de.mindcollaps.yuki.application.discord.command.handler;
 
-import de.mindcollaps.yuki.console.log.YukiLogInfo;
-import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.application.discord.command.*;
 import de.mindcollaps.yuki.application.discord.command.special.SpecialCommand;
 import de.mindcollaps.yuki.application.discord.core.DiscordApplication;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -74,7 +74,7 @@ public class DiscCommandHandler {
             for (SubCommandGroup command : commands) {
                 if (command.getInvoke().equalsIgnoreCase(args[0])) {
                     report.setFoundGroup(command);
-                    SubCommand command1 = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, 0 + 1, report);
+                    SubCommand command1 = checkSubCommands(command.getSubCommands().toArray(new SubCommand[0]), args, 1, report);
                     if (command1 != null)
                         return command1;
                 }
@@ -198,14 +198,12 @@ public class DiscCommandHandler {
             helpBuild(builder, subCommand);
         }
 
-        /**
-         if (command.getOptions().size() > 0) {
-         for (CommandOption option : command.getOptions()) {
-         builder.append("... ");
-         builder.append(buildOptionHelp(option)).append(" ");
-         }
-         }
-         **/
+        if (command.getOptions().size() > 0) {
+            for (CommandOption option : command.getOptions()) {
+                builder.append("... ");
+                builder.append(buildOptionHelp(option)).append(" ");
+            }
+        }
 
         builder.deleteCharAt(builder.length() - 1);
 

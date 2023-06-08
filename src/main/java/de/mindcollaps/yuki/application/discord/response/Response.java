@@ -11,17 +11,12 @@ public abstract class Response {
     public String discGuildId;
     public String discChannelId;
     public String discUserId;
+    public String discMessageId;
 
-    public void onGuildEmote(MessageReactionAddEvent respondingEvent) {
+    public void onEmote(MessageReactionAddEvent respondingEvent) {
     }
 
-    public void onGuildMessage(MessageReceivedEvent respondingEvent) {
-    }
-
-    public void onPrivateEmote(MessageReactionAddEvent respondingEvent) {
-    }
-
-    public void onPrivateMessage(MessageReceivedEvent respondingEvent) {
+    public void onMessage(MessageReceivedEvent respondingEvent) {
     }
 
     public void onError(Exception e) {

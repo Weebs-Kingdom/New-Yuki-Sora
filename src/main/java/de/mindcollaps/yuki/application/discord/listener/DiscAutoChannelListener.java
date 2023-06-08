@@ -1,12 +1,12 @@
 package de.mindcollaps.yuki.application.discord.listener;
 
+import de.mindcollaps.yuki.api.lib.data.AutoChannel;
+import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.request.FindAutoChannelsByGuildId;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
 import de.mindcollaps.yuki.console.log.YukiLogger;
-import de.mindcollaps.yuki.api.lib.data.AutoChannel;
-import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

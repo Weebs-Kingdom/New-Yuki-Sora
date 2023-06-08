@@ -6,22 +6,22 @@ import de.mindcollaps.yuki.api.lib.route.RouteClass;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.api.lib.route.RouteRequest;
 
-@RouteClass("findTwitchUserConByUser")
-public class FindTwitchUserConByUser extends RouteRequest<UserTwitchConnection> {
+@RouteClass("findTwitchUsersByServer")
+public class FindTwitchUserByServer extends RouteRequest<UserTwitchConnection> {
 
     @RouteField
-    private String user;
+    private String id;
 
-    public FindTwitchUserConByUser(DatabaseId user) {
+    public FindTwitchUserByServer(DatabaseId serverId) {
         super(UserTwitchConnection.class);
-        this.user = user.getDatabaseId();
+        this.id = serverId.getDatabaseId();
     }
 
-    public String getUser() {
-        return user;
+    public String getId() {
+        return id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setId(String id) {
+        this.id = id;
     }
 }

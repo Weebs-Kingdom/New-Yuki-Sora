@@ -1,15 +1,15 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
-import de.mindcollaps.yuki.api.lib.data.VoteElement;
-import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
-import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.data.Vote;
+import de.mindcollaps.yuki.api.lib.data.VoteElement;
 import de.mindcollaps.yuki.api.lib.request.FindVoteElementsByVoteId;
 import de.mindcollaps.yuki.api.lib.request.FindVotesByGuildChannel;
 import de.mindcollaps.yuki.application.discord.command.*;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
+import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
+import de.mindcollaps.yuki.application.discord.util.TextUtil;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -475,7 +475,6 @@ public class DiscCmdVote extends DiscCommand {
                 vote.setVoteType(0);
                 vote.updateData(yukiSora);
             }
-
 
             if (!addLineVoteElementToVote(vote, emote, channel.getGuild(), description, yukiSora, res))
                 return;

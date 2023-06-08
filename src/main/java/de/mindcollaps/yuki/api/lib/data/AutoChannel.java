@@ -1,10 +1,7 @@
 package de.mindcollaps.yuki.api.lib.data;
 
-import de.mindcollaps.yuki.api.lib.route.ForeignData;
-import de.mindcollaps.yuki.api.lib.route.RouteClass;
+import de.mindcollaps.yuki.api.lib.route.*;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
-import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -19,7 +16,7 @@ public class AutoChannel extends RouteData {
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)
-    private String server = "";
+    private DatabaseId server = new DatabaseId();
 
     @RouteField
     private String channelId = "";
@@ -49,7 +46,7 @@ public class AutoChannel extends RouteData {
         this.initialized = true;
     }
 
-    public AutoChannel(String server, String channelId, int autoChannelType) {
+    public AutoChannel(DatabaseId server, String channelId, int autoChannelType) {
         this.server = server;
         this.channelId = channelId;
         this.autoChannelType = autoChannelType;
@@ -143,11 +140,11 @@ public class AutoChannel extends RouteData {
         return nvc;
     }
 
-    public String getServer() {
+    public DatabaseId getServer() {
         return server;
     }
 
-    public void setServer(String server) {
+    public void setServer(DatabaseId server) {
         this.server = server;
     }
 

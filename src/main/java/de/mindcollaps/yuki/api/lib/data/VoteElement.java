@@ -1,16 +1,13 @@
 package de.mindcollaps.yuki.api.lib.data;
 
-import de.mindcollaps.yuki.api.lib.route.ForeignData;
-import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
-import de.mindcollaps.yuki.api.lib.route.RouteField;
+import de.mindcollaps.yuki.api.lib.route.*;
 
 @RouteClass("vote-element")
 public class VoteElement extends RouteData {
 
     @RouteField
     @ForeignData(Vote.class)
-    private String vote;
+    private DatabaseId vote;
 
     @RouteField
     private String roleId;
@@ -27,11 +24,11 @@ public class VoteElement extends RouteData {
     @RouteField
     private int votes;
 
-    public String getVote() {
+    public DatabaseId getVote() {
         return vote;
     }
 
-    public void setVote(String vote) {
+    public void setVote(DatabaseId vote) {
         this.vote = vote;
     }
 

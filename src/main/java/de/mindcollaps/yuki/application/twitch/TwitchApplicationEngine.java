@@ -6,7 +6,6 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.helix.domain.User;
-import com.netflix.hystrix.collapser.RequestCollapserFactory;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.manager.LibManager;
@@ -25,15 +24,12 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
 import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
-import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.awt.*;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -69,6 +65,12 @@ public class TwitchApplicationEngine {
         b.getEventManager().getEventHandler(SimpleEventHandler.class).registerListener(myEventHandler);
 
         JSONObject res = yukiSora.getApiManagerOld().getTwitchUsers();
+        if(res == null){
+            YukiLogger.log(
+                    new YukiLogInfo("Couldn't load Twitch Users. It seems that they are empty").warning()
+            );
+            return;
+        }
         JSONArray array = (JSONArray) res.get("data");
 
         for (Object o : array) {

@@ -1,9 +1,6 @@
 package de.mindcollaps.yuki.api.lib.data;
 
-import de.mindcollaps.yuki.api.lib.route.ForeignData;
-import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
-import de.mindcollaps.yuki.api.lib.route.RouteField;
+import de.mindcollaps.yuki.api.lib.route.*;
 
 @RouteClass("user-job")
 public class UserJob extends RouteData {
@@ -22,7 +19,7 @@ public class UserJob extends RouteData {
 
     @RouteField
     @ForeignData(Job.class)
-    private String job;
+    private DatabaseId job;
 
     public int getJobXP() {
         return jobXP;
@@ -56,11 +53,11 @@ public class UserJob extends RouteData {
         this.jobStreak = jobStreak;
     }
 
-    public String getJob() {
+    public DatabaseId getJob() {
         return job;
     }
 
-    public void setJob(String job) {
+    public void setJob(DatabaseId job) {
         this.job = job;
     }
 }

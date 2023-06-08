@@ -1,9 +1,9 @@
 package de.mindcollaps.yuki.api.lib.request;
 
-import de.mindcollaps.yuki.api.lib.route.RouteRequest;
 import de.mindcollaps.yuki.api.lib.data.AutoChannel;
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
+import de.mindcollaps.yuki.api.lib.route.RouteRequest;
 
 @RouteClass("findAutoChannelByIds")
 public class FindAutoChannelsByIds extends RouteRequest<AutoChannel> {

@@ -12,7 +12,7 @@ public abstract class Route {
         if (!clazz.isAnnotationPresent(RouteClass.class))
             return null;
 
-        return YukiProperties.getProperties(YukiProperties.dPDbApiUrl) + "/" + ((RouteClass) clazz.getAnnotation(RouteClass.class)).value();
+        return YukiProperties.getProperties(YukiProperties.dPDbApiUrl) + "/" + clazz.getAnnotation(RouteClass.class).value();
     }
 
     public boolean isValid() {

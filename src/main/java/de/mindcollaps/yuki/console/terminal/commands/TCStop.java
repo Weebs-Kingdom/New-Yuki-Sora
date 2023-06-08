@@ -4,7 +4,7 @@ import de.mindcollaps.yuki.core.YukiSora;
 
 public class TCStop implements TerminalCommand{
 
-    private YukiSora yukiSora;
+    private final YukiSora yukiSora;
 
     public TCStop(YukiSora yukiSora) {
         this.yukiSora = yukiSora;

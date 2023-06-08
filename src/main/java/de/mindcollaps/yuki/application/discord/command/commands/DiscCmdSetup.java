@@ -1,18 +1,19 @@
 package de.mindcollaps.yuki.application.discord.command.commands;
 
-import de.mindcollaps.yuki.api.lib.request.FindAutoChannelsByIds;
-import de.mindcollaps.yuki.api.lib.request.FindUserById;
-import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
-import de.mindcollaps.yuki.application.discord.util.TextUtil;
-import de.mindcollaps.yuki.console.log.YukiLogInfo;
-import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.api.lib.data.AutoChannel;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
 import de.mindcollaps.yuki.api.lib.data.UserTwitchConnection;
+import de.mindcollaps.yuki.api.lib.request.FindAutoChannelsByIds;
+import de.mindcollaps.yuki.api.lib.request.FindTwitchUserByServer;
 import de.mindcollaps.yuki.api.lib.request.FindTwitchUserConByUser;
+import de.mindcollaps.yuki.api.lib.request.FindUserById;
 import de.mindcollaps.yuki.application.discord.command.*;
 import de.mindcollaps.yuki.application.discord.command.handler.DiscCommandArgs;
+import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
+import de.mindcollaps.yuki.application.discord.util.TextUtil;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import de.mindcollaps.yuki.util.YukiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -435,6 +436,29 @@ public class DiscCmdSetup extends DiscCommand {
                                             public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
                                                 twitchMemberRemove(args.getArg("member").getUser(), server, user, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
                                             }
+                                        }),
+
+                                new SubCommand("list", "List all twitch users that are registered in this server")
+                                        .addAction(new CommandAction() {
+                                            @Override
+                                            public boolean calledServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public boolean calledSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+                                                return DiscordUtil.userHasGuildAdminPermission(event.getMember(), event.getGuild(), new TextUtil.ResponseInstance(event.getChannel()), yukiSora);
+                                            }
+
+                                            @Override
+                                            public void actionServer(DiscCommandArgs args, MessageReceivedEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws Exception {
+                                                twitchMembersList(server, user, yukiSora, new TextUtil.ResponseInstance(event.getChannel()));
+                                            }
+
+                                            @Override
+                                            public void actionSlash(DiscCommandArgs args, SlashCommandInteractionEvent event, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) throws Exception {
+                                                twitchMembersList(server, user, yukiSora, new TextUtil.ResponseInstance(event.getInteraction()));
+                                            }
                                         })
                         ));
 
@@ -696,6 +720,24 @@ public class DiscCmdSetup extends DiscCommand {
         }
     }
 
+    private void twitchMembersList(DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
+        UserTwitchConnection[] cons = new FindTwitchUserByServer(server.getDatabaseId()).makeRequest(yukiSora);
+        if (cons == null || cons.length == 0) {
+            TextUtil.sendWarning("There are no twitch members registered yet!", res);
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (UserTwitchConnection con : cons) {
+            DiscApplicationUser us = new DiscApplicationUser();
+            us.fetchData(con.getUser(), yukiSora);
+
+            builder.append(us.getUsername()).append(" - ").append(con.getTwitchChannelId()).append("\n");
+        }
+
+        TextUtil.sendColoredText("List of twitch members:\n\n" + builder, Color.BLUE, res);
+    }
+
     private void twitchMemberAdd(User us, String twitchName, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         if (us == null) {
             TextUtil.sendError("That member can't be found!", res);
@@ -707,12 +749,12 @@ public class DiscCmdSetup extends DiscCommand {
         }
 
         DiscApplicationUser twitchUser = new FindUserById(us.getId()).makeRequestSingle(yukiSora);
-        if(twitchUser == null){
+        if (twitchUser == null) {
             TextUtil.sendError("That member can't be found! Make sure, they were active on this server!", res);
             return;
         }
 
-        UserTwitchConnection con = new FindTwitchUserConByUser(user.getUserID()).makeRequestSingle(yukiSora);
+        UserTwitchConnection con = new FindTwitchUserConByUser(twitchUser.getDatabaseId()).makeRequestSingle(yukiSora);
         if (con == null) {
             con = new UserTwitchConnection();
             con.setUser(twitchUser.getDatabaseId());
@@ -742,9 +784,12 @@ public class DiscCmdSetup extends DiscCommand {
     private void twitchMemberRemove(User us, DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
         if (us == null) {
             TextUtil.sendError("That member can't be found!", res);
+            return;
         }
 
-        UserTwitchConnection con = new FindTwitchUserConByUser(user.getUserID()).makeRequestSingle(yukiSora);
+        DiscApplicationUser twitchUser = new FindUserById(us.getId()).makeRequestSingle(yukiSora);
+
+        UserTwitchConnection con = new FindTwitchUserConByUser(twitchUser.getDatabaseId()).makeRequestSingle(yukiSora);
         if (con == null) {
             TextUtil.sendError("It seems like this member has no twitch records :person_shrugging:", res);
         } else {
@@ -825,8 +870,8 @@ public class DiscCmdSetup extends DiscCommand {
                 .setTitle("Member Certification")
                 .setDescription("By pressing ✅ or \uD83C\uDFAE **bellow this message** you accept\n• the :notebook_with_decorative_cover: **rules** :notebook_with_decorative_cover: of **" + g.getName() + "** and\n• the  **terms of service** of this bot **Yuki Sora**.\n\n\n")
                 .addField("Terms of Service", "https://weebskingdom.com/bot-terms-of-service/\n\n\n", false)
-                .addField("Pressing ✅", "Become a member of and enjoy all the features of this guild.", true)
-                .addField("Pressing ❌", "Remove all your data stored in **Yuki Sora** and remove your rights to use this server.", true)
+                .addField("Pressing ✅", "Become a member of " + g.getName() + " and enjoy all the features of this guild.", true)
+                .addField("Pressing ❌", "Remove all your data associated with this server in **Yuki Sora** and remove your rights to use this server.", true)
                 .addField("Pressing \uD83C\uDFAE", "Become a temporary member and don't get annoyed by guild announcements, events  etc.", true)
                 .build();
 

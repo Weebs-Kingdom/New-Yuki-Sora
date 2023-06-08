@@ -1,8 +1,8 @@
 package de.mindcollaps.yuki.api.lib.route;
 
+import de.mindcollaps.yuki.api.ApiResponse;
 import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogger;
-import de.mindcollaps.yuki.api.ApiResponse;
 import de.mindcollaps.yuki.core.YukiSora;
 import org.json.simple.JSONObject;
 

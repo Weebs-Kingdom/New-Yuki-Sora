@@ -4,7 +4,7 @@ import de.mindcollaps.yuki.core.YukiSora;
 
 public abstract class Task {
 
-    private String instruction;
+    private final String instruction;
 
     public abstract boolean action(YukiSora yukiSora);
 

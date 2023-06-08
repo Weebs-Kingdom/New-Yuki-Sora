@@ -101,12 +101,7 @@ public class DiscCmdJob extends DiscCommand {
 
         Response r = new Response() {
             @Override
-            public void onGuildMessage(MessageReceivedEvent respondingEvent) {
-                stepTwo(yukiSora, respondingEvent.getAuthor(), respondingEvent.getMessage().getContentRaw(), jbss, respondingEvent.getChannel());
-            }
-
-            @Override
-            public void onPrivateMessage(MessageReceivedEvent respondingEvent) {
+            public void onMessage(MessageReceivedEvent respondingEvent) {
                 stepTwo(yukiSora, respondingEvent.getAuthor(), respondingEvent.getMessage().getContentRaw(), jbss, respondingEvent.getChannel());
             }
         };

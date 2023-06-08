@@ -17,7 +17,7 @@ import java.util.List;
 @YukiLogModule(name = "Route Data")
 public abstract class RouteData extends Route {
 
-    private String databaseId;
+    private DatabaseId databaseId;
 
     public <T extends RouteData> T[] fetchAll(Class<T> clazz, YukiSora yukiSora){
         ApiResponse response = yukiSora.getRequestHandler().get(getRoute());
@@ -44,7 +44,7 @@ public abstract class RouteData extends Route {
         }
     }
 
-    public void fetchData(String databaseId, YukiSora yukiSora) {
+    public void fetchData(DatabaseId databaseId, YukiSora yukiSora) {
         this.databaseId = databaseId;
 
         if (!this.isValid())
@@ -86,7 +86,7 @@ public abstract class RouteData extends Route {
                 if (data == null)
                     return null;
 
-                data.fetchData(value, yukiSora);
+                data.fetchData(new DatabaseId(value), yukiSora);
                 return data;
             }
         }
@@ -133,11 +133,11 @@ public abstract class RouteData extends Route {
             YukiLogger.log(new YukiLogInfo("The post request was not successful!").error());
     }
 
-    public String getDatabaseId() {
+    public DatabaseId getDatabaseId() {
         return databaseId;
     }
 
-    public void setDatabaseId(String databaseId) {
+    public void setDatabaseId(DatabaseId databaseId) {
         this.databaseId = databaseId;
     }
 }

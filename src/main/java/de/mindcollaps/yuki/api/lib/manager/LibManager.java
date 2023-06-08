@@ -1,12 +1,14 @@
 package de.mindcollaps.yuki.api.lib.manager;
 
-import de.mindcollaps.yuki.console.log.YukiLogInfo;
-import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationServer;
 import de.mindcollaps.yuki.api.lib.data.DiscApplicationUser;
+import de.mindcollaps.yuki.api.lib.data.ServerUser;
 import de.mindcollaps.yuki.api.lib.request.FindServerByGuildId;
+import de.mindcollaps.yuki.api.lib.request.FindServerUserByUserAndServer;
 import de.mindcollaps.yuki.api.lib.request.FindUserById;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
 import de.mindcollaps.yuki.console.log.YukiLogModule;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
@@ -58,6 +60,24 @@ public class LibManager {
         }
 
         return discUser;
+    }
+
+    public static ServerUser retrieveServerUser(DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora) {
+        ServerUser serverUser = new FindServerUserByUserAndServer(user.getDatabaseId(), server.getDatabaseId()).makeRequestSingle(yukiSora);
+        if(serverUser == null){
+            YukiLogger.log(new YukiLogInfo("The server user " + user.getUsername() + " (" + user.getUserID() + ") was not found in the database! The user was created by the lib manager.").debug());
+            serverUser = new ServerUser();
+            serverUser.setServerId(server.getDatabaseId());
+            serverUser.setUserId(user.getDatabaseId());
+            serverUser.postData(yukiSora);
+
+            if (serverUser.getDatabaseId() == null) {
+                YukiLogger.log(new YukiLogInfo("The server user " + user.getUsername() + " (" + user.getUserID() + ") could not be created by the lib manager.").error());
+                return null;
+            }
+        }
+
+        return serverUser;
     }
 
     @Nullable
