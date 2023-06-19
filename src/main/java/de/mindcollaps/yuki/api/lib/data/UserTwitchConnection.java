@@ -3,7 +3,7 @@ package de.mindcollaps.yuki.api.lib.data;
 import de.mindcollaps.yuki.api.lib.route.*;
 
 @RouteClass("user-twitch-con")
-public class UserTwitchConnection extends RouteData {
+public class UserTwitchConnection extends YukiRoute {
 
     @RouteField
     @ForeignData(DiscApplicationUser.class)

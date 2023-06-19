@@ -14,6 +14,7 @@ import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
@@ -40,7 +41,8 @@ public class DiscReactionListener extends ListenerAdapter {
         if (event.getMember().getUser().isBot())
             return;
 
-        checkForVote(event.getMember(), event.getGuild(), event.getEmoji(), (TextChannel) event.getChannel(), event.getMessageId(), 1);
+        if (event.getChannel().getType() == ChannelType.TEXT)
+            checkForVote(event.getMember(), event.getGuild(), event.getEmoji(), (TextChannel) event.getChannel(), event.getMessageId(), 1);
     }
 
     @Override

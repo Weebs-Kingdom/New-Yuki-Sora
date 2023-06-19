@@ -3,7 +3,7 @@ package de.mindcollaps.yuki.api.lib.data;
 import de.mindcollaps.yuki.api.lib.route.*;
 
 @RouteClass("user-job")
-public class UserJob extends RouteData {
+public class UserJob extends YukiRoute {
 
     @RouteField
     private int jobXP;

@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 
 import java.lang.reflect.Array;
 
-public abstract class RouteRequest<T extends RouteData> extends Route {
+public abstract class RouteRequest<T extends YukiRoute> extends Route {
 
     private final Class<T> clazz;
 

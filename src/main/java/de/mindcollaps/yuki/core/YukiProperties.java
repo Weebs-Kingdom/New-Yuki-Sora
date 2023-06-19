@@ -106,6 +106,7 @@ public class YukiProperties implements Serializable {
 
         if (applicationSettings == null) {
             applicationSettings = new YukiProperties();
+
             saveApplicationSettings();
         }
 
@@ -114,7 +115,7 @@ public class YukiProperties implements Serializable {
 
     @SuppressWarnings("UnusedReturnValue")
     public static Properties loadBotProperties() {
-        properties = new Properties();
+        properties = null;
         FileUtils.createFileRootAndFile(new File(yukiPropertiesPath));
         try {
             InputStream inputStream = new FileInputStream(yukiPropertiesPath);

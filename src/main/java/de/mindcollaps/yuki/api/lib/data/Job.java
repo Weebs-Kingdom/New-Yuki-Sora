@@ -1,11 +1,11 @@
 package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
+import de.mindcollaps.yuki.api.lib.route.YukiRoute;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 
 @RouteClass("job")
-public class Job extends RouteData {
+public class Job extends YukiRoute {
 
     @RouteField
     private int earningTrainee;

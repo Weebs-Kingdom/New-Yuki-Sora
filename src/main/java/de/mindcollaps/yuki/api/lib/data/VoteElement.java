@@ -3,7 +3,7 @@ package de.mindcollaps.yuki.api.lib.data;
 import de.mindcollaps.yuki.api.lib.route.*;
 
 @RouteClass("vote-element")
-public class VoteElement extends RouteData {
+public class VoteElement extends YukiRoute {
 
     @RouteField
     @ForeignData(Vote.class)

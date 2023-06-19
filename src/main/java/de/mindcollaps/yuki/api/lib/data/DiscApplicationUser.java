@@ -1,7 +1,7 @@
 package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
+import de.mindcollaps.yuki.api.lib.route.YukiRoute;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 @SuppressWarnings("unused")
 @RouteClass("disc-user")
-public class DiscApplicationUser extends RouteData {
+public class DiscApplicationUser extends YukiRoute {
 
     @RouteField
     private String[] servers = new String[]{};

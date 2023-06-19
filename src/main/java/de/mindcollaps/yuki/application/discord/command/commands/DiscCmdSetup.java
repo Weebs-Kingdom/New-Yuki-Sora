@@ -721,7 +721,7 @@ public class DiscCmdSetup extends DiscCommand {
     }
 
     private void twitchMembersList(DiscApplicationServer server, DiscApplicationUser user, YukiSora yukiSora, TextUtil.ResponseInstance res) {
-        UserTwitchConnection[] cons = new FindTwitchUserByServer(server.getDatabaseId()).makeRequest(yukiSora);
+        UserTwitchConnection[] cons = new FindTwitchUserByServer(server.getGuildId()).makeRequest(yukiSora);
         if (cons == null || cons.length == 0) {
             TextUtil.sendWarning("There are no twitch members registered yet!", res);
             return;
@@ -832,6 +832,12 @@ public class DiscCmdSetup extends DiscCommand {
     }
 
     private void createAutoChannel(GuildChannel channel, DiscApplicationServer server, YukiSora yukiSora, TextUtil.ResponseInstance responseInstance) {
+        AutoChannel old = new FindAutoChannelsByIds(channel.getGuild().getId(), channel.getId()).makeRequestSingle(yukiSora);
+        if(old != null) {
+            TextUtil.sendError("This channel is already a Auto Channel :person_shrugging:", responseInstance);
+            return;
+        }
+
         AutoChannel autoChannel = new AutoChannel(server.getDatabaseId(), channel.getId(), 0);
         try {
             autoChannel.initBaseChannel(channel.getGuild(), yukiSora);

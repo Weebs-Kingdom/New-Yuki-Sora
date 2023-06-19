@@ -94,6 +94,7 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
             return;
 
         addMemberRolesToMember(server, member, false);
+        issueWelcomeMessageForMember(user, serverUser, server, member);
 
         serverUser.setTempMember(false);
         serverUser.setMember(true);
@@ -181,7 +182,6 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
             return;
 
         addMemberRolesToMember(server, member, true);
-        issueWelcomeMessageForMember(user, serverUser, server, member);
 
         serverUser.setTempMember(true);
         serverUser.setMember(false);

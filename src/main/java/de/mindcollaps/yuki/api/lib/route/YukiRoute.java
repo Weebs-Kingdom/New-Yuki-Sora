@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @YukiLogModule(name = "Route Data")
-public abstract class RouteData extends Route {
+public abstract class YukiRoute extends Route {
 
     private DatabaseId databaseId;
 
-    public <T extends RouteData> T[] fetchAll(Class<T> clazz, YukiSora yukiSora){
+    public <T extends YukiRoute> T[] fetchAll(Class<T> clazz, YukiSora yukiSora){
         ApiResponse response = yukiSora.getRequestHandler().get(getRoute());
         if(response.getStatus() == 200){
             JSONArray datas = response.getArray();
@@ -53,7 +53,7 @@ public abstract class RouteData extends Route {
         fetchData(yukiSora);
     }
 
-    public <J extends RouteData> J getForeignData(Class<J> clazz, YukiSora yukiSora) {
+    public <J extends YukiRoute> J getForeignData(Class<J> clazz, YukiSora yukiSora) {
         for (Field declaredField : this.getClass().getDeclaredFields()) {
             if (declaredField.isAnnotationPresent(ForeignData.class)) {
                 ForeignData anno = declaredField.getAnnotation(ForeignData.class);

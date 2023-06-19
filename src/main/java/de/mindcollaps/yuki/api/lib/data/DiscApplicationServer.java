@@ -1,7 +1,7 @@
 package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
+import de.mindcollaps.yuki.api.lib.route.YukiRoute;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 import de.mindcollaps.yuki.core.YukiProperties;
 import de.mindcollaps.yuki.core.YukiSora;
@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 @SuppressWarnings("unused")
 @RouteClass("disc-server")
-public class DiscApplicationServer extends RouteData {
+public class DiscApplicationServer extends YukiRoute {
 
     @RouteField
     private String guildName = "";

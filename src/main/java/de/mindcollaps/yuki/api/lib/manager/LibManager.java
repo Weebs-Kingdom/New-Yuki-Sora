@@ -68,7 +68,7 @@ public class LibManager {
             YukiLogger.log(new YukiLogInfo("The server user " + user.getUsername() + " (" + user.getUserID() + ") was not found in the database! The user was created by the lib manager.").debug());
             serverUser = new ServerUser();
             serverUser.setServerId(server.getDatabaseId());
-            serverUser.setUserId(user.getDatabaseId());
+            serverUser.setUser(user.getDatabaseId());
             serverUser.postData(yukiSora);
 
             if (serverUser.getDatabaseId() == null) {

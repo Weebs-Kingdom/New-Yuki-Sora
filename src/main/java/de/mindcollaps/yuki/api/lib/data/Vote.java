@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RouteClass("vote")
-public class Vote extends RouteData {
+public class Vote extends YukiRoute {
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)

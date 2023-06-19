@@ -1,13 +1,13 @@
 package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.route.RouteClass;
-import de.mindcollaps.yuki.api.lib.route.RouteData;
+import de.mindcollaps.yuki.api.lib.route.YukiRoute;
 import de.mindcollaps.yuki.api.lib.route.RouteField;
 
 import java.util.Date;
 
 @RouteClass("yukiTask")
-public class YukiTask extends RouteData {
+public class YukiTask extends YukiRoute {
 
     @RouteField
     private String task;

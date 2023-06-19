@@ -10,18 +10,18 @@ import de.mindcollaps.yuki.api.lib.route.RouteRequest;
 public class FindTwitchUserConByUser extends RouteRequest<UserTwitchConnection> {
 
     @RouteField
-    private String user;
+    private String userid;
 
     public FindTwitchUserConByUser(DatabaseId user) {
         super(UserTwitchConnection.class);
-        this.user = user.getDatabaseId();
+        this.userid = user.getDatabaseId();
     }
 
-    public String getUser() {
-        return user;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 }

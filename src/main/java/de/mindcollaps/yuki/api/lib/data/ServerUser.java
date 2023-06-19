@@ -6,11 +6,11 @@ import java.time.Instant;
 import java.util.Date;
 
 @RouteClass("server-user")
-public class ServerUser extends RouteData {
+public class ServerUser extends YukiRoute {
 
     @RouteField
     @ForeignData(DiscApplicationUser.class)
-    private DatabaseId userId = new DatabaseId();
+    private DatabaseId user = new DatabaseId();
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)
@@ -41,12 +41,12 @@ public class ServerUser extends RouteData {
     @RouteField
     private int level = 1;
 
-    public DatabaseId getUserId() {
-        return userId;
+    public DatabaseId getUser() {
+        return user;
     }
 
-    public void setUserId(DatabaseId userId) {
-        this.userId = userId;
+    public void setUser(DatabaseId user) {
+        this.user = user;
     }
 
     public DatabaseId getServerId() {

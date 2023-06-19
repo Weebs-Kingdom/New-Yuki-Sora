@@ -10,23 +10,23 @@ import de.mindcollaps.yuki.api.lib.route.RouteRequest;
 public class FindServerUserByUserAndServer extends RouteRequest<ServerUser> {
 
     @RouteField
-    private String id;
+    private String userid;
 
     @RouteField
     private String server;
 
     public FindServerUserByUserAndServer(DatabaseId userId, DatabaseId serverId) {
         super(ServerUser.class);
-        this.id = userId.getDatabaseId();
+        this.userid = userId.getDatabaseId();
         this.server = serverId.getDatabaseId();
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String id) {
+        this.userid = id;
     }
 
     public String getServer() {

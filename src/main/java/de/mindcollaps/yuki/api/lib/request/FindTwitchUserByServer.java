@@ -12,9 +12,9 @@ public class FindTwitchUserByServer extends RouteRequest<UserTwitchConnection> {
     @RouteField
     private String id;
 
-    public FindTwitchUserByServer(DatabaseId serverId) {
+    public FindTwitchUserByServer(String serverId) {
         super(UserTwitchConnection.class);
-        this.id = serverId.getDatabaseId();
+        this.id = serverId;
     }
 
     public String getId() {

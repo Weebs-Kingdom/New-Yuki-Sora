@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ForeignData {
-    Class<? extends RouteData> value();
+    Class<? extends YukiRoute> value();
 }

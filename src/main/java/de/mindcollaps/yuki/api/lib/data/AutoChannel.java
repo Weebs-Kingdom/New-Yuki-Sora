@@ -2,6 +2,8 @@ package de.mindcollaps.yuki.api.lib.data;
 
 import de.mindcollaps.yuki.api.lib.route.*;
 import de.mindcollaps.yuki.application.discord.util.DiscordUtil;
+import de.mindcollaps.yuki.console.log.YukiLogInfo;
+import de.mindcollaps.yuki.console.log.YukiLogger;
 import de.mindcollaps.yuki.core.YukiSora;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 @RouteClass("autochannel")
-public class AutoChannel extends RouteData {
+public class AutoChannel extends YukiRoute {
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)
@@ -75,7 +77,7 @@ public class AutoChannel extends RouteData {
         voiceChannel = guild.getVoiceChannelById(channelId);
         if (voiceChannel == null)
             return;
-        voiceChannel.getManager().setName(":heavy_plus_sign: Create Channel").queue();
+        voiceChannel.getManager().setName("➕ Create Channel").queue();
         voiceChannel.getManager().setUserLimit(1).queue();
         initialized = true;
     }
@@ -105,6 +107,9 @@ public class AutoChannel extends RouteData {
 
         VoiceChannel channel = createNewAutoChannel(voiceChannel, m.getGuild(), m, name);
 
+        if (channel == null)
+            return null;
+
         AutoChannel newAutoChannel = new AutoChannel(channel);
         newAutoChannel.setCreatedBy(m);
         newAutoChannel.setServer(server);
@@ -128,14 +133,23 @@ public class AutoChannel extends RouteData {
         if (baseVoiceChannel.getParentCategory() != null)
             nvc.getManager().setParent(baseVoiceChannel.getParentCategory()).queue();
 
-        gc.modifyVoiceChannelPositions().selectPosition(nvc).moveTo(baseVoiceChannel.getPosition() + 1).queue();
+        //Not necessary anymore
+        //gc.modifyVoiceChannelPositions().selectPosition(nvc).moveTo(baseVoiceChannel.getPosition() + 1).queue();
         for (PermissionOverride or : baseVoiceChannel.getPermissionOverrides()) {
-            nvc.upsertPermissionOverride(or.getRole()).setAllowed(or.getAllowed()).setDenied(or.getDenied()).complete();
+            if (or.getRole() != null)
+                nvc.upsertPermissionOverride(or.getRole()).setAllowed(or.getAllowed()).setDenied(or.getDenied()).complete();
+            else if (or.getMember() != null)
+                nvc.upsertPermissionOverride(or.getMember()).setAllowed(or.getAllowed()).setDenied(or.getDenied()).complete();
+            else
+                nvc.upsertPermissionOverride(gc.getPublicRole()).setAllowed(or.getAllowed()).setDenied(or.getDenied()).complete();
         }
+
         try {
             gc.moveVoiceMember(m, nvc).complete();
         } catch (Exception e) {
             nvc.delete().queue();
+            YukiLogger.log(new YukiLogInfo("Failed to move member to new auto channel").trace(e));
+            return null;
         }
         return nvc;
     }

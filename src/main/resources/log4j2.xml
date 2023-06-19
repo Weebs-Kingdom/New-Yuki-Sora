@@ -2,27 +2,24 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d{HH:mm:ss:SSS} %-5level] %msg%n"/>
+            <PatternLayout pattern="[%d{dd.MM.YYYY HH:mm:ss:SSS} %-5level] %msg%n"/>
         </Console>
         <File name="YukiLog" fileName="yuki.log" bufferedIO="false">
-            <PatternLayout pattern="[%d{HH:mm:ss:SSS} %-5level] %msg%n"/>
+            <PatternLayout pattern="[%d{dd.MM.YYYY HH:mm:ss:SSS} %-5level] %msg%n"/>
         </File>
 
         <File name="YukiDebug" fileName="yukidebug.log" bufferedIO="false">
-            <PatternLayout pattern="[%d{HH:mm:ss:SSS} %-5level] %msg%n"/>
+            <PatternLayout pattern="[%d{dd.MM.YYYY HH:mm:ss:SSS} %-5level] %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="debug" level="trace">
-            <AppenderRef ref="YukiDebug"/>
-            <AppenderRef ref="Console"/>
-        </Logger>
-        <Logger name="de.mindcollaps.yuki" level="info">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="YukiLog"/>
-            <AppenderRef ref="YukiDebug"/>
-        </Logger>
         <Root level="all">
+            <AppenderRef ref="YukiDebug"/>
+            <AppenderRef ref="Console"/>
         </Root>
+
+        <Logger name="de.mindcollaps.yuki" level="info">
+            <AppenderRef ref="YukiLog"/>
+        </Logger>
     </Loggers>
 </Configuration>
