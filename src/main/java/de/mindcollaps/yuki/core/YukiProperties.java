@@ -115,7 +115,7 @@ public class YukiProperties implements Serializable {
 
     @SuppressWarnings("UnusedReturnValue")
     public static Properties loadBotProperties() {
-        properties = null;
+        properties = new Properties();
         FileUtils.createFileRootAndFile(new File(yukiPropertiesPath));
         try {
             InputStream inputStream = new FileInputStream(yukiPropertiesPath);
@@ -123,7 +123,7 @@ public class YukiProperties implements Serializable {
         } catch (Exception ignored) {
         }
 
-        if (properties == null) {
+        if (properties.isEmpty()) {
             properties = getDefaultProperties();
             YukiLogger.log(new YukiLogInfo("Couldn't find a properties file - using default parameters").warning());
             YukiLogger.log(new YukiLogInfo("Created default properties file: " + properties.toString()).debug());
