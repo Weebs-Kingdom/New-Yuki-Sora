@@ -14,7 +14,7 @@ public class ServerUser extends YukiRoute {
 
     @RouteField
     @ForeignData(DiscApplicationServer.class)
-    private DatabaseId serverId = new DatabaseId();
+    private DatabaseId server = new DatabaseId();
 
     @RouteField
     private boolean saidHello = false;
@@ -49,12 +49,12 @@ public class ServerUser extends YukiRoute {
         this.user = user;
     }
 
-    public DatabaseId getServerId() {
-        return serverId;
+    public DatabaseId getServer() {
+        return server;
     }
 
-    public void setServerId(DatabaseId serverId) {
-        this.serverId = serverId;
+    public void setServer(DatabaseId server) {
+        this.server = server;
     }
 
     public boolean isSaidHello() {
