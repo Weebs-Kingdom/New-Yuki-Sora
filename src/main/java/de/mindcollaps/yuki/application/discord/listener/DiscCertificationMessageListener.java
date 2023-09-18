@@ -194,6 +194,8 @@ public class DiscCertificationMessageListener extends ListenerAdapter {
             return;
         if (server.getWelcomeMessageChannelId() == null)
             return;
+        if(server.getWelcomeMessageChannelId().length() == 0)
+            return;
 
         MessageChannel welcomeChannel = member.getGuild().getChannelById(MessageChannel.class, server.getWelcomeMessageChannelId());
         if (welcomeChannel == null)

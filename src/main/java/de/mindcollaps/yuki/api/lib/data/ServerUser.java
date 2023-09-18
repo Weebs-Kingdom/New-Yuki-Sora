@@ -29,13 +29,13 @@ public class ServerUser extends YukiRoute {
     private boolean isMember = false;
 
     @RouteField
-    private Date dateBecomeMember = Date.from(Instant.now());
+    private Date dateBecomeMember = null;
 
     @RouteField
     private boolean isTempMember = false;
 
     @RouteField
-    private Date dateBecomeTempMember = Date.from(Instant.now());
+    private Date dateBecomeTempMember = null;
     @RouteField
     private int xp = 0;
     @RouteField
