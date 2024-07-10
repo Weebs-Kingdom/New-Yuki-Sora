@@ -17,6 +17,10 @@ public class YukiTerminalCommandHandlerThread implements Runnable {
         while (true) {
             try {
                 line = scanner.nextLine();
+                if (line == null)
+                    continue;
+                if (line.isEmpty())
+                    continue;
             } catch (Exception ignored) {
             }
             try {

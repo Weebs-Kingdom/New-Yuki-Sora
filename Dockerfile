@@ -12,4 +12,4 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=builder /app/New-Yuki-Sora-main/target/bot.jar /app/bot.jar
 COPY --from=builder /app/New-Yuki-Sora-main/pom.xml /app/pom.xml
-ENTRYPOINT ["java", "-jar", "/app/bot.jar", "start"]
+ENTRYPOINT ["java", "-jar", "/app/bot.jar", "start", "docker"]
